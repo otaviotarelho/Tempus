@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.otaviotarelho.tempus.R;
 
 
 /**
@@ -20,10 +19,7 @@ public class StatisticFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static StatisticFragment newInstance() {
-        StatisticFragment fragment = new StatisticFragment();
-        return fragment;
-    }
+    public static StatisticFragment newInstance() { return new StatisticFragment(); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

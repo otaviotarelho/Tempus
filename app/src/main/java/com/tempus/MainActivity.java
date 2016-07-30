@@ -1,6 +1,6 @@
 package com.tempus;
 
-
+/* Imports section */
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.example.otaviotarelho.tempus.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
         getString(R.string.tab_statistics);
 
-    }
+    } // end of onCreate
 
 
     @Override
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    } // end of onCreateOptionMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -62,19 +60,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    } // end of onOptionItemSelected
 
     public class SectionAdapter extends FragmentPagerAdapter {
 
-        public SectionAdapter(FragmentManager fm) {
-            super(fm);
-        }
+        public SectionAdapter(FragmentManager fm) { super(fm); } // end of constructor
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch(position){
+            switch(position) {
                 case 0:
                     return AlarmFragment.newInstance();
                 case 1:
@@ -84,14 +79,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return null;
-        }
+        } // end of getItem method
 
         @Override
         public int getCount() {
             // Show 3 total pages.
             return 3;
-        }
+        } // end of getCount method
 
+        //Method that set title based on the file String.XML in resource folder
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -103,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     return getString(R.string.tab_statistics);
             }
             return null;
-        }
-    }
+        } // end of getPageTitle method
+
+    } // end of SectionAdapter method
 
 }

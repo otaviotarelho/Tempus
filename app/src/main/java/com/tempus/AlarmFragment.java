@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.otaviotarelho.tempus.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,10 +18,7 @@ public class AlarmFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AlarmFragment newInstance(){
-        AlarmFragment fragment = new AlarmFragment();
-        return fragment;
-    }
+    public static AlarmFragment newInstance(){ return new AlarmFragment(); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
