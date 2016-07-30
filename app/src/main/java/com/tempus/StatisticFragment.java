@@ -1,4 +1,4 @@
-package com.example.otaviotarelho.tempus;
+package com.tempus;
 
 
 import android.os.Bundle;
@@ -7,19 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.otaviotarelho.tempus.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EventFragment extends Fragment {
+public class StatisticFragment extends Fragment {
 
 
-    public EventFragment() {
+    public StatisticFragment() {
         // Required empty public constructor
     }
 
-    public static EventFragment newInstance(){
-        EventFragment fragment = new EventFragment();
+    public static StatisticFragment newInstance() {
+        StatisticFragment fragment = new StatisticFragment();
         return fragment;
     }
 
@@ -27,7 +29,7 @@ public class EventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_event, container, false);
+        return inflater.inflate(R.layout.fragment_statistic, container, false);
     }
 
 }
