@@ -18,6 +18,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    public final int[] ICON = {
+            R.drawable.ic_alarm_white_36dp,
+            R.drawable.ic_event_white_36dp,
+            R.drawable.ic_pie_chart_white_36dp
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        getString(R.string.tab_statistics);
+
+        for(int i = 0; i < 3; i++) {
+
+            tabLayout.getTabAt(i).setIcon(ICON[i]);
+
+        }
+
+
 
     } // end of onCreate
 
@@ -61,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     } // end of onOptionItemSelected
+
+
 
     public class SectionAdapter extends FragmentPagerAdapter {
 
@@ -90,14 +105,6 @@ public class MainActivity extends AppCompatActivity {
         //Method that set title based on the file String.XML in resource folder
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.tab_alarms);
-                case 1:
-                    return getString(R.string.tab_events);
-                case 2:
-                    return getString(R.string.tab_statistics);
-            }
             return null;
         } // end of getPageTitle method
 

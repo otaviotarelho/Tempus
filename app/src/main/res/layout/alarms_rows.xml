@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2d2d2d"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmClock"
+        android:paddingTop="9dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorClock"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/alarm_name"
+        android:id="@+id/ListItemAlarmName"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/alarmClock"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_marginBottom="2dp"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_eta"
+        android:id="@+id/ListItemETA"
+        android:layout_below="@+id/ListItemAlarmName"
+        android:layout_alignParentEnd="false"
+        android:layout_toEndOf="@+id/alarmClock"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_alarm"
+        android:id="@+id/switch_alarm"
+        android:layout_alignBottom="@+id/alarmClock"
+        android:layout_alignEnd="@+id/ListItemETA"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="9dp"
+        android:checked="false"
+        android:textColor="#FFFFFF"
+        />
+
+
+</RelativeLayout>

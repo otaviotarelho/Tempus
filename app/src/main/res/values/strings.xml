@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">Tempus</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_add_new_alarm">+</string>
+
+    <!-- ALARM FRAGMENT -->
+    <string name="switch_alarm">OFF</string>
+    <string name="alarm_name">Alarm Name</string>
+    <string name="alarm_eta">expected time of arrivel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Tabs names -->
-    <string name="tab_alarms">ALARME</string>
-    <string name="tab_events">EVENTOS</string>
-    <string name="tab_statistics">ESTATISTICAS</string>
 </resources>
