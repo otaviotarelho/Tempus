@@ -9,25 +9,57 @@
     android:paddingLeft="16dp">
 
 
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/EventTimeClock"
+        android:paddingTop="9dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorClock"
+        />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/alarm_name"
+        android:id="@+id/EventNameList"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="17dp"/>
+        android:layout_toEndOf="@+id/EventTimeClock"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_marginBottom="2dp"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_eta"
+        android:id="@+id/EventDateList"
+        android:layout_below="@+id/EventNameList"
+        android:layout_alignParentEnd="false"
+        android:layout_toEndOf="@+id/EventTimeClock"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/eventAddImageButton"
         android:layout_alignParentTop="true"
+        android:src="@drawable/ic_add_alert_white_24dp"
+        android:layout_alignBottom="@+id/EventDateList"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_add_white_48dp"
-        android:adjustViewBounds="false"
-        android:clickable="true"
-        android:backgroundTint="#232323" />
+        android:background="@null"
+        android:paddingRight="16dp"
+        />
 
 </RelativeLayout>

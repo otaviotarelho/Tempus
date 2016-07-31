@@ -17,9 +17,11 @@ import java.util.ArrayList;
  */
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
-
+    public ArrayList<Alarm> alarm;
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
+
         super(context,0,alarms);
+        alarm = alarms;
     }
 
 
@@ -34,6 +36,19 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
         elements.eta = (TextView) convertView.findViewById(R.id.ListItemETA);
         elements.active = (Switch) convertView.findViewById(R.id.switch_alarm);
 
+        Alarm a = alarm.get(position);
+
+        elements.clock.setText(a.getAlarmTime());
+        elements.active.setChecked(a.isActive());
+
+        if(a.isActive()) {
+            elements.active.setText("ON");
+        } else {
+            elements.active.setText("OFF");
+        }
+
+        elements.eta.setText(a.getAlarmETA());
+        elements.name.setText(a.getAlarmName());
 
         return convertView;
     }
