@@ -30,13 +30,29 @@ public class EventFragment extends Fragment {
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_event, container, false);
 
-        setEvents();
+        //If to prevent add same items to the ArrayList
+        if(savedInstanceState != null) {
+
+            events = (ArrayList<Event>) savedInstanceState.get(MainActivity.SAVE_EVENT_LIST);
+
+        }
+        else {
+
+            setEvents();
+
+        }
 
         listViewEvent = (ListView) fragmentLayout.findViewById(R.id.listViewsEvents);
         listViewEvent.setAdapter(new EventAdapter(getActivity(),events));
 
         // Inflate the layout for this fragment
         return fragmentLayout;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(MainActivity.SAVE_EVENT_LIST, events);
     }
 
     public static void setEvents(){

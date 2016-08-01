@@ -32,12 +32,29 @@ public class AlarmFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_alarm, container, false);
 
-        setAlarms();
+        //If to prevent add same items to the ArrayList
+        if(savedInstanceState != null) {
+
+            alarms = (ArrayList<Alarm>) savedInstanceState.get(MainActivity.SAVE_ALARM_LIST);
+
+        }
+        else {
+
+            setAlarms();
+
+        }
+
 
         listView = (ListView) fragmentLayout.findViewById(R.id.listViews);
         listView.setAdapter(new AlarmAdapter(getActivity(),alarms));
 
         return fragmentLayout;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable(MainActivity.SAVE_ALARM_LIST, alarms);
     }
 
     public static void setAlarms(){

@@ -18,11 +18,14 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
-    public final int[] ICON = {
+    private final int[] ICON = {
             R.drawable.ic_alarm_white_36dp,
             R.drawable.ic_event_white_36dp,
             R.drawable.ic_pie_chart_white_36dp
-    };
+    }; // ICON LIST
+
+    public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
+    public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        //Set icon to tablayout
         for(int i = 0; i < 3; i++) {
 
             tabLayout.getTabAt(i).setIcon(ICON[i]);
 
-        }
+        } // end of for
 
 
 
