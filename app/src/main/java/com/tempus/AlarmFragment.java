@@ -44,10 +44,8 @@ public class AlarmFragment extends Fragment {
 
         }
 
-
         listView = (ListView) fragmentLayout.findViewById(R.id.listViews);
         listView.setAdapter(new AlarmAdapter(getActivity(),alarms));
-
         return fragmentLayout;
     }
 
@@ -57,8 +55,10 @@ public class AlarmFragment extends Fragment {
         savedInstanceState.putSerializable(MainActivity.SAVE_ALARM_LIST, alarms);
     }
 
+
+
     public static void setAlarms(){
-        alarms.add(new Alarm("Primeiro alarm", "2 horas","",true));
+        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30",false));
         alarms.add(new Alarm("Segundo alarm", "2 horas","",true));
     }
 }

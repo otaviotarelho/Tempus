@@ -5,6 +5,7 @@
     <color name="colorAccent">#EA7F16</color>
     <color name="colorWhite">#FFFF</color>
     <color name="colorClock">#f4bd87</color>
+    <color name="colorBackground">#1f1f1f</color>
     <!--
     <color name="colorPrimaryLight">#CFD8DC</color>
     <color name="colorPrimaryText">#212121</color>

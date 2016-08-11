@@ -30,7 +30,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
         convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarms_rows, parent, false);
 
-        rowsElements elements = new rowsElements();
+        final rowsElements elements = new rowsElements();
         elements.clock = (TextClock) convertView.findViewById(R.id.alarmClock);
         elements.name = (TextView) convertView.findViewById(R.id.ListItemAlarmName);
         elements.eta = (TextView) convertView.findViewById(R.id.ListItemETA);
@@ -38,20 +38,40 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
         Alarm a = alarm.get(position);
 
-        elements.clock.setText(a.getAlarmTime());
+        elements.clock.setFormat12Hour(a.getAlarmTime());
         elements.active.setChecked(a.isActive());
 
         if(a.isActive()) {
-            elements.active.setText("ON");
+            elements.active.setText(R.string.alarm_on);
         } else {
-            elements.active.setText("OFF");
+            elements.active.setText(R.string.alarm_off);
         }
 
         elements.eta.setText(a.getAlarmETA());
         elements.name.setText(a.getAlarmName());
 
+        elements.active.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                if(elements.active.isChecked()){
+
+                    elements.active.setText(R.string.alarm_on);
+
+                }
+                else {
+
+                    elements.active.setText(R.string.alarm_off);
+
+                }
+            }
+
+        });
+
         return convertView;
     }
+
+
 
     public class rowsElements {
         TextClock clock;
