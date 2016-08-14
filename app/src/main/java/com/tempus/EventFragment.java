@@ -42,7 +42,11 @@ public class EventFragment extends Fragment {
         }
         else {
 
-            setEvents();
+            if(events.size() == 0) {
+
+                setEvents();
+
+            }
 
         }
 

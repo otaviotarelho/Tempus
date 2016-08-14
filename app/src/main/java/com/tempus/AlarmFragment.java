@@ -36,7 +36,9 @@ public class AlarmFragment extends Fragment {
         }
         else {
 
-            setAlarms();
+            if(alarms.size() == 0) {
+                setAlarms();
+            }
 
         }
 
