@@ -1,12 +1,14 @@
+
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by otaviotarelho on 8/2/16.
- */
 public class DBAdapter {
 
     private static final String DB_NAME = "";

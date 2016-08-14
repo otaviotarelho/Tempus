@@ -7,10 +7,6 @@
     <string name="alarm_eta">expected time of arrivel</string>
     <string name="alarm_on">ON</string>
     <string name="alarm_off">OFF</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_settings">Settings</string>
-
-
 
 </resources>

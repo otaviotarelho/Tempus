@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
 import android.content.Context;
@@ -13,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by otaviotarelho on 7/31/16.
  */
+
 public class EventAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> e;
     public EventAdapter(Context context, ArrayList<Event> events) {

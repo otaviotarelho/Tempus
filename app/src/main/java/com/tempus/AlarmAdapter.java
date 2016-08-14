@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
 import android.content.Context;
@@ -5,16 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
-/**
- * Created by otaviotarelho on 7/30/16.
- */
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
     public ArrayList<Alarm> alarm;

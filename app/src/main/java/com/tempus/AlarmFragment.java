@@ -1,21 +1,17 @@
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
-
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AlarmFragment extends Fragment {
 
     private static ArrayList<Alarm> alarms = new ArrayList<>();
@@ -45,7 +41,7 @@ public class AlarmFragment extends Fragment {
         }
 
         listView = (ListView) fragmentLayout.findViewById(R.id.listViews);
-        listView.setAdapter(new AlarmAdapter(getActivity(),alarms));
+        listView.setAdapter(new AlarmAdapter(getActivity(), alarms));
         return fragmentLayout;
     }
 
@@ -62,3 +58,4 @@ public class AlarmFragment extends Fragment {
         alarms.add(new Alarm("Segundo alarm", "2 horas","",true));
     }
 }
+

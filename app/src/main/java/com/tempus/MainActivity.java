@@ -1,6 +1,11 @@
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
 /* Imports section */
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    public final static String EXTRA_MESSAGE = "com.tempus.NEW";
+    public final static String EXTRA_MESSAGE_EDIT = "com.tempus.EDIT";
+    public final static String EXTRA_MESSAGE_ADD_EVENT = "com.tempus.EVENT";
+
 
     private SectionAdapter mSectionsPagerAdapter;
 
@@ -52,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         } // end of for
 
-
-
     } // end of onCreate
 
 
@@ -72,7 +80,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if(id == R.id.action_add_new_alarm){
+            Intent newAlarm = new Intent(this, NewAlarmActivity.class);
+            startActivity(newAlarm);
+            return true;
+        }
+
+        else if (id == R.id.action_settings) {
+            Intent settings = new Intent(this, Settings.class);
+            startActivity(settings);
             return true;
         }
 

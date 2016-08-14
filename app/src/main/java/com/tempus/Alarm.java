@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+ */
+
 package com.tempus;
 
-/**
- * Created by otaviotarelho on 7/30/16.
- */
-public class Alarm {
+import java.io.Serializable;
+
+public class Alarm implements Serializable {
     private long ID;
     private String alarmName, alarmETA, alarmTime;
     private boolean active;
