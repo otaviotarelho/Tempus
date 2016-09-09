@@ -5,10 +5,17 @@
     tools:context="com.tempus.EventFragment"
     android:background="@color/colorPrimaryDark">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:visibility="invisible" />
+
     <ListView
         android:id="@+id/listViewsEvents"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:visibility="visible">
     </ListView>
 
 </LinearLayout>

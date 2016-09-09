@@ -5,12 +5,24 @@
 package com.tempus;
 
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,6 +33,25 @@ public class EventFragment extends Fragment {
 
     private static ArrayList<Event> events = new ArrayList<>();
     private static ListView listViewEvent;
+    private static TextView textView; // TextView to show when no data is shown
+    private Context context;
+
+    //Events Array - List of Elements in the database
+    private static final String[] EVENT_PROJECTION = new String[] {
+            CalendarContract.Events.TITLE,
+            CalendarContract.Events.EVENT_LOCATION,
+            CalendarContract.Events.DTSTART,
+            CalendarContract.Events.DTEND,
+            CalendarContract.Events.DURATION
+    };
+
+    // Array Event Projection keys
+    private static final int PROJECTION_TITLE = 0;
+    private static final int PROJECTION_LOCATION = 1;
+    private static final int PROJECTION_DTSTART = 2;
+    private static final int PROJECTION_DT_END = 3;
+    private static final int PROJECTION_DURATION = 4;
+    private static final int MY_PERMISSION_ACCESS_CALENDAR = 5520;
 
     public EventFragment() {
         // Required empty public constructor
@@ -34,6 +65,16 @@ public class EventFragment extends Fragment {
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_event, container, false);
 
+        textView = (TextView) fragmentLayout.findViewById(R.id.textView);
+        context = getActivity();
+
+        //Get Permission to access database in the first usage
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.READ_CALENDAR},
+                    MY_PERMISSION_ACCESS_CALENDAR);
+        }
+
         //If to prevent add same items to the ArrayList
         if(savedInstanceState != null) {
 
@@ -42,11 +83,8 @@ public class EventFragment extends Fragment {
         }
         else {
 
-            if(events.size() == 0) {
-
-                setEvents();
-
-            }
+            events.clear();
+            getEvents();
 
         }
 
@@ -63,10 +101,51 @@ public class EventFragment extends Fragment {
         savedInstanceState.putSerializable(MainActivity.SAVE_EVENT_LIST, events);
     }
 
-    public static void setEvents(){
+    //Get events from User calendar database;
 
-        events.add(new Event("Event1", "12345677.34-1993005","","","","",1));
-        events.add(new Event("Event2", "12345677.34-1993005","","","","",1));
+    public void getEvents(){
+
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_DENIED) {
+
+            Cursor cur;
+            ContentResolver cr = context.getContentResolver();
+            Uri uri = CalendarContract.Events.CONTENT_URI;
+            Event event = new Event();
+
+            cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
+
+            while(cur.moveToNext()){
+                event.setName(cur.getString(PROJECTION_TITLE));
+                event.setDay_start(cur.getString(PROJECTION_DTSTART));
+                event.setDay_end(cur.getString(PROJECTION_DT_END));
+                event.setLocation(cur.getString(PROJECTION_LOCATION));
+                event.setDuration(cur.getString(PROJECTION_DURATION));
+                events.add(event);
+            }
+
+            //code used to test events
+            events.add(new Event("Event1", "12345677.34-1993005","","",""));
+            events.add(new Event("Event2", "12345677.34-1993005","","",""));
+
+            if(events.size() == 0) {
+                textView.setTextColor(Color.WHITE);
+                textView.setText(R.string.no_event);
+                textView.setVisibility(View.VISIBLE);
+                listViewEvent.setVisibility(View.INVISIBLE);
+            }
+            else {
+                textView.setVisibility(View.INVISIBLE);
+                listViewEvent.setVisibility(View.VISIBLE);
+            }
+
+        }
+        else {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_CALENDAR},
+                        MY_PERMISSION_ACCESS_CALENDAR);
+            }
+        }
 
     }
 }

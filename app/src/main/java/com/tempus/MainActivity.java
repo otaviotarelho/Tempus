@@ -5,11 +5,15 @@
 package com.tempus;
 
 /* Imports section */
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         //Set icon to tablayout
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 
             tabLayout.getTabAt(i).setIcon(ICON[i]);
 
@@ -87,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (id == R.id.action_settings) {
-            Intent settings = new Intent(this, Settings.class);
-            startActivity(settings);
+            //Intent settings = new Intent(this, NewAlarmActivity.class);
+            //startActivity(settings);
             return true;
         }
 
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         } // end of getCount method
 
         //Method that set title based on the file String.XML in resource folder
