@@ -3,13 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tempus.EventFragment"
-    android:background="@color/colorPrimaryDark">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:visibility="invisible" />
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/listViewsEvents"

@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
-    public ArrayList<Alarm> alarm;
+    private ArrayList<Alarm> alarm;
+
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
 
         super(context,0,alarms);

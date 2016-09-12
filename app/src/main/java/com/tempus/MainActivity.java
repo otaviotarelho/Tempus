@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SectionAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
 
     private final int[] ICON = {
@@ -113,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                     return AlarmFragment.newInstance();
                 case 1:
                     return EventFragment.newInstance();
-                case 2:
-                    return StatisticFragment.newInstance();
             }
 
             return null;
