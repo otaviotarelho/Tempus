@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,15 +72,11 @@ public class EventFragment extends Fragment {
 
         //If to prevent add same items to the ArrayList
         if(savedInstanceState != null) {
-
             events = (ArrayList<Event>) savedInstanceState.get(MainActivity.SAVE_EVENT_LIST);
-
         }
         else {
-
             events.clear();
             getEvents();
-
         }
 
 
@@ -92,21 +89,31 @@ public class EventFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putSerializable(MainActivity.SAVE_EVENT_LIST, events);
+        savedInstanceState.putSerializable(MainActivity.SAVE_EVENT_LIST, events);  //Save current list of vents
     }
 
     //Get events from User calendar database;
 
     public void getEvents(){
 
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_DENIED) {
-
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) !=
+                PackageManager.PERMISSION_DENIED) { // if permission is grated
             Cursor cur;
             ContentResolver cr = context.getContentResolver();
-            Uri uri = CalendarContract.Events.CONTENT_URI;
+            Uri uri = CalendarContract.Events.CONTENT_URI; // API Address in the System
 
+            //Week Dates
+            Calendar calendar = Calendar.getInstance();
+            long startDay = calendar.getTimeInMillis();
+            calendar.add(Calendar.DATE, 6); // Add 6 days to current date
+            long endDay = calendar.getTimeInMillis();
 
-            cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
+            String selection = CalendarContract.Events.DTSTART + " >= ? AND "
+                    + CalendarContract.Events.DTSTART + "<= ?"; //Selection String == WHERE in SQL
+
+            //String WHERE arguments
+            String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
+            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 
             while(cur.moveToNext()){
 
@@ -117,11 +124,13 @@ public class EventFragment extends Fragment {
                 event.setDay_end(cur.getString(PROJECTION_DTEND));
                 event.setLocation(cur.getString(PROJECTION_LOCATION));
                 event.setDuration(cur.getString(PROJECTION_DURATION));
+
                 events.add(event);
             }
         }
         else {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
+                    != PackageManager.PERMISSION_GRANTED) { // if not ask for permission
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.READ_CALENDAR},
                         MY_PERMISSION_ACCESS_CALENDAR);
