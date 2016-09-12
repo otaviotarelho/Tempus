@@ -4,18 +4,20 @@
 
 package com.tempus;
 
+/* Imports section */
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by otaviotarelho on 7/31/16.
@@ -23,11 +25,9 @@ import java.util.ArrayList;
 
 public class EventAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> e;
-    private Context context;
 
     public EventAdapter(Context context, ArrayList<Event> events) {
         super(context,0,events);
-        this.context = context;
         e = events;
     }
 
@@ -47,25 +47,37 @@ public class EventAdapter extends ArrayAdapter<Event> {
         ev = e.get(position);
 
         elements.name.setText(ev.getName());
-        elements.date.setText(ev.getDay_start());
-        elements.time.setText("");
+        elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
+        elements.time.setText(getStringFromDate("HH:mm:ss", ev.getDay_start()));
 
         elements.btn.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NewAlarmActivity.class);
-
-                //send informations to new activity about the event
+                Intent intent = new Intent(getContext(), NewAlarmActivity.class);
+                //send information to new activity about the event
 
 
                 //start activity
-                context.startActivity(intent);
+                getContext().startActivity(intent);
             }
+
         });
 
         return convertView;
     }
 
+    // Format Calender Content Provider into readable format -- Current format in milliseconds from epoch
+    public String getStringFromDate(String pattern, String longDTSTART){
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(Long.getLong(longDTSTART));
+        String result = sdf.format(c);
+
+        return result;
+    }
+
+    //elements class to make it more organized and reusable
     public class ErowsElements {
         TextView name, date;
         TextClock time;

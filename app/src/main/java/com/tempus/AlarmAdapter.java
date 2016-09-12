@@ -4,6 +4,7 @@
 
 package com.tempus;
 
+/* Imports section */
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
