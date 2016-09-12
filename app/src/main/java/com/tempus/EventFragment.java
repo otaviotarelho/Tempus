@@ -16,6 +16,7 @@ import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,12 +109,16 @@ public class EventFragment extends Fragment {
             calendar.add(Calendar.DATE, 6); // Add 6 days to current date
             long endDay = calendar.getTimeInMillis();
 
-            String selection = CalendarContract.Events.DTSTART + " >= ? AND "
-                    + CalendarContract.Events.DTSTART + "<= ?"; //Selection String == WHERE in SQL
+            // Constructs a selection clause with a replaceable parameter
+            String selection = "(" + CalendarContract.Events.DTSTART + " >= ? ) AND ("
+                    + CalendarContract.Events.DTSTART + "<= ? )"; //Selection String == WHERE in SQL
 
-            //String WHERE arguments
+            // Defines an array to contain the selection arguments
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
+
             cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+
+            Log.e("TOTAL EVENT-CALENDAR:", String.valueOf(cur.getCount()));
 
             while(cur.moveToNext()){
 
