@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
     private ArrayList<Alarm> alarm;
+    private Boolean _24_h_Clock = false;
 
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
 
@@ -39,7 +40,17 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
         Alarm a = alarm.get(position);
 
-        elements.clock.setFormat12Hour(a.getAlarmTime());
+        if(_24_h_Clock) {
+
+            elements.clock.setFormat24Hour(a.getAlarmTime());
+
+        } else {
+
+            elements.clock.setFormat12Hour(a.getAlarmTime());
+
+        }
+
+
         elements.active.setChecked(a.isActive());
 
         if(a.isActive()) {
@@ -59,10 +70,14 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
                     elements.active.setText(R.string.alarm_on);
 
+                    //turn AlarBroadCast On
+
                 }
                 else {
 
                     elements.active.setText(R.string.alarm_off);
+
+                    //turn AlarmBroadCast off;
 
                 }
             }

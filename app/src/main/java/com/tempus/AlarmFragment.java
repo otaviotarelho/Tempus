@@ -57,8 +57,8 @@ public class AlarmFragment extends Fragment {
 
 
     public static void setAlarms(){
-        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30",false));
-        alarms.add(new Alarm("Segundo alarm", "2 horas","",true));
+        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30", false));
+        alarms.add(new Alarm("Segundo alarm", "2 horas","", true));
     }
 }
 

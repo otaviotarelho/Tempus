@@ -16,6 +16,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         } // end of for
 
+
     } // end of onCreate
 
 
@@ -86,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (id == R.id.action_settings) {
-            //Intent settings = new Intent(this, NewAlarmActivity.class);
-            //startActivity(settings);
+            Intent settings = new Intent(this, TempusSettingsActivity.class);
+            startActivity(settings);
             return true;
         }
 

@@ -8,6 +8,7 @@ package com.tempus;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -69,6 +70,7 @@ public class EventFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_CALENDAR},
                     MY_PERMISSION_ACCESS_CALENDAR);
+            restartIntent();
         }
 
         //If to prevent add same items to the ArrayList
@@ -110,8 +112,8 @@ public class EventFragment extends Fragment {
             long endDay = calendar.getTimeInMillis();
 
             // Constructs a selection clause with a replaceable parameter
-            String selection = "(" + CalendarContract.Events.DTSTART + " >= ? ) AND ("
-                    + CalendarContract.Events.DTSTART + "<= ? )"; //Selection String == WHERE in SQL
+            String selection = CalendarContract.Events.DTSTART + " >= ? AND "
+                    + CalendarContract.Events.DTSTART + "<= ?"; //Selection String == WHERE in SQL
 
             // Defines an array to contain the selection arguments
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
@@ -139,8 +141,19 @@ public class EventFragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.READ_CALENDAR},
                         MY_PERMISSION_ACCESS_CALENDAR);
+                restartIntent();
             }
+
         }
 
     }
+
+    public void restartIntent(){
+        Intent intent = getActivity().getIntent();
+        getActivity().finish();
+        startActivity(intent);
+    }
+
+
+
 }
