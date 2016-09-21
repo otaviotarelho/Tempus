@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+  -->
+
+<resources>
+    <string name="app_name">Tempus</string>
+    <string name="no_event">Nenhum evento encontrado no calendario</string>
+    <string name="pref_header_data_sync">Opções de Sincronização de Dados</string>
+    <string name="pref_header_how_works">Como funciona?</string>
+    <string name="pref_header_legal">Informações Legais</string>
+    <string name="pref_hour_system">Sistema de 24 Hours</string>
+    <string name="pref_org_sync_frequency">Quanto tempo precisa para estar preparado para sair?</string>
+    <string name="pref_title_sync_frequency">Frequência de Atualização do Google Maps</string>
+    <string name="title_activity_settings">Configurações</string>
+    <string name="title_activity_tempus_settings">Configurações</string>
+    <string name="alarm_name">Nome do Alarme</string>
+    <string name="alarm_eta">Tempo de chegada</string>
+    <string name="pref_header_lang_options">Linguagem</string>
+    <string name="pref_header_app_options">Opções da Aplicação</string>
+    <string name="pref_header_data_sync_sum">Mude as opções de sincronismo para melhor experiência.</string>
+    <string name="pref_header_app_options_sum">Mude preferencias do sistema como linguagem e sistema de hora.</string>
+    <string name="pref_hour_systems">Sistema de 24 Hours</string>
+</resources>
