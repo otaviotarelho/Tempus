@@ -9,7 +9,6 @@
     <string name="pref_header_data_sync">Opções de Sincronização de Dados</string>
     <string name="pref_header_how_works">Como funciona?</string>
     <string name="pref_header_legal">Informações Legais</string>
-    <string name="pref_hour_system">Sistema de 24 Hours</string>
     <string name="pref_org_sync_frequency">Quanto tempo precisa para estar preparado para sair?</string>
     <string name="pref_title_sync_frequency">Frequência de Atualização do Google Maps</string>
     <string name="title_activity_settings">Configurações</string>
