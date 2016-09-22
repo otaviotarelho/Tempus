@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tempus.MainActivity">
+    <item
+        android:id="@+id/action_save_alarm"
+        android:orderInCategory="1"
+        android:title="@string/save_string"
+        app:showAsAction="ifRoom" />
+</menu>
+

@@ -11,6 +11,7 @@
         android:key="sync_frequency"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
+        android:persistent="true"
         android:title="@string/pref_title_sync_frequency" />
 
     <ListPreference
@@ -20,6 +21,7 @@
         android:key="org_sync_frequency"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
+        android:persistent="true"
         android:title="@string/pref_org_sync_frequency" />
 
 </PreferenceScreen>

@@ -4,6 +4,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <ListPreference
         android:defaultValue="en-us"
         android:entries="@array/pref_lang_titles"
@@ -11,12 +12,15 @@
         android:key="lang_setting"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_header_lang_options" />
+        android:title="@string/pref_header_lang_options"
+        android:persistent="true"/>
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="hour_system"
-        android:title="@string/pref_hour_systems" />
+        android:title="@string/pref_hour_systems"
+        android:persistent="true"
+        />
 
 
 </PreferenceScreen>

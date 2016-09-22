@@ -20,4 +20,5 @@
     <string name="pref_header_data_sync_sum">Mude as opções de sincronismo para melhor experiência.</string>
     <string name="pref_header_app_options_sum">Mude preferencias do sistema como linguagem e sistema de hora.</string>
     <string name="pref_hour_systems">Sistema de 24 Hours</string>
+    <string name="save_string">Salvar</string>
 </resources>

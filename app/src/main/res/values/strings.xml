@@ -3,6 +3,7 @@
     <string name="app_name">Tempus</string>
     <string name="title_activity_tempus_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="save_string">Save</string>
     <!-- End of Activity Headers -->
 
     <!-- Alarm and Events List Strings -->
@@ -64,7 +65,5 @@
     <!-- Legal -->
     <string name="pref_header_legal">Legal Information</string>
     <string name="pref_hour_systems">24 Hour System</string>
-    <!-- End of Settings Strings -->
-
 
 </resources>
