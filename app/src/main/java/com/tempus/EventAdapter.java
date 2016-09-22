@@ -7,6 +7,7 @@ package com.tempus;
 /* Imports section */
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
         elements.name.setText(ev.getName());
         elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
-        elements.time.setText(getStringFromDate("HH:mm:ss", ev.getDay_start()));
+        elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
 
         elements.btn.setOnClickListener(new View.OnClickListener(){
 
@@ -71,8 +72,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public String getStringFromDate(String pattern, String longDTSTART){
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(Long.getLong(longDTSTART));
-        String result = sdf.format(c);
+        Long mili = Long.valueOf(longDTSTART).longValue();
+        c.setTimeInMillis(mili);
+        String result = sdf.format(c.getTime());
+
+        Log.e("TIME", String.valueOf(result));
 
         return result;
     }
