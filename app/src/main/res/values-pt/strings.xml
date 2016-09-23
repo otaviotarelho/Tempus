@@ -21,4 +21,17 @@
     <string name="pref_header_app_options_sum">Mude preferencias do sistema como linguagem e sistema de hora.</string>
     <string name="pref_hour_systems">Sistema de 24 Hours</string>
     <string name="save_string">Salvar</string>
+    <string name="event_end_time">Hora de Enceramento</string>
+    <string name="event_location">Localização do Evento</string>
+    <string name="event_start_time">Hora de Início</string>
+    <string name="new_alarm_default_name">Alarme</string>
+    <string name="new_alarm_repeat">Repetir</string>
+    <string name="new_alarm_time">Horário</string>
+    <string name="new_alarm_title">Título</string>
+    <string name="new_alarm_title_dialog">Nome do alarme</string>
+    <string name="new_alarm_title_dialog_sum">Coloque um novo nome para o alarme.</string>
+    <string name="pref_cat_alarm">INFORMAÇÕES DO ALARME</string>
+    <string name="pref_cat_traffic">INFORMAÇÕES BASEADAS NO TRÁFEGO</string>
+    <string name="snooze_title">Soneca</string>
+    <string name="type">Tipo</string>
 </resources>

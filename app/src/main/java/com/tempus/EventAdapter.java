@@ -25,6 +25,7 @@ import java.util.Calendar;
  */
 
 public class EventAdapter extends ArrayAdapter<Event> {
+
     private ArrayList<Event> e;
 
     public EventAdapter(Context context, ArrayList<Event> events) {
@@ -48,8 +49,21 @@ public class EventAdapter extends ArrayAdapter<Event> {
         ev = e.get(position);
 
         elements.name.setText(ev.getName());
-        elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
-        elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
+
+        if(true) { // change with getPreferences
+            elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
+        }
+        else{
+            elements.date.setText(getStringFromDate("MM/dd/yyyy", ev.getDay_start()));
+        }
+
+        if(true) { // change with getPreferences
+            elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
+        }
+        else {
+            elements.time.setFormat12Hour(getStringFromDate("h:mm", ev.getDay_start()));
+        }
+
 
         elements.btn.setOnClickListener(new View.OnClickListener(){
 
@@ -75,9 +89,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
         Long mili = Long.valueOf(longDTSTART).longValue();
         c.setTimeInMillis(mili);
         String result = sdf.format(c.getTime());
-
-        Log.e("TIME", String.valueOf(result));
-
         return result;
     }
 

@@ -5,75 +5,89 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <PreferenceCategory android:title="ALARM INFORMATION"
+    <PreferenceCategory android:title="@string/pref_cat_alarm"
         android:key="alarm_information_category">
+
         <ListPreference
             android:defaultValue="0:00"
             android:entries="@array/pref_lang_titles"
             android:entryValues="@array/pref_lang_values"
+            android:persistent="false"
             android:key="alarm_time"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="Time" />
+            android:title="@string/new_alarm_time" />
 
         <EditTextPreference
-            android:title="Label"
+            android:title="@string/new_alarm_title"
             android:key="alarm_name"
-            android:dialogTitle="Alarm name"
-            android:dialogMessage="Set a new name for the alarm"
-            android:defaultValue="Alarm"/>
+            android:persistent="false"
+            android:dialogTitle="@string/new_alarm_title_dialog"
+            android:dialogMessage="@string/new_alarm_title_dialog_sum"
+            android:defaultValue="@string/new_alarm_default_name"/>
 
         <ListPreference
-            android:defaultValue="Never"
-            android:entries="@array/pref_lang_titles"
-            android:entryValues="@array/pref_lang_values"
+            android:defaultValue="-1"
+            android:entries="@array/repeat_label"
+            android:entryValues="@array/repeat_values"
+            android:persistent="false"
             android:key="alarm_repeat"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="Repeat" />
+            android:title="@string/new_alarm_repeat" />
 
         <RingtonePreference
             android:title="Ringtone"
             android:key="alarm_ringtone"
+            android:persistent="false"
             android:ringtoneType="all"
             />
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="alarm_snooze"
-            android:title="snooze" />
+            android:persistent="false"
+            android:title="@string/snooze_title" />
 
         <ListPreference
-            android:defaultValue="Normal"
-            android:entries="@array/pref_lang_titles"
-            android:entryValues="@array/pref_lang_values"
+            android:defaultValue="0"
+            android:entries="@array/alarm_type_title"
+            android:entryValues="@array/alarm_type_values"
             android:key="alarm_type"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
-            android:title="Type" />
+            android:persistent="false"
+            android:title="@string/type" />
+
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="BASED TRAFFIC INFORMATION">
+    <PreferenceCategory android:title="@string/pref_cat_traffic">
+
         <EditTextPreference
-            android:title="Event Location"
+            android:title="@string/event_location"
             android:key="event_location"
             android:dialogTitle="Alarm name"
             android:dialogMessage="Set a new name for the alarm"
+            android:persistent="false"
             android:defaultValue="Alarm"/>
 
         <EditTextPreference
-            android:title="Start time"
+            android:title="@string/event_start_time"
             android:key="event_start_time"
             android:dialogTitle="Alarm name"
             android:dialogMessage="Set a new name for the alarm"
+            android:persistent="false"
             android:defaultValue="13:30"/>
 
         <EditTextPreference
-            android:title="End Time"
+            android:title="@string/event_end_time"
             android:key="event_end_time"
             android:dialogTitle="Alarm name"
             android:dialogMessage="Set a new name for the alarm"
-            android:defaultValue="15:30"/>
+            android:persistent="false"
+            android:defaultValue="13:30"/>
+
+
     </PreferenceCategory>
 
 </PreferenceScreen>
