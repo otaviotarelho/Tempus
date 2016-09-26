@@ -32,7 +32,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/EventTimeClock"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="1"
         android:layout_marginBottom="2dp"
         android:textColor="#FFFFFF"
         />
@@ -46,7 +46,7 @@
         android:layout_alignParentEnd="false"
         android:layout_toEndOf="@+id/EventTimeClock"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textColor="#FFFFFF"
         />
 

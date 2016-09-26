@@ -2,14 +2,13 @@
  * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
  */
 
-package com.tempus;
+package com.tempus.Events;
 
 /* Imports section */
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import java.io.Serializable;
+import com.tempus.MainActivity;
+import com.tempus.Alarm.NewAlarmActivity;
+import com.tempus.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

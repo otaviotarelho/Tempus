@@ -109,4 +109,7 @@
     <string name="confirm">Confirmar</string>
     <string name="delete_alarm_sum">Tem certeza que deseja deletar esse alarme?</string>
     <string name="delete_alarm_title">Tem certeza?</string>
+    <string name="save_alarm_sum">Tem certeza que deseja salvar esse alarme?</string>
+    <string name="save_alarm_title">Salvando o Novo Alarme</string>
+    <string name="save_alarm_toast">O alarme foi salvo e está configurado para tocar logo mais!</string>
 </resources>

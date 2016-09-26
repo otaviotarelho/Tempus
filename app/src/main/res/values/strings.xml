@@ -41,6 +41,9 @@
     <string name="delete_alarm_title">Are you sure?</string>
     <string name="delete_alarm_sum">Are you sure you want to delete the alarm?</string>
     <string name="confirm">Confirm</string>
+    <string name="save_alarm_title">Saving New Alarm</string>
+    <string name="save_alarm_sum">Are you sure you  want to save this alarm?</string>
+    <string name="save_alarm_toast">Alarm saved and was set to ring sooner!</string>
     <string name="type">Type</string>
 
     <string-array name="pref_lang_titles">

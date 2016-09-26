@@ -5,25 +5,25 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="com.tempus.TempusSettingsActivity$AppOptPreferenceFragment"
+        android:fragment="com.tempus.Preferences.AppCompatPreferenceActivity$TempusSettingsActivity$AppOptPreferenceFragment"
         android:icon="@drawable/ic_settings_applications_black_36dp"
         android:title="@string/pref_header_app_options"
         android:summary="@string/pref_header_app_options_sum"
         />
 
     <header
-        android:fragment="com.tempus.TempusSettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.tempus.Preferences.AppCompatPreferenceActivity$TempusSettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_36dp"
         android:title="@string/pref_header_data_sync"
         android:summary="@string/pref_header_data_sync_sum"/>
 
     <header
-        android:fragment="com.tempus.HowWork"
+        android:fragment="com.tempus.Preferences.HowWork"
         android:icon="@drawable/ic_perm_device_information_black_36dp"
         android:title="@string/pref_header_how_works" />
 
     <header
-        android:fragment="com.tempus.Legal"
+        android:fragment="com.tempus.Preferences.Legal"
         android:icon="@drawable/ic_info_outline_black_36dp"
         android:title="@string/pref_header_legal" />
 

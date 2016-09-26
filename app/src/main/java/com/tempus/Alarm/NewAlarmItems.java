@@ -2,9 +2,8 @@
  * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
  */
 
-package com.tempus;
+package com.tempus.Alarm;
 
-import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,10 +14,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import com.tempus.R;
 
-/**
- * Created by otaviotarelho on 9/25/16.
- */
 public class NewAlarmItems extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -2,23 +2,30 @@
  * Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
  */
 
-package com.tempus;
+package com.tempus.Alarm;
 
-/* Imports section */
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
-
+import android.widget.Toast;
+import com.tempus.Events.Event;
+import com.tempus.MainActivity;
+import com.tempus.Preferences.AppCompatPreferenceActivity;
+import com.tempus.R;
 import java.util.Locale;
 
 public class NewAlarmActivity extends AppCompatPreferenceActivity {
+
+    private AlertDialog confirmDialogObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean hour_system = sharedPref.getBoolean("hour_system", true);
+        SharedPreferences.Editor edit = sharedPref.edit();
+        ClearPreferences(edit);
         TimePicker textClock = (TimePicker) findViewById(R.id.timePicker);
 
         if(hour_system){
@@ -84,6 +93,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             }
             return true;
         }
+
         return super.onMenuItemSelected(featureId, item);
     }
 
@@ -95,8 +105,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_save_alarm) {
-            saveData();
-            Log.e("Save selected", "TRUE");
+            buildConformDialog();
+            confirmDialogObj.show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -104,8 +114,53 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     public void saveData(){
         //saveData in the database
+
+        // return to home
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
+        //Set toast mensage
+        Context context = getApplicationContext();
+        CharSequence text = getResources().getString(R.string.save_alarm_toast);
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        //Finish this activity
+        finish();
     }
 
+    private void buildConformDialog(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle(R.string.save_alarm_title);
+        confirmBuilder.setMessage(R.string.save_alarm_sum);
+        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                saveData();
+            }
+        });
+
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+            }
+        });
+
+        confirmDialogObj = confirmBuilder.create();
+    }
+
+    public void ClearPreferences(SharedPreferences.Editor edit){
+        edit.remove("alarm_name");
+        edit.remove("alarm_ringtone");
+        edit.remove("alarm_type");
+        edit.remove("alarm_snooze");
+        edit.remove("alarm_repeat");
+        edit.remove("event_location");
+        edit.remove("event_start_time");
+        edit.remove("event_end_time");
+        edit.commit();
+    }
 
 }
 
