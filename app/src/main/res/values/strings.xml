@@ -34,6 +34,13 @@
     <string name="new_alarm_default_name">Alarm</string>
     <string name="new_alarm_repeat">Repeat</string>
     <string name="snooze_title">Snooze</string>
+    <string name="edit_alarm">Edit Alarm</string>
+    <string name="view_traffic">View Traffic</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_alarm_title">Are you sure?</string>
+    <string name="delete_alarm_sum">Are you sure you want to delete the alarm?</string>
+    <string name="confirm">Confirm</string>
     <string name="type">Type</string>
 
     <string-array name="pref_lang_titles">

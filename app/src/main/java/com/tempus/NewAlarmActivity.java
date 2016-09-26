@@ -5,6 +5,7 @@
 package com.tempus;
 
 /* Imports section */
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextClock;
 import android.widget.TimePicker;
 
 import java.util.Locale;
@@ -49,11 +49,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         }
         else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
             //Get info from Events
+            Intent i = getIntent();
+            Event e = (Event) i.getSerializableExtra("DATA");
+            // DO SOMETHING WITH DATA
         }
-
-
-
-
     }
 
     @Override

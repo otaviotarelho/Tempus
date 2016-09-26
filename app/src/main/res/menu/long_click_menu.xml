@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2016. This app was made by Otavio Tarelho and Diego Nunes as requirement to get their major certificate. Any copy of this project will suffer legal penalties under Copyrights Laws.
+  -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <item
+        android:id="@+id/edit"
+        android:title="@string/edit_alarm"/>
+    <item
+        android:id="@+id/view"
+        android:title="@string/view_traffic"/>
+    <item
+        android:id="@+id/delete"
+        android:title="@string/delete_alarm"/>
+
+</menu>

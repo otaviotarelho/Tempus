@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
     private ArrayList<Alarm> alarm;
-    private Boolean _24_h_Clock = false;
 
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
 
@@ -90,7 +89,6 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
         return convertView;
     }
-
 
 
     public class rowsElements {
