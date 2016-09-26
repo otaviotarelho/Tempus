@@ -6,6 +6,8 @@ package com.tempus;
 
 /* Imports section */
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
     public View getView(final int position, View convertView, ViewGroup parent){
 
         convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarms_rows, parent, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Boolean hour_system = sharedPref.getBoolean("hour_system", true);
 
         final rowsElements elements = new rowsElements();
         elements.clock = (TextClock) convertView.findViewById(R.id.alarmClock);
@@ -40,7 +44,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
         Alarm a = alarm.get(position);
 
-        if(_24_h_Clock) {
+        if(hour_system) {
 
             elements.clock.setFormat24Hour(a.getAlarmTime());
 

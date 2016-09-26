@@ -8,16 +8,6 @@
     <PreferenceCategory android:title="@string/pref_cat_alarm"
         android:key="alarm_information_category">
 
-        <ListPreference
-            android:defaultValue="0:00"
-            android:entries="@array/pref_lang_titles"
-            android:entryValues="@array/pref_lang_values"
-            android:persistent="false"
-            android:key="alarm_time"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
-            android:title="@string/new_alarm_time" />
-
         <EditTextPreference
             android:title="@string/new_alarm_title"
             android:key="alarm_name"
@@ -26,14 +16,15 @@
             android:dialogMessage="@string/new_alarm_title_dialog_sum"
             android:defaultValue="@string/new_alarm_default_name"/>
 
-        <ListPreference
-            android:defaultValue="-1"
+        <MultiSelectListPreference
             android:entries="@array/repeat_label"
             android:entryValues="@array/repeat_values"
             android:persistent="false"
             android:key="alarm_repeat"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
+            android:summary="@string/new_alarm_repeat_sum"
+            android:dialogTitle="@string/new_alarm_repeat"
+            android:negativeButtonText="cancel"
+            android:positiveButtonText="set"
             android:title="@string/new_alarm_repeat" />
 
         <RingtonePreference
@@ -69,7 +60,7 @@
             android:dialogTitle="Alarm name"
             android:dialogMessage="Set a new name for the alarm"
             android:persistent="false"
-            android:defaultValue="Alarm"/>
+            android:defaultValue="Alarm"/> <!-- fazer um location picker -->
 
         <EditTextPreference
             android:title="@string/event_start_time"

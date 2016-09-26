@@ -6,7 +6,7 @@
 
 
     <ListPreference
-        android:defaultValue="en-us"
+        android:defaultValue="en"
         android:entries="@array/pref_lang_titles"
         android:entryValues="@array/pref_lang_values"
         android:key="lang_setting"

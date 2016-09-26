@@ -5,45 +5,67 @@
 package com.tempus;
 
 /* Imports section */
-import android.content.Intent;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextClock;
+import android.widget.TimePicker;
+
+import java.util.Locale;
 
 public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new newAlarmItems()).commit();
+        setContentView(R.layout.activity_new_alarm);
+        getFragmentManager().beginTransaction().replace(R.id.preferences_alarm,
+                new NewAlarmItems()).commit();
+
+        Bundle extras = getIntent().getExtras();
+        String come_from = extras.getString("ALARM");
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean hour_system = sharedPref.getBoolean("hour_system", true);
+        TimePicker textClock = (TimePicker) findViewById(R.id.timePicker);
+
+        if(hour_system){
+            textClock.setIs24HourView(true);
+        }
+        else{
+            textClock.setIs24HourView(false);
+        }
+
+        if(come_from.equals(MainActivity.EXTRA_MESSAGE)){
+            //Does not do anything
+        }
+        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+            //Get info from ALARM
+        }
+        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
+            //Get info from Events
+        }
+
+
+
+
     }
 
-    public static class newAlarmItems extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_new_alarm);
-            setHasOptionsMenu(true);
-
-            //First Category
-            bindPreferenceSummaryToValue(findPreference("alarm_time"));
-            bindPreferenceSummaryToValue(findPreference("alarm_name"));
-            bindPreferenceSummaryToValue(findPreference("alarm_repeat"));
-            bindPreferenceSummaryToValue(findPreference("alarm_ringtone"));
-            bindPreferenceSummaryToValue(findPreference("alarm_type"));
-
-            //Second Category
-            bindPreferenceSummaryToValue(findPreference("event_location"));
-            bindPreferenceSummaryToValue(findPreference("event_start_time"));
-            bindPreferenceSummaryToValue(findPreference("event_end_time"));
-        }
+    @Override
+    protected void onResume() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = settings.getString("lang_setting", "");
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        super.onResume();
     }
 
     @Override
@@ -85,43 +107,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         //saveData in the database
     }
 
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
-    }
-
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-
-            }
-            else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                preference.setSummary(stringValue);
-            }
-            return true;
-        }
-    };
 }
 

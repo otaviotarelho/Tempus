@@ -4,17 +4,25 @@
 
 package com.tempus;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Locale;
 
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
@@ -24,6 +32,9 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(spChanged);
         super.onCreate(savedInstanceState);
     }
 
@@ -106,4 +117,24 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         }
         return mDelegate;
     }
+
+    SharedPreferences.OnSharedPreferenceChangeListener spChanged = new
+                                            SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                                              String key) {
+            if (key.equals("lang_setting")) {
+                String lang = sharedPreferences.getString(key, "");
+                Configuration config = getBaseContext().getResources().getConfiguration();
+                Locale locale = new Locale(lang);
+                Locale.setDefault(locale);
+                config.locale = locale;
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+                Intent myIntent = getIntent();
+                finish();
+                startActivity(myIntent);
+            }
+        }
+    };
 }

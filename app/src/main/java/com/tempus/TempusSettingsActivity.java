@@ -8,6 +8,7 @@ package com.tempus;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -22,10 +23,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class TempusSettingsActivity extends AppCompatPreferenceActivity {
     /**
@@ -85,15 +88,16 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+    @Override
+    protected void onResume() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = settings.getString("lang_setting", "");
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        super.onResume();
     }
 
     @Override
@@ -108,10 +112,6 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
         }
         return super.onMenuItemSelected(featureId, item);
     }
-
-    /**
-     * {@inheritDoc}
-     */
 
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -138,6 +138,7 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_app_options);
             setHasOptionsMenu(true);
             bindPreferenceSummaryToValue(findPreference("lang_setting")); // information of selected item
+
         }
 
         @Override

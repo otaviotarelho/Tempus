@@ -9,10 +9,12 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TimePicker;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -82,8 +86,9 @@ public class EventFragment extends Fragment {
             getEvents();
         }
 
-
         listViewEvent.setAdapter(new EventAdapter(getActivity(), events));
+
+
 
         // Inflate the layout for this fragment
         return fragmentLayout;
@@ -119,8 +124,6 @@ public class EventFragment extends Fragment {
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
 
             cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-
-            Log.e("TOTAL EVENT-CALENDAR:", String.valueOf(cur.getCount()));
 
             while(cur.moveToNext()){
 

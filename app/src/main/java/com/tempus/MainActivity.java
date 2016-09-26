@@ -6,6 +6,9 @@ package com.tempus;
 
 /* Imports section */
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +19,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,6 +69,17 @@ public class MainActivity extends AppCompatActivity {
 
     } // end of onCreate
 
+    @Override
+    protected void onResume() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = settings.getString("lang_setting", "");
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_add_new_alarm){
             Intent newAlarm = new Intent(this, NewAlarmActivity.class);
+            newAlarm.putExtra("ALARM", EXTRA_MESSAGE);
             startActivity(newAlarm);
             return true;
         }
