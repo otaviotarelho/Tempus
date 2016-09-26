@@ -33,8 +33,10 @@
     <string name="pref_cat_traffic">INFORMAÇÕES BASEADAS NO TRÁFEGO</string>
     <string name="snooze_title">Soneca</string>
     <string name="type">Tipo</string>
-
-
+    <string name="new_alarm_repeat_sum">Selecione os dias que o alarme irá repetir</string>
+    <string name="pref_ringtone_silent">Silecioso</string>
+    <string name="pref_title_vibrate">Vibrar</string>
+    <string name="new_alarm">Novo Alarme</string>
 
     <string-array name="repeat_label">
         <item>Nunca</item>
@@ -45,6 +47,10 @@
         <item>Sexta-Feira</item>
         <item>Sábado</item>
         <item>Domingo</item>
+    </string-array>
+
+    <string-array name="repeat_values_def">
+        <item>-1</item>
     </string-array>
 
     <string-array name="repeat_values">
@@ -58,7 +64,6 @@
         <item>7</item>
     </string-array>
 
-    <!-- title of total of time -->
     <string-array name="pref_sync_frequency_titles">
         <item>15 minutos</item>
         <item>30 minutos</item>
@@ -67,7 +72,6 @@
         <item>2 hora</item>
     </string-array>
 
-    <!-- total of time -->
     <string-array name="pref_sync_frequency_values">
         <item>15</item>
         <item>30</item>
@@ -76,19 +80,23 @@
         <item>180</item>
     </string-array>
 
-    <!-- title of total of time -->
     <string-array name="pref_lang_titles">
         <item>Ingles (US)</item>
         <item>Português (BRA)</item>
     </string-array>
 
-    <!-- total of time -->
     <string-array name="pref_lang_values">
         <item>en</item>
         <item>pt</item>
     </string-array>
-    <string name="new_alarm_repeat_sum">Selecione os dias que o alarme irá repetir</string>
-    <string name="pref_ringtone_silent">Silecioso</string>
-    <string name="pref_title_vibrate">Vibrar</string>
-    <string name="new_alarm">Novo Alarme</string>
+
+    <string-array name="alarm_type_title">
+        <item>Normal</item>
+        <item>Monitorar Tráfego</item>
+    </string-array>
+
+    <string-array name="alarm_type_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 </resources>

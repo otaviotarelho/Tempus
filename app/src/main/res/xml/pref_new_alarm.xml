@@ -19,6 +19,7 @@
         <MultiSelectListPreference
             android:entries="@array/repeat_label"
             android:entryValues="@array/repeat_values"
+            android:defaultValue="@array/repeat_values_def"
             android:persistent="false"
             android:key="alarm_repeat"
             android:summary="@string/new_alarm_repeat_sum"
@@ -47,6 +48,7 @@
             android:key="alarm_type"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
+            android:summary="%s"
             android:persistent="false"
             android:title="@string/type" />
 
