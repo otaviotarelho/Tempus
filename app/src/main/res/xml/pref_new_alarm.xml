@@ -22,8 +22,8 @@
             android:key="alarm_repeat"
             android:summary="@string/new_alarm_repeat_sum"
             android:dialogTitle="@string/new_alarm_repeat"
-            android:negativeButtonText="cancel"
-            android:positiveButtonText="set"
+            android:negativeButtonText="@string/cancel"
+            android:positiveButtonText="@string/set"
             android:title="@string/new_alarm_repeat" />
 
         <RingtonePreference

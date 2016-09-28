@@ -143,7 +143,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         if(type == "0") {
             // in case new normal alarm
             e = new Event();
-            a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+            a = new Alarm(title, String.valueOf(R.string.normal_alarm),
+                    time, ringtone,repeat,type,snooze, true, e);
             AlarmFragment.alarms.add(a);
         }
         else {
@@ -152,7 +153,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
                 //in case new alarm from events tab
                 e.setDay_start(time_event);
                 e.setDay_end(time_event_end);
-                a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+                a = new Alarm(title, String.valueOf(ExpectedTimeOfArrivel(event_location))
+                        + R.string.hour, time, ringtone,repeat,type,snooze, true, e);
                 AlarmFragment.alarms.add(a);
             }
             else {
@@ -162,7 +164,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
                 e.setDay_end(time_event_end);
                 e.setLocation(event_location);
                 e.setName(title);
-                a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+                a = new Alarm(title, String.valueOf(ExpectedTimeOfArrivel(event_location))
+                        + R.string.hour, time, ringtone,repeat,type,snooze, true, e);
                 AlarmFragment.alarms.add(a);
             }
 
@@ -174,6 +177,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         toastMessage();
         //Finish this activity
         finish();
+    }
+
+    private int ExpectedTimeOfArrivel(String event_location) {
+        return 0;
     }
 
     private void toastMessage(){

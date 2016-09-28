@@ -45,6 +45,11 @@
     <string name="save_alarm_sum">Are you sure you  want to save this alarm?</string>
     <string name="save_alarm_toast">Alarm saved and was set to ring sooner!</string>
     <string name="type">Type</string>
+    <string name="title_activity_how_work">how_work</string>
+    <string name="action_settings">Settings</string>
+    <string name="hour">Hour</string>
+    <string name="normal_alarm">Normal Alarm</string>
+    <string name="set">Set</string>
 
     <string-array name="pref_lang_titles">
         <item>English (US)</item>
@@ -107,9 +112,6 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="title_activity_how_work">how_work</string>
-    <string name="action_settings">Settings</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
