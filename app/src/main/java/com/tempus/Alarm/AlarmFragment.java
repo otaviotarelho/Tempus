@@ -7,6 +7,7 @@ package com.tempus.Alarm;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
@@ -17,13 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.R;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class AlarmFragment extends Fragment {
 
-    private static ArrayList<Alarm> alarms = new ArrayList<>();
+    public static ArrayList<Alarm> alarms = new ArrayList<>();
     private AlarmAdapter adapter;
     private static ListView listView;
     private AlertDialog confirmDialogObj;
@@ -105,11 +112,11 @@ public class AlarmFragment extends Fragment {
         savedInstanceState.putSerializable(MainActivity.SAVE_ALARM_LIST, alarms);
     }
 
-
-
     public static void setAlarms(){
-        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30", false));
-        alarms.add(new Alarm("Segundo alarm", "2 horas","", true));
+        Event e = new Event();
+        Set<String> setNull = new HashSet<>();
+        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30","",setNull, "", true, false, e));
+        alarms.add(new Alarm("Segundo alarm", "2 horas","", "11:45", setNull, "", true, true, e));
     }
 
     private void buildConformDialog(final int position){

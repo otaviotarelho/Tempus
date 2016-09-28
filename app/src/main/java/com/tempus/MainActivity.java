@@ -24,6 +24,7 @@ import com.tempus.Alarm.AlarmFragment;
 import com.tempus.Alarm.NewAlarmActivity;
 import com.tempus.Events.EventFragment;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
+import com.tempus.Preferences.TempusSettingsActivity;
 
 import java.util.Locale;
 
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (id == R.id.action_settings) {
-            Intent settings = new Intent(this, AppCompatPreferenceActivity.TempusSettingsActivity.class);
+            Intent settings = new Intent(this, TempusSettingsActivity.class);
             startActivity(settings);
             return true;
         }

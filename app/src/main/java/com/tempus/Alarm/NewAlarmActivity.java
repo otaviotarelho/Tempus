@@ -4,11 +4,13 @@
 
 package com.tempus.Alarm;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -21,11 +23,19 @@ import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.R;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     private AlertDialog confirmDialogObj;
+    private Alarm a;
+    private Event e;
+    private String come_from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +45,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
                 new NewAlarmItems()).commit();
 
         Bundle extras = getIntent().getExtras();
-        String come_from = extras.getString("ALARM");
+        come_from = extras.getString("ALARM");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean hour_system = sharedPref.getBoolean("hour_system", true);
@@ -59,7 +69,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
             //Get info from Events
             Intent i = getIntent();
-            Event e = (Event) i.getSerializableExtra("DATA");
+            e = (Event) i.getSerializableExtra("DATA");
             // DO SOMETHING WITH DATA
         }
     }
@@ -99,9 +109,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if(id == R.id.action_save_alarm) {
@@ -112,22 +119,83 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         return super.onOptionsItemSelected(item);
     } // end of onOptionItemSelected
 
-    public void saveData(){
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void saveData() {
         //saveData in the database
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        HashSet<String> to_solve = new HashSet<>();
+
+        TimePicker alarmTime = (TimePicker) findViewById(R.id.timePicker);
+        String time;
+        time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour());
+
+        String title = settings.getString("alarm_name", "");
+        Set<String> repeat = settings.getStringSet("alarm_repeat", to_solve);
+        String ringtone = settings.getString("alarm_ringtone", "");
+        Boolean snooze = settings.getBoolean("alarm_snooze", true);
+        String type = settings.getString("alarm_type", "");
+
+        String time_event = String.valueOf(settings.getLong("event_start_time", 0));
+        String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
+        String event_location = settings.getString("event_location", "");
+
+        //Hardcoded ALARMS
+        if(type == "0") {
+            // in case new normal alarm
+            e = new Event();
+            a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+            AlarmFragment.alarms.add(a);
+        }
+        else {
+
+            if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
+                //in case new alarm from events tab
+                e.setDay_start(time_event);
+                e.setDay_end(time_event_end);
+                a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+                AlarmFragment.alarms.add(a);
+            }
+            else {
+                //in case new alarm from menu and traffic based
+                e = new Event();
+                e.setDay_start(time_event);
+                e.setDay_end(time_event_end);
+                e.setLocation(event_location);
+                e.setName(title);
+                a = new Alarm(title, "", time, ringtone,repeat,type,snooze, true, e);
+                AlarmFragment.alarms.add(a);
+            }
+
+        }
 
         // return to home
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-
+        endIntentToMain();
         //Set toast mensage
+        toastMessage();
+        //Finish this activity
+        finish();
+    }
+
+    private void toastMessage(){
         Context context = getApplicationContext();
         CharSequence text = getResources().getString(R.string.save_alarm_toast);
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+    }
 
-        //Finish this activity
-        finish();
+    private String getStringTime(int minutes, int hour){
+
+        if(minutes < 10) {
+            return String.valueOf(hour) + ":0" + String.valueOf(minutes);
+        }
+        return String.valueOf(hour) + ":" + String.valueOf(minutes);
+
+    }
+
+    private void endIntentToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void buildConformDialog(){
@@ -157,8 +225,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         edit.remove("alarm_snooze");
         edit.remove("alarm_repeat");
         edit.remove("event_location");
-        edit.remove("event_start_time");
-        edit.remove("event_end_time");
         edit.commit();
     }
 

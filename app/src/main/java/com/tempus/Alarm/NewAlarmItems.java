@@ -30,8 +30,6 @@ public class NewAlarmItems extends PreferenceFragment {
 
         //Second Category
         bindPreferenceSummaryToValue(findPreference("event_location"));
-        bindPreferenceSummaryToValue(findPreference("event_start_time"));
-        bindPreferenceSummaryToValue(findPreference("event_end_time"));
     }
 
     private static void bindPreferenceSummaryToValue(Preference preference) {

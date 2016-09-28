@@ -4,18 +4,30 @@
 
 package com.tempus.Alarm;
 
+import com.tempus.Events.Event;
 import java.io.Serializable;
+import java.util.Set;
 
 public class Alarm implements Serializable {
     private long ID;
-    private String alarmName, alarmETA, alarmTime;
+    private String alarmName, alarmETA, alarmTime, ringtone, type;
+    private Set<String> repeat;
+    private Event event;
+    private boolean snooze;
     private boolean active;
 
-    public Alarm(String alarmName, String alarmETA, String alarmTime, boolean active) {
+    public Alarm(){}
+
+    public Alarm(String alarmName, String alarmETA, String alarmTime,String ringtone, Set<String> repeat, String type, boolean snooze, boolean active, Event event) {
         this.alarmName = alarmName;
         this.alarmETA = alarmETA;
         this.alarmTime = alarmTime;
         this.active = active;
+        this.event = event;
+        this.ringtone = ringtone;
+        this.snooze = snooze;
+        this.repeat = repeat;
+        this.type = type;
     }
 
     public long getID() {
@@ -50,6 +62,34 @@ public class Alarm implements Serializable {
         this.alarmTime = alarmTime;
     }
 
+    public String getRingtone() {
+        return ringtone;
+    }
+
+    public void setRingtone(String ringtone) {
+        this.ringtone = ringtone;
+    }
+
+    public void setRepeat(Set<String> repeat) {
+        this.repeat = repeat;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public boolean isSnooze() {
+        return snooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        this.snooze = snooze;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -58,4 +98,11 @@ public class Alarm implements Serializable {
         this.active = active;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

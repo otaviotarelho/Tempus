@@ -41,7 +41,7 @@ public class Legal extends PreferenceFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            startActivity(new Intent(getActivity(), AppCompatPreferenceActivity.TempusSettingsActivity.class));
+            startActivity(new Intent(getActivity(), TempusSettingsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

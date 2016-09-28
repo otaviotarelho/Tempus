@@ -35,7 +35,7 @@
                 android:value="com.tempus.MainActivity" />
         </activity>
         <activity
-            android:name=".Preferences.AppCompatPreferenceActivity$TempusSettingsActivity"
+            android:name=".Preferences.TempusSettingsActivity"
             android:configChanges="locale"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"

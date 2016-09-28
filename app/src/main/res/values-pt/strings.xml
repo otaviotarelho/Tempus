@@ -81,8 +81,8 @@
     </string-array>
 
     <string-array name="pref_lang_titles">
-        <item>Ingles (US)</item>
-        <item>Português (BRA)</item>
+        <item>Inglês (US)</item>
+        <item>Português Brasileiro (BRA)</item>
     </string-array>
 
     <string-array name="pref_lang_values">

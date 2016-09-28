@@ -69,7 +69,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
         }
         else {
-            elements.time.setFormat12Hour(getStringFromDate("h:mm", ev.getDay_start()));
+            elements.time.setFormat12Hour(getStringFromDate("h:mm aa", ev.getDay_start()));
         }
 
 

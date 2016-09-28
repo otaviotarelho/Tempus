@@ -44,15 +44,10 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
         Alarm a = alarm.get(position);
 
         if(hour_system) {
-
             elements.clock.setFormat24Hour(a.getAlarmTime());
-
         } else {
-
             elements.clock.setFormat12Hour(a.getAlarmTime());
-
         }
-
 
         elements.active.setChecked(a.isActive());
 
@@ -72,14 +67,12 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
                 if(elements.active.isChecked()){
 
                     elements.active.setText(R.string.alarm_on);
-
                     //turn AlarBroadCast On
 
                 }
                 else {
 
                     elements.active.setText(R.string.alarm_off);
-
                     //turn AlarmBroadCast off;
 
                 }

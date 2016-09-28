@@ -11,7 +11,6 @@
         <EditTextPreference
             android:title="@string/new_alarm_title"
             android:key="alarm_name"
-            android:persistent="false"
             android:dialogTitle="@string/new_alarm_title_dialog"
             android:dialogMessage="@string/new_alarm_title_dialog_sum"
             android:defaultValue="@string/new_alarm_default_name"/>
@@ -20,7 +19,6 @@
             android:entries="@array/repeat_label"
             android:entryValues="@array/repeat_values"
             android:defaultValue="@array/repeat_values_def"
-            android:persistent="false"
             android:key="alarm_repeat"
             android:summary="@string/new_alarm_repeat_sum"
             android:dialogTitle="@string/new_alarm_repeat"
@@ -31,14 +29,12 @@
         <RingtonePreference
             android:title="Ringtone"
             android:key="alarm_ringtone"
-            android:persistent="false"
             android:ringtoneType="all"
             />
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="alarm_snooze"
-            android:persistent="false"
             android:title="@string/snooze_title" />
 
         <ListPreference
@@ -49,7 +45,6 @@
             android:negativeButtonText="@null"
             android:positiveButtonText="@null"
             android:summary="%s"
-            android:persistent="false"
             android:title="@string/type" />
 
     </PreferenceCategory>
@@ -61,25 +56,16 @@
             android:key="event_location"
             android:dialogTitle="Alarm name"
             android:dialogMessage="Set a new name for the alarm"
-            android:persistent="false"
             android:defaultValue="Alarm"/> <!-- fazer um location picker -->
 
-        <EditTextPreference
-            android:title="@string/event_start_time"
+        <com.tempus.auxiliars.TimePreference
             android:key="event_start_time"
-            android:dialogTitle="Alarm name"
-            android:dialogMessage="Set a new name for the alarm"
-            android:persistent="false"
-            android:defaultValue="13:30"/>
+            android:title="@string/event_start_time"
+            />
 
-        <EditTextPreference
-            android:title="@string/event_end_time"
+        <com.tempus.auxiliars.TimePreference
             android:key="event_end_time"
-            android:dialogTitle="Alarm name"
-            android:dialogMessage="Set a new name for the alarm"
-            android:persistent="false"
-            android:defaultValue="13:30"/>
-
+            android:title="@string/event_end_time"/>
 
     </PreferenceCategory>
 
