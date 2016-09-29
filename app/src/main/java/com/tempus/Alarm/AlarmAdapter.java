@@ -7,6 +7,7 @@ package com.tempus.Alarm;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,12 @@ import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
 import com.tempus.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
@@ -46,7 +52,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
         if(hour_system) {
             elements.clock.setFormat24Hour(a.getAlarmTime());
         } else {
-            elements.clock.setFormat12Hour(a.getAlarmTime());
+            elements.clock.setFormat12Hour(convert24Hours(a.getAlarmTime()));
         }
 
         elements.active.setChecked(a.isActive());
@@ -83,8 +89,24 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
         return convertView;
     }
 
+    private String convert24Hours(String hour){
+        final SimpleDateFormat sdf;
+        final Date dateObj;
 
-    public class rowsElements {
+        try {
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            sdf = new SimpleDateFormat("h:mm a");
+            dateObj = displayFormat.parse(hour);
+            return sdf.format(dateObj);
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+
+    private class rowsElements {
         TextClock clock;
         TextView name, eta;
         Switch active;

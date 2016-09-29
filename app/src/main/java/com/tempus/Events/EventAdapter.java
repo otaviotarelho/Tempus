@@ -94,14 +94,13 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public String getStringFromDate(String pattern, String longDTSTART){
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Calendar c = Calendar.getInstance();
-        Long mili = Long.valueOf(longDTSTART).longValue();
+        Long mili = Long.valueOf(longDTSTART);
         c.setTimeInMillis(mili);
-        String result = sdf.format(c.getTime());
-        return result;
+        return sdf.format(c.getTime());
     }
 
     //elements class to make it more organized and reusable
-    public class ErowsElements {
+    private class ErowsElements {
         TextView name, date;
         TextClock time;
         ImageButton btn;

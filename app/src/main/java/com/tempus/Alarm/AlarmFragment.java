@@ -32,8 +32,8 @@ public class AlarmFragment extends Fragment {
 
     public static ArrayList<Alarm> alarms = new ArrayList<>();
     private AlarmAdapter adapter;
-    private static ListView listView;
     private AlertDialog confirmDialogObj;
+    private ListView listView;
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -45,6 +45,7 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //If to prevent add same items to the ArrayList
+
         if(savedInstanceState != null) {
 
             alarms = (ArrayList<Alarm>) savedInstanceState.get(MainActivity.SAVE_ALARM_LIST);
@@ -97,7 +98,9 @@ public class AlarmFragment extends Fragment {
                 confirmDialogObj.show();
                 return true;
             case R.id.view:
-                //Colocar aqui activity traffic
+                Intent map = new Intent(getContext(), ViewMapActivity.class);
+                map.putExtra("LOCATION", alarms.get(rowPosition).getEvent().getLocation());
+                getContext().startActivity(map);
                 return true;
         }
 

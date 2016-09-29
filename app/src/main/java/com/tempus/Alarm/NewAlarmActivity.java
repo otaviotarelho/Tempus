@@ -21,12 +21,18 @@ import android.view.MenuItem;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.tempus.Events.Event;
+import com.tempus.Events.EventAdapter;
+import com.tempus.Events.EventFragment;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.R;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -77,6 +83,12 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putLong("event_end_time",
                     Long.getLong(alarm.getEvent().getDay_end(), 0)).apply();
             settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
+
+            int[] hour;
+            hour = changeTime(alarm.getAlarmTime());
+            textClock.setCurrentHour(hour[0]);
+            textClock.setCurrentMinute(hour[1]);
+
         }
         else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
             Intent i = getIntent();
@@ -95,6 +107,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putLong("event_start_time", Long.getLong(e.getDay_start(), 0)).apply();
             settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end(), 0)).apply();
             settings.edit().putString("event_location", e.getLocation()).apply();
+
+            textClock.setCurrentHour(Integer.getInteger(getStringFromDate("H", e.getDay_start())));
+            textClock.setCurrentMinute(Integer.getInteger(getStringFromDate("mm", e.getDay_start())));
+
         }
     }
 
@@ -151,7 +167,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
         TimePicker alarmTime = (TimePicker) findViewById(R.id.timePicker);
         String time;
-        time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour());
+        time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour()); // HOUR SAVED IN 24
 
         String title = settings.getString("alarm_name", "");
         Set<String> repeat = settings.getStringSet("alarm_repeat", to_solve);
@@ -208,6 +224,30 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         return 122;
     }
 
+    private int[] changeTime(String hour){
+        final Date dateObj;
+        int[] completeHour = new int[2];
+
+        try {
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            dateObj = displayFormat.parse(hour);
+            completeHour[0] = dateObj.getHours();
+            completeHour[1] = dateObj.getMinutes();
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+
+        return completeHour;
+    }
+
+    public String getStringFromDate(String pattern, String longDTSTART){
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Calendar c = Calendar.getInstance();
+        Long mili = Long.valueOf(longDTSTART);
+        c.setTimeInMillis(mili);
+        return sdf.format(c.getTime());
+    }
+
     private void toastMessage(){
         Context context = getApplicationContext();
         CharSequence text = getResources().getString(R.string.save_alarm_toast);
@@ -234,6 +274,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.save_alarm_title);
         confirmBuilder.setMessage(R.string.save_alarm_sum);
+
         confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){

@@ -34,7 +34,6 @@ import java.util.Calendar;
 public class EventFragment extends Fragment {
 
     private static ArrayList<Event> events = new ArrayList<>();
-    private static ListView listViewEvent;
     private Context context;
 
     //Events Array - List of Elements in the database
@@ -66,6 +65,7 @@ public class EventFragment extends Fragment {
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_event, container, false);
         context = getActivity();
+        ListView listViewEvent;
         listViewEvent = (ListView) fragmentLayout.findViewById(R.id.listViewsEvents);
 
         //Get Permission to access database in the first usage
@@ -136,6 +136,8 @@ public class EventFragment extends Fragment {
 
                 events.add(event);
             }
+
+            cur.close();
         }
         else {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
