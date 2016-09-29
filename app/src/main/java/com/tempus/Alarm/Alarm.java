@@ -18,7 +18,8 @@ public class Alarm implements Serializable {
 
     public Alarm(){}
 
-    public Alarm(String alarmName, String alarmETA, String alarmTime,String ringtone, Set<String> repeat, String type, boolean snooze, boolean active, Event event) {
+    public Alarm(String alarmName, String alarmETA, String alarmTime,String ringtone,
+                 Set<String> repeat, String type, boolean snooze, boolean active, Event event) {
         this.alarmName = alarmName;
         this.alarmETA = alarmETA;
         this.alarmTime = alarmTime;

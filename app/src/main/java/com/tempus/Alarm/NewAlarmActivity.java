@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
@@ -65,15 +66,17 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
-            settings.edit().putString("alarm_name", alarm.getAlarmName());
-            settings.edit().putStringSet("alarm_repeat", alarm.getRepeat());
-            settings.edit().putString("alarm_ringtone", alarm.getRingtone());
-            settings.edit().putBoolean("alarm_snooze", alarm.isSnooze());
-            settings.edit().putString("alarm_type", alarm.getType());
+            settings.edit().putString("alarm_name", alarm.getAlarmName()).apply();
+            settings.edit().putStringSet("alarm_repeat", alarm.getRepeat()).apply();
+            settings.edit().putString("alarm_ringtone", alarm.getRingtone()).apply();
+            settings.edit().putBoolean("alarm_snooze", alarm.isSnooze()).apply();
+            settings.edit().putString("alarm_type", alarm.getType()).apply();
 
-            settings.edit().putLong("event_start_time", Long.getLong(alarm.getEvent().getDay_start()));
-            settings.edit().putLong("event_end_time", Long.getLong(alarm.getEvent().getDay_end()));
-            settings.edit().putString("event_location", alarm.getEvent().getLocation());
+            settings.edit().putLong("event_start_time",
+                    Long.getLong(alarm.getEvent().getDay_start(), 0)).apply();
+            settings.edit().putLong("event_end_time",
+                    Long.getLong(alarm.getEvent().getDay_end(), 0)).apply();
+            settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
         }
         else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
             Intent i = getIntent();
@@ -83,15 +86,15 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             HashSet<String> to_solve = new HashSet<>();
             to_solve.add("-1");
 
-            settings.edit().putString("alarm_name", e.getName());
-            settings.edit().putStringSet("alarm_repeat", to_solve);
-            settings.edit().putString("alarm_ringtone", "");
-            settings.edit().putBoolean("alarm_snooze", true);
-            settings.edit().putString("alarm_type", "1");
+            settings.edit().putString("alarm_name", e.getName()).apply();
+            settings.edit().putStringSet("alarm_repeat", to_solve).apply();
+            settings.edit().putString("alarm_ringtone", "").apply();
+            settings.edit().putBoolean("alarm_snooze", true).apply();
+            settings.edit().putString("alarm_type", "1").apply();
 
-            settings.edit().putLong("event_start_time", Long.getLong(e.getDay_start()));
-            settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end()));
-            settings.edit().putString("event_location", e.getLocation());
+            settings.edit().putLong("event_start_time", Long.getLong(e.getDay_start(), 0)).apply();
+            settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end(), 0)).apply();
+            settings.edit().putString("event_location", e.getLocation()).apply();
         }
     }
 
@@ -161,10 +164,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         String event_location = settings.getString("event_location", "");
 
         //Hardcoded ALARMS
-        if(type == "0") {
+        if(type.equals("0")) {
             // in case new normal alarm
             e = new Event();
-            a = new Alarm(title, String.valueOf(R.string.normal_alarm),
+            a = new Alarm(title, getResources().getString(R.string.normal_alarm),
                     time, ringtone,repeat,type,snooze, true, e);
             AlarmFragment.alarms.add(a);
         }
@@ -202,7 +205,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     private int ExpectedTimeOfArrivel(String event_location) {
         //fazer o maps here
-        return 0;
+        return 122;
     }
 
     private void toastMessage(){

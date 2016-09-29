@@ -80,11 +80,10 @@ public class AlarmFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item){
-        //RETURN THE ID OF MENU SELECTED
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
                 item.getMenuInfo();
 
-        int rowPosition = info.position;
+        int rowPosition = info.position; //RETURN THE ID OF MENU SELECTED
 
         switch (item.getItemId()){
             case R.id.edit:
@@ -113,10 +112,11 @@ public class AlarmFragment extends Fragment {
     }
 
     public static void setAlarms(){
-        Event e = new Event();
-        Set<String> setNull = new HashSet<>();
-        alarms.add(new Alarm("Primeiro alarm", "2 horas","10:30","",setNull, "", true, false, e));
-        alarms.add(new Alarm("Segundo alarm", "2 horas","", "11:45", setNull, "", true, true, e));
+        //pegar alarms do banco de dados e jogar no arraylist
+    }
+
+    public static void deleteAlarm(){
+        //colocar deletar alarm aqui
     }
 
     private void buildConformDialog(final int position){
