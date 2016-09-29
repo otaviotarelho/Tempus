@@ -105,4 +105,8 @@ public class Alarm implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public Set<String> getRepeat() {
+        return repeat;
+    }
 }

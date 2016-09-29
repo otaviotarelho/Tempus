@@ -60,17 +60,38 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             textClock.setIs24HourView(false);
         }
 
-        if(come_from.equals(MainActivity.EXTRA_MESSAGE)){
-            //Does not do anything
-        }
-        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
-            //Get info from ALARM
+        if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+            Intent i = getIntent();
+            Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+            settings.edit().putString("alarm_name", alarm.getAlarmName());
+            settings.edit().putStringSet("alarm_repeat", alarm.getRepeat());
+            settings.edit().putString("alarm_ringtone", alarm.getRingtone());
+            settings.edit().putBoolean("alarm_snooze", alarm.isSnooze());
+            settings.edit().putString("alarm_type", alarm.getType());
+
+            settings.edit().putLong("event_start_time", Long.getLong(alarm.getEvent().getDay_start()));
+            settings.edit().putLong("event_end_time", Long.getLong(alarm.getEvent().getDay_end()));
+            settings.edit().putString("event_location", alarm.getEvent().getLocation());
         }
         else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
-            //Get info from Events
             Intent i = getIntent();
             e = (Event) i.getSerializableExtra("DATA");
-            // DO SOMETHING WITH DATA
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            HashSet<String> to_solve = new HashSet<>();
+            to_solve.add("-1");
+
+            settings.edit().putString("alarm_name", e.getName());
+            settings.edit().putStringSet("alarm_repeat", to_solve);
+            settings.edit().putString("alarm_ringtone", "");
+            settings.edit().putBoolean("alarm_snooze", true);
+            settings.edit().putString("alarm_type", "1");
+
+            settings.edit().putLong("event_start_time", Long.getLong(e.getDay_start()));
+            settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end()));
+            settings.edit().putString("event_location", e.getLocation());
         }
     }
 
@@ -180,6 +201,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     }
 
     private int ExpectedTimeOfArrivel(String event_location) {
+        //fazer o maps here
         return 0;
     }
 
