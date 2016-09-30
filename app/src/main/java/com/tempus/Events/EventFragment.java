@@ -42,7 +42,8 @@ public class EventFragment extends Fragment {
             CalendarContract.Events.EVENT_LOCATION,
             CalendarContract.Events.DTSTART,
             CalendarContract.Events.DTEND,
-            CalendarContract.Events.DURATION
+            CalendarContract.Events.DURATION,
+            CalendarContract.Events.ALL_DAY
     };
 
     // Array Event Projection keys
@@ -51,7 +52,9 @@ public class EventFragment extends Fragment {
     private static final int PROJECTION_DTSTART = 2;
     private static final int PROJECTION_DTEND = 3;
     private static final int PROJECTION_DURATION = 4;
+    private static final int ALL_DAY = 5;
     private static final int MY_PERMISSION_ACCESS_CALENDAR = 5520;
+
 
     public EventFragment() {
         // Required empty public constructor
@@ -129,10 +132,20 @@ public class EventFragment extends Fragment {
                 Event event = new Event();
 
                 event.setName(cur.getString(PROJECTION_TITLE));
-                event.setDay_start(cur.getString(PROJECTION_DTSTART));
+
                 event.setDay_end(cur.getString(PROJECTION_DTEND));
                 event.setLocation(cur.getString(PROJECTION_LOCATION));
                 event.setDuration(cur.getString(PROJECTION_DURATION));
+
+                if(cur.getString(ALL_DAY).equals("1")) {
+                    Calendar cal = Calendar.getInstance();
+                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART),0);
+                    cal.setTimeInMillis(val);
+                    cal.add(cal.DATE, 1);
+                    event.setDay_start(String.valueOf(cal));
+                }else {
+                    event.setDay_start(cur.getString(PROJECTION_DTSTART));
+                }
 
                 events.add(event);
             }
