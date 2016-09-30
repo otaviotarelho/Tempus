@@ -51,7 +51,7 @@
     <string name="normal_alarm" translatable="false">Normal</string>
     <string name="set">Set</string>
     <string name="ok" translatable="false">Ok</string>
-    <string name="title_activity_view_map">Traffic View</string>
+    <string name="title_activity_view_map">View Atual Traffic</string>
     <string name="traffic_view_title_alart">Alert!</string>
     <string name="traffic_view_sum_alart">This operation cannot be done!</string>
 
@@ -118,6 +118,5 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_view_map">View Atual Traffic</string>
 
 </resources>
