@@ -2,54 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:background="@color/colorPrimaryDark"
+    android:paddingTop="5dp"
+    android:paddingBottom="20dp"
     >
 
-    <TextClock
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarmClock"
-        android:paddingTop="9dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="15dp"
-        android:format12Hour="h:mm aa"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorClock"
-        />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/alarm_name"
-        android:id="@+id/ListItemAlarmName"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/alarmClock"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="2dp"
-        android:textColor="#FFFFFF"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/alarm_eta"
-        android:id="@+id/ListItemETA"
-        android:layout_below="@+id/ListItemAlarmName"
-        android:layout_alignParentEnd="false"
-        android:layout_toEndOf="@+id/alarmClock"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="#FFFFFF"
-        />
 
     <Switch
         android:layout_width="wrap_content"
@@ -66,6 +23,44 @@
         android:textColor="#FFFFFF"
         android:focusable="false"
         />
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmClock"
+        android:textSize="65sp"
+        android:textColor="@color/colorClock"
+        android:fontFamily="sans-serif-thin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/alarm_name"
+        android:id="@+id/ListItemAlarmName"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/alarmClock"
+        android:fontFamily="sans-serif"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_eta"
+        android:id="@+id/ListItemETA"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif"
+        android:layout_alignBottom="@+id/ListItemAlarmName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"/>
 
 
 </RelativeLayout>

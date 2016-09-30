@@ -10,7 +10,10 @@
         android:id="@+id/listViewsEvents"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="visible">
+        android:dividerHeight="1dp"
+        android:divider="#4c4c4c"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
     </ListView>
 
 </LinearLayout>

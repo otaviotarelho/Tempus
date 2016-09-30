@@ -48,7 +48,7 @@
     <string name="title_activity_how_work">how_work</string>
     <string name="action_settings">Settings</string>
     <string name="hour">Hour</string>
-    <string name="normal_alarm">Normal Alarm</string>
+    <string name="normal_alarm" translatable="false">Normal</string>
     <string name="set">Set</string>
 
     <string-array name="pref_lang_titles">
@@ -114,5 +114,5 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_view_map">ViewMapActivity</string>
+    <string name="title_activity_view_map">Traffic View</string>
 </resources>

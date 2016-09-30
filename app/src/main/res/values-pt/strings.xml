@@ -113,6 +113,6 @@
     <string name="save_alarm_title">Salvando o Novo Alarme</string>
     <string name="save_alarm_toast">O alarme foi salvo e está configurado para tocar logo mais!</string>
     <string name="hour">Hora</string>
-    <string name="normal_alarm">Alarme Normal</string>
     <string name="set">Ok</string>
+    <string name="title_activity_view_map">Visualização do Tráfego</string>
 </resources>

@@ -17,7 +17,10 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import com.tempus.R;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,12 +91,12 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
     }
 
     private String convert24Hours(String hour){
-        final SimpleDateFormat sdf;
+        final DateFormat sdf;
         final Date dateObj;
 
         try {
-            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
-            sdf = new SimpleDateFormat("h:mm");
+            DateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            sdf = DateFormat.getTimeInstance(DateFormat.SHORT);
             dateObj = displayFormat.parse(hour);
             return sdf.format(dateObj);
         } catch (final ParseException e) {
