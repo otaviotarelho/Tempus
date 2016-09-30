@@ -47,6 +47,14 @@ public class TimePreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
+
+        if(android.text.format.DateFormat.is24HourFormat(getContext())) {
+            picker.setIs24HourView(true);
+        }
+        else {
+            picker.setIs24HourView(false);
+        }
+
         picker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
         picker.setCurrentMinute(calendar.get(Calendar.MINUTE));
 
@@ -97,11 +105,10 @@ public class TimePreference extends DialogPreference {
         if (calendar == null) {
             return null;
         }
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Boolean hour_system = sharedPref.getBoolean("hour_system", true);
+
         Date date = new Date(calendar.getTimeInMillis());
 
-        if(hour_system){
+        if(android.text.format.DateFormat.is24HourFormat(getContext())){
             return DateFormat.format("H:mm", date);
         }
 

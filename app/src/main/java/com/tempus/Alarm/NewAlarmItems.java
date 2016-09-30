@@ -14,6 +14,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.tempus.R;
 
 public class NewAlarmItems extends PreferenceFragment {
@@ -32,7 +34,7 @@ public class NewAlarmItems extends PreferenceFragment {
         bindPreferenceSummaryToValue(findPreference("event_location"));
     }
 
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
@@ -44,7 +46,7 @@ public class NewAlarmItems extends PreferenceFragment {
                         .getString(preference.getKey(), ""));
     }
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -54,6 +56,15 @@ public class NewAlarmItems extends PreferenceFragment {
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
+
+                if(listPreference.getKey().equals("alarm_type") && stringValue.equals("1")){
+                    Preference prefCat = findPreference("prefCatTraffic");
+                    prefCat.setEnabled(true);
+                }
+                else if(listPreference.getKey().equals("alarm_type") && stringValue.equals("0")){
+                    Preference prefCat = findPreference("prefCatTraffic");
+                    prefCat.setEnabled(false);
+                }
 
                 // Set the summary to reflect the new value.
                 preference.setSummary(

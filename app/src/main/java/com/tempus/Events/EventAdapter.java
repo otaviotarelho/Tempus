@@ -24,10 +24,7 @@ import com.tempus.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-/**
- * Created by otaviotarelho on 7/31/16.
- */
+import java.util.Locale;
 
 public class EventAdapter extends ArrayAdapter<Event> {
 
@@ -58,17 +55,19 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
         elements.name.setText(ev.getName());
 
-        if(!day.equals("en-us")) { // change with getPreferences
+        if(android.text.format.DateFormat.is24HourFormat(getContext())) { // change with getPreferences
             elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
-        }
-        else {
-            elements.date.setText(getStringFromDate("MM/dd/yyyy", ev.getDay_start()));
-        }
-
-        if(hour_system) { // change with getPreferences
             elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
         }
         else {
+
+            if(Locale.getDefault().getCountry().equals("US")){
+                elements.date.setText(getStringFromDate("MM/dd/yyyy", ev.getDay_start()));
+            }
+            else{
+                elements.date.setText(getStringFromDate("dd/MM/yyyy", ev.getDay_start()));
+            }
+
             elements.time.setFormat12Hour(getStringFromDate("h:mm aa", ev.getDay_start()));
         }
 
@@ -91,7 +90,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
     }
 
     // Format Calender Content Provider into readable format -- Current format in milliseconds from epoch
-    public String getStringFromDate(String pattern, String longDTSTART){
+    private String getStringFromDate(String pattern, String longDTSTART){
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Calendar c = Calendar.getInstance();
         Long mili = Long.valueOf(longDTSTART);

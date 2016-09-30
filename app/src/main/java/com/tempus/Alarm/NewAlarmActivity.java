@@ -15,22 +15,16 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.tempus.Events.Event;
-import com.tempus.Events.EventAdapter;
-import com.tempus.Events.EventFragment;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.R;
-
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,7 +37,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     private Alarm a;
     private Event e;
     private String come_from;
+    private int positionArray;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +51,11 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         come_from = extras.getString("ALARM");
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean hour_system = sharedPref.getBoolean("hour_system", true);
         SharedPreferences.Editor edit = sharedPref.edit();
         ClearPreferences(edit);
         TimePicker textClock = (TimePicker) findViewById(R.id.timePicker);
 
-        if(hour_system){
+        if(android.text.format.DateFormat.is24HourFormat(this)){
             textClock.setIs24HourView(true);
         }
         else{
@@ -78,14 +73,16 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putBoolean("alarm_snooze", alarm.isSnooze()).apply();
             settings.edit().putString("alarm_type", alarm.getType()).apply();
 
-            settings.edit().putLong("event_start_time",
-                    Long.getLong(alarm.getEvent().getDay_start(), 0)).apply();
-            settings.edit().putLong("event_end_time",
-                    Long.getLong(alarm.getEvent().getDay_end(), 0)).apply();
-            settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
+            if(settings.getString("alarm_type", "").equals("1")){
+                settings.edit().putLong("event_start_time",
+                        Long.getLong(alarm.getEvent().getDay_start(), 0)).apply();
+                settings.edit().putLong("event_end_time",
+                        Long.getLong(alarm.getEvent().getDay_end(), 0)).apply();
+                settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
+            }
 
-            int[] hour;
-            hour = changeTime(alarm.getAlarmTime());
+            positionArray = i.getIntExtra("POSITION", 0); // get array position
+            int[] hour = changeTime(alarm.getAlarmTime());
             textClock.setCurrentHour(hour[0]);
             textClock.setCurrentMinute(hour[1]);
 
@@ -114,6 +111,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -159,7 +157,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         return super.onOptionsItemSelected(item);
     } // end of onOptionItemSelected
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressWarnings("deprecation")
     public void saveData() {
         //saveData in the database
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -181,34 +179,40 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
         //Hardcoded ALARMS
         if(type.equals("0")) {
-            // in case new normal alarm
+            // in case new normal alarm change
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
                     time, ringtone,repeat,type,snooze, true, e);
-            AlarmFragment.alarms.add(a);
         }
-        else {
+        else if (type.equals("1")) {
+            //in case new alarm from menu and traffic based
+            Event ev = new Event();
+            ev.setDay_start(time_event);
+            ev.setDay_end(time_event_end);
+            ev.setLocation(event_location);
+            ev.setName(title);
 
-            if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
-                //in case new alarm from events tab
-                e.setDay_start(time_event);
-                e.setDay_end(time_event_end);
-                a = new Alarm(title, String.valueOf(ExpectedTimeOfArrivel(event_location))
-                        + R.string.hour, time, ringtone,repeat,type,snooze, true, e);
-                AlarmFragment.alarms.add(a);
-            }
-            else {
-                //in case new alarm from menu and traffic based
-                e = new Event();
-                e.setDay_start(time_event);
-                e.setDay_end(time_event_end);
-                e.setLocation(event_location);
-                e.setName(title);
-                a = new Alarm(title, String.valueOf(ExpectedTimeOfArrivel(event_location))
-                        + R.string.hour, time, ringtone,repeat,type,snooze, true, e);
-                AlarmFragment.alarms.add(a);
+            if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)){
+                ev.setDuration(e.getDuration());
+            }else{
+                ev.setDuration("");
             }
 
+            a = new Alarm(title, ExpectedTimeOfArrivel(event_location)
+                    + getResources().getString(R.string.hour)
+                    , time, ringtone,repeat,type,snooze, true, ev);
+        }
+
+
+        if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
+                come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
+            AlarmFragment.alarms.add(a);
+
+        }
+        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+            //in case new alarm from events tab
+            AlarmFragment.alarms.remove(positionArray);
+            AlarmFragment.alarms.add(a);
         }
 
         // return to home
@@ -224,12 +228,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         return 122;
     }
 
+    @SuppressWarnings("deprecation")
     private int[] changeTime(String hour){
         final Date dateObj;
         int[] completeHour = new int[2];
 
         try {
-            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             dateObj = displayFormat.parse(hour);
             completeHour[0] = dateObj.getHours();
             completeHour[1] = dateObj.getMinutes();
@@ -241,7 +246,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     }
 
     public String getStringFromDate(String pattern, String longDTSTART){
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
         Calendar c = Calendar.getInstance();
         Long mili = Long.valueOf(longDTSTART);
         c.setTimeInMillis(mili);

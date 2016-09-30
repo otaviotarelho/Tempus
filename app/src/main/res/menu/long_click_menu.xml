@@ -10,7 +10,7 @@
         android:title="@string/edit_alarm"/>
     <item
         android:id="@+id/view"
-        android:title="@string/view_traffic"/>
+        android:title="@string/view_traffic" />
     <item
         android:id="@+id/delete"
         android:title="@string/delete_alarm"/>

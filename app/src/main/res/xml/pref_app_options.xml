@@ -15,12 +15,4 @@
         android:title="@string/pref_header_lang_options"
         android:persistent="true"/>
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="hour_system"
-        android:title="@string/pref_hour_systems"
-        android:persistent="true"
-        />
-
-
 </PreferenceScreen>

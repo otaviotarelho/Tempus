@@ -49,7 +49,9 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_cat_traffic">
+    <PreferenceCategory android:title="@string/pref_cat_traffic"
+        android:enabled="false"
+        android:key="prefCatTraffic">
 
         <EditTextPreference
             android:title="@string/event_location"

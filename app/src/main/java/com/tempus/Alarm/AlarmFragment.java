@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +77,9 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+
         MenuInflater menuInflater = getActivity().getMenuInflater();
+
         menuInflater.inflate(R.menu.long_click_menu, menu);
     }
 
@@ -83,30 +87,27 @@ public class AlarmFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item){
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
                 item.getMenuInfo();
-
-        int rowPosition = info.position; //RETURN THE ID OF MENU SELECTED
-
         switch (item.getItemId()){
             case R.id.edit:
                 Intent intent = new Intent(getContext(), NewAlarmActivity.class);
-                intent.putExtra("DATA", alarms.get(rowPosition));
+                intent.putExtra("DATA", alarms.get(info.position));
                 intent.putExtra("ALARM", MainActivity.EXTRA_MESSAGE_EDIT);
+                intent.putExtra("POSITION", info.position);
                 getContext().startActivity(intent);
                 return true;
             case R.id.delete:
-                buildConformDialog(rowPosition);
+                buildConformDialog(info.position);
                 confirmDialogObj.show();
                 return true;
             case R.id.view:
                 Intent map = new Intent(getContext(), ViewMapActivity.class);
-                map.putExtra("LOCATION", alarms.get(rowPosition).getEvent().getLocation());
+                map.putExtra("LOCATION", alarms.get(info.position).getEvent().getLocation());
                 getContext().startActivity(map);
                 return true;
         }
 
         return super.onContextItemSelected(item);
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
