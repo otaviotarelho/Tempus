@@ -7,28 +7,19 @@ package com.tempus.Alarm;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.R;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class AlarmFragment extends Fragment {
 
@@ -100,6 +91,13 @@ public class AlarmFragment extends Fragment {
                 confirmDialogObj.show();
                 return true;
             case R.id.view:
+
+                if(alarms.get(info.position).getType().equals("0")){
+                    buildViewTrafficDialog();
+                    confirmDialogObj.show();
+                    return true;
+                }
+
                 Intent map = new Intent(getContext(), ViewMapActivity.class);
                 map.putExtra("LOCATION", alarms.get(info.position).getEvent().getLocation());
                 getContext().startActivity(map);
@@ -138,6 +136,21 @@ public class AlarmFragment extends Fragment {
         confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
+            }
+        });
+
+        confirmDialogObj = confirmBuilder.create();
+    }
+
+    private void buildViewTrafficDialog(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(getActivity());
+        confirmBuilder.setTitle(R.string.traffic_view_title_alart);
+        confirmBuilder.setMessage(R.string.traffic_view_sum_alart);
+
+        confirmBuilder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+
             }
         });
 

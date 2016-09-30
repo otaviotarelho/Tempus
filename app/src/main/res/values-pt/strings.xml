@@ -81,7 +81,7 @@
     </string-array>
 
     <string-array name="pref_lang_titles">
-        <item>Inglês (US)</item>
+        <item>Inglês</item>
         <item>Português Brasileiro (BRA)</item>
     </string-array>
 
@@ -115,4 +115,6 @@
     <string name="hour">Hora</string>
     <string name="set">Ok</string>
     <string name="title_activity_view_map">Visualização do Tráfego</string>
+    <string name="traffic_view_sum_alart">Essa operação não pôde ser concluida!</string>
+    <string name="traffic_view_title_alart">Alerta!</string>
 </resources>
