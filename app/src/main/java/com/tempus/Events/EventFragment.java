@@ -17,6 +17,7 @@ import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,10 +137,9 @@ public class EventFragment extends Fragment {
                 event.setDay_end(cur.getString(PROJECTION_DTEND));
                 event.setLocation(cur.getString(PROJECTION_LOCATION));
                 event.setDuration(cur.getString(PROJECTION_DURATION));
-
                 if(cur.getString(ALL_DAY).equals("1")) {
                     Calendar cal = Calendar.getInstance();
-                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART),0);
+                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 10);
                     cal.setTimeInMillis(val);
                     cal.add(cal.DATE, 1);
                     event.setDay_start(String.valueOf(cal));
@@ -147,7 +147,7 @@ public class EventFragment extends Fragment {
                     event.setDay_start(cur.getString(PROJECTION_DTSTART));
                 }
 
-                events.add(event);
+               events.add(event);
             }
 
             cur.close();

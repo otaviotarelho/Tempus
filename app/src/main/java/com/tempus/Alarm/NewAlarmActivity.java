@@ -105,8 +105,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end(), 0)).apply();
             settings.edit().putString("event_location", e.getLocation()).apply();
 
-            textClock.setCurrentHour(Integer.getInteger(getStringFromDate("H", e.getDay_start())));
-            textClock.setCurrentMinute(Integer.getInteger(getStringFromDate("mm", e.getDay_start())));
+            //textClock.setCurrentHour(Integer.getInteger(getStringFromDate("H", e.getDay_start())));
+//            textClock.setCurrentMinute(Integer.getInteger(getStringFromDate("mm", e.getDay_start())));
 
         }
     }

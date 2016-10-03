@@ -17,4 +17,5 @@
     tools:context="com.tempus.Alarm.ViewMapActivity"
     tools:showIn="@layout/activity_view_map">
 
+
 </RelativeLayout>
