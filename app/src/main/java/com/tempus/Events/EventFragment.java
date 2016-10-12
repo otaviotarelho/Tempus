@@ -118,33 +118,37 @@ public class EventFragment extends Fragment {
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
 
             cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-
-            while(cur.moveToNext()){
-
-                Event event = new Event();
-
-                event.setName(cur.getString(PROJECTION_TITLE));
-
-                event.setDay_end(cur.getString(PROJECTION_DTEND));
-                event.setLocation(cur.getString(PROJECTION_LOCATION));
-                event.setDuration(cur.getString(PROJECTION_DURATION));
-
-                if(cur.getString(ALL_DAY).equals("1")) {
-                    Calendar cal = Calendar.getInstance();
-                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 100000);
-                    cal.setTimeInMillis(val);
-                    cal.add(cal.DATE, 1);
-                    event.setDay_start(String.valueOf(cal.getTimeInMillis()));
-                }else {
-                    event.setDay_start(cur.getString(PROJECTION_DTSTART));
-                }
-
-               events.add(event);
-            }
-
-            cur.close();
+            addEventsToArrayList(cur);
         }
 
+    }
+
+    private void addEventsToArrayList(Cursor cur){
+
+        while(cur.moveToNext()){
+
+            Event event = new Event();
+
+            event.setName(cur.getString(PROJECTION_TITLE));
+
+            event.setDay_end(cur.getString(PROJECTION_DTEND));
+            event.setLocation(cur.getString(PROJECTION_LOCATION));
+            event.setDuration(cur.getString(PROJECTION_DURATION));
+
+            if(cur.getString(ALL_DAY).equals("1")) {
+                Calendar cal = Calendar.getInstance();
+                Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 10);
+                cal.setTimeInMillis(val);
+                cal.add(cal.DATE, 1);
+                event.setDay_start(String.valueOf(cal.getTimeInMillis()));
+            }else {
+                event.setDay_start(cur.getString(PROJECTION_DTSTART));
+            }
+
+            events.add(event);
+        }
+
+        cur.close();
     }
 
 

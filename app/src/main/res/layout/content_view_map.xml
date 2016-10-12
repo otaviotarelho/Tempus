@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/viewMap"
         map:mapType="normal"
-        map:uiZoomControls="false"
+        map:uiZoomControls="true"
         map:uiZoomGestures="true"
         map:uiCompass="true"
         map:uiRotateGestures="true"
-        map:uiScrollGestures="false"
+        map:uiScrollGestures="true"
         map:uiTiltGestures="true"/>
 
 </RelativeLayout>
