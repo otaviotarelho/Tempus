@@ -4,6 +4,7 @@
 
 package com.tempus.Alarm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,14 +27,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private String LocationStart = "";
+    private String LocationEnd = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.viewMap);
         mapFragment.getMapAsync(this);
+
+        //get location - still empty
+        Intent intent = getIntent();
+        LocationEnd = intent.getStringExtra("LOCATION");
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -43,5 +51,13 @@ public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallb
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void getCurrentLocation(){
+
+    }
+
+    public void getLocationEnd(){
+
     }
 }

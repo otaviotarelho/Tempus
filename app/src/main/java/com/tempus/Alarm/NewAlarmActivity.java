@@ -4,13 +4,11 @@
 
 package com.tempus.Alarm;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
@@ -105,8 +103,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end(), 0)).apply();
             settings.edit().putString("event_location", e.getLocation()).apply();
 
-            //textClock.setCurrentHour(Integer.getInteger(getStringFromDate("H", e.getDay_start())));
-//            textClock.setCurrentMinute(Integer.getInteger(getStringFromDate("mm", e.getDay_start())));
+            textClock.setCurrentHour(Integer.valueOf(getStringFromDate("H", e.getDay_start())));
+            textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
     }

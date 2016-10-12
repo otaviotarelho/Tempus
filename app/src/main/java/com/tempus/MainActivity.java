@@ -5,14 +5,18 @@
 package com.tempus;
 
 /* Imports section */
+import android.*;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
     public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
+    private static final int MY_PERMISSIONS = 0002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
         } // end of for
 
-
     } // end of onCreate
+
+    public void restartIntent(){
+        Intent intent = this.getIntent();
+        finish();
+        startActivity(intent);
+    }
 
     @Override
     protected void onResume() {
@@ -85,6 +95,18 @@ public class MainActivity extends AppCompatActivity {
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
+
+        //Get Permission to access database in the first usage
+        if((ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED )
+                || (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED )) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_CALENDAR, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS);
+
+            restartIntent();
+        }
     }
 
     @Override

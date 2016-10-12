@@ -93,7 +93,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
     private String getStringFromDate(String pattern, String longDTSTART){
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Calendar c = Calendar.getInstance();
-        Long mili = Long.valueOf(longDTSTART);
+        Long mili = Long.parseLong(longDTSTART, 10);
         c.setTimeInMillis(mili);
         return sdf.format(c.getTime());
     }

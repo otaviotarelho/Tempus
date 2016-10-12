@@ -54,7 +54,6 @@ public class EventFragment extends Fragment {
     private static final int PROJECTION_DTEND = 3;
     private static final int PROJECTION_DURATION = 4;
     private static final int ALL_DAY = 5;
-    private static final int MY_PERMISSION_ACCESS_CALENDAR = 5520;
 
 
     public EventFragment() {
@@ -71,14 +70,6 @@ public class EventFragment extends Fragment {
         context = getActivity();
         ListView listViewEvent;
         listViewEvent = (ListView) fragmentLayout.findViewById(R.id.listViewsEvents);
-
-        //Get Permission to access database in the first usage
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.READ_CALENDAR},
-                    MY_PERMISSION_ACCESS_CALENDAR);
-            restartIntent();
-        }
 
         //If to prevent add same items to the ArrayList
         if(savedInstanceState != null) {
@@ -137,12 +128,13 @@ public class EventFragment extends Fragment {
                 event.setDay_end(cur.getString(PROJECTION_DTEND));
                 event.setLocation(cur.getString(PROJECTION_LOCATION));
                 event.setDuration(cur.getString(PROJECTION_DURATION));
+
                 if(cur.getString(ALL_DAY).equals("1")) {
                     Calendar cal = Calendar.getInstance();
-                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 10);
+                    Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 100000);
                     cal.setTimeInMillis(val);
                     cal.add(cal.DATE, 1);
-                    event.setDay_start(String.valueOf(cal));
+                    event.setDay_start(String.valueOf(cal.getTimeInMillis()));
                 }else {
                     event.setDay_start(cur.getString(PROJECTION_DTSTART));
                 }
@@ -152,25 +144,8 @@ public class EventFragment extends Fragment {
 
             cur.close();
         }
-        else {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR)
-                    != PackageManager.PERMISSION_GRANTED) { // if not ask for permission
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_CALENDAR},
-                        MY_PERMISSION_ACCESS_CALENDAR);
-                restartIntent();
-            }
-
-        }
 
     }
-
-    public void restartIntent(){
-        Intent intent = getActivity().getIntent();
-        getActivity().finish();
-        startActivity(intent);
-    }
-
 
 
 }

@@ -17,5 +17,19 @@
     tools:context="com.tempus.Alarm.ViewMapActivity"
     tools:showIn="@layout/activity_view_map">
 
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewMap"
+        map:mapType="normal"
+        map:uiZoomControls="false"
+        map:uiZoomGestures="true"
+        map:uiCompass="true"
+        map:uiRotateGestures="true"
+        map:uiScrollGestures="false"
+        map:uiTiltGestures="true"/>
 
 </RelativeLayout>
