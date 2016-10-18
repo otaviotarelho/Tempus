@@ -114,10 +114,12 @@ public class EventFragment extends Fragment {
             String selection = CalendarContract.Events.DTSTART + " >= ? AND "
                     + CalendarContract.Events.DTSTART + "<= ?"; //Selection String == WHERE in SQL
 
+            String sortOrder = "ORDER BY " + CalendarContract.Events.DTSTART + "ASC";
+
             // Defines an array to contain the selection arguments
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
 
-            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
             addEventsToArrayList(cur);
         }
 

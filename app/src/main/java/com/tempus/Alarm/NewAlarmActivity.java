@@ -48,6 +48,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         Bundle extras = getIntent().getExtras();
         come_from = extras.getString("ALARM");
 
+        this.setTitle(R.string.new_alarm);
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor edit = sharedPref.edit();
         ClearPreferences(edit);
@@ -62,6 +64,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
         if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
             Intent i = getIntent();
+            this.setTitle(R.string.edit_alarm);
             Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -73,9 +76,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
             if(settings.getString("alarm_type", "").equals("1")){
                 settings.edit().putLong("event_start_time",
-                        Long.getLong(alarm.getEvent().getDay_start(), 0)).apply();
+                        Long.parseLong(alarm.getEvent().getDay_start(), 10)).apply();
                 settings.edit().putLong("event_end_time",
-                        Long.getLong(alarm.getEvent().getDay_end(), 0)).apply();
+                        Long.parseLong(alarm.getEvent().getDay_end(), 10)).apply();
                 settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
             }
 
@@ -99,8 +102,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             settings.edit().putBoolean("alarm_snooze", true).apply();
             settings.edit().putString("alarm_type", "1").apply();
 
-            settings.edit().putLong("event_start_time", Long.getLong(e.getDay_start(), 0)).apply();
-            settings.edit().putLong("event_end_time", Long.getLong(e.getDay_end(), 0)).apply();
+            settings.edit().putLong("event_start_time", Long.parseLong(e.getDay_start(), 10)).apply();
+            settings.edit().putLong("event_end_time", Long.parseLong(e.getDay_end(), 10)).apply();
             settings.edit().putString("event_location", e.getLocation()).apply();
 
             textClock.setCurrentHour(Integer.valueOf(getStringFromDate("H", e.getDay_start())));

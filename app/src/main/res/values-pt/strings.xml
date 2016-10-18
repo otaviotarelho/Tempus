@@ -101,10 +101,8 @@
     </string-array>
     <string name="action_settings">Configurações</string>
     <string name="delete_alarm">Deletar Alarme</string>
-    <string name="edit_alarm">Editar Alarme</string>
     <string name="title_activity_how_work">Como funciona?</string>
     <string name="view_traffic">Visualizar Tráfego</string>
-    <string name="hello_blank_fragment">Hallo blank fragment</string>
     <string name="cancel">Cancelar</string>
     <string name="confirm">Confirmar</string>
     <string name="delete_alarm_sum">Tem certeza que deseja deletar esse alarme?</string>
