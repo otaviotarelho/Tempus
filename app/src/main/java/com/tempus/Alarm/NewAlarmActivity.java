@@ -38,6 +38,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     private Event e;
     private String come_from;
     private int positionArray;
+    public static String locationPicked;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -180,7 +181,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
-        String event_location = settings.getString("event_location", "");
+        String event_location = locationPicked;
 
         //Hardcoded ALARMS
         if(type.equals("0")) {
