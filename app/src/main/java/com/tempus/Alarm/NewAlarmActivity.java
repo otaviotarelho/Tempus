@@ -9,10 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
@@ -104,17 +106,19 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
             settings.edit().putLong("event_start_time", Long.parseLong(e.getDay_start(), 10)).apply();
             settings.edit().putLong("event_end_time", Long.parseLong(e.getDay_end(), 10)).apply();
-            settings.edit().putString("event_location", e.getLocation()).apply();
+            settings.edit().putString("event_location", e.getLocation()).apply(); // corrigir isso
 
             textClock.setCurrentHour(Integer.valueOf(getStringFromDate("H", e.getDay_start())));
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
+
     }
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String lang = settings.getString("lang_setting", "");
         Configuration config = getBaseContext().getResources().getConfiguration();

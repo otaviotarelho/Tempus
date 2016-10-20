@@ -4,6 +4,7 @@
 
 package com.tempus.Alarm;
 
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -14,11 +15,20 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.tempus.R;
 
+import static android.app.Activity.RESULT_OK;
+
 public class NewAlarmItems extends PreferenceFragment {
+
+    int PLACE_PICKER_REQUEST = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +40,31 @@ public class NewAlarmItems extends PreferenceFragment {
         bindPreferenceSummaryToValue(findPreference("alarm_ringtone"));
         bindPreferenceSummaryToValue(findPreference("alarm_type"));
 
-        //Second Category
-        bindPreferenceSummaryToValue(findPreference("event_location"));
+        Preference myPref = findPreference("event_loc");
+        myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+
+                return true;
+            }
+        });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getActivity(), data);
+                String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void bindPreferenceSummaryToValue(Preference preference) {

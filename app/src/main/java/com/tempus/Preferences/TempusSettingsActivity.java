@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import com.tempus.R;
+
 import java.util.List;
 import java.util.Locale;
 

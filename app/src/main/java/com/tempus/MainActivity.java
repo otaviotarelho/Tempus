@@ -6,6 +6,7 @@ package com.tempus;
 
 /* Imports section */
 import android.*;
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
     public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
-    private static final int MY_PERMISSIONS = 0002;
+    private static final int MY_PERMISSIONS = 0005;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +101,13 @@ public class MainActivity extends AppCompatActivity {
         if((ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED )
                 || (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED )) {
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED )
+                || (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED)) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.READ_CALENDAR, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{android.Manifest.permission.READ_CALENDAR,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            android.Manifest.permission.INTERNET},
                     MY_PERMISSIONS);
 
             restartIntent();
