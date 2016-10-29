@@ -4,7 +4,6 @@
   -->
 
 <resources>
-    <string name="app_name">Tempus</string>
     <string name="no_event">Nenhum evento encontrado no calendario</string>
     <string name="pref_header_data_sync">Opções de Sincronização de Dados</string>
     <string name="pref_header_how_works">Como funciona?</string>

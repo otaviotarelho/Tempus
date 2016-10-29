@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">TEMPUS</string>
+    <string name="app_name" translatable="false">Tempus</string>
+    <string name="app_title" translatable="false">TEMPUS</string>
     <string name="title_activity_settings">Settings</string>
     <string name='new_alarm'>New Alarm</string>
     <string name="save_string">Save</string>
