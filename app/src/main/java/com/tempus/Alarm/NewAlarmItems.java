@@ -15,6 +15,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -33,7 +35,6 @@ public class NewAlarmItems extends PreferenceFragment {
         addPreferencesFromResource(R.xml.pref_new_alarm);
         setHasOptionsMenu(true);
 
-        //First Category
         bindPreferenceSummaryToValue(findPreference("alarm_name"));
         bindPreferenceSummaryToValue(findPreference("alarm_ringtone"));
         bindPreferenceSummaryToValue(findPreference("alarm_type"));
@@ -56,6 +57,7 @@ public class NewAlarmItems extends PreferenceFragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(getActivity(), data);
@@ -80,7 +82,6 @@ public class NewAlarmItems extends PreferenceFragment {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
-
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
@@ -109,7 +110,6 @@ public class NewAlarmItems extends PreferenceFragment {
                 if (TextUtils.isEmpty(stringValue)) {
                     // Empty values correspond to 'silent' (no ringtone).
                     preference.setSummary(R.string.pref_ringtone_silent);
-
                 } else {
                     Ringtone ringtone = RingtoneManager.getRingtone(
                             preference.getContext(), Uri.parse(stringValue));

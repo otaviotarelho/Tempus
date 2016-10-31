@@ -4,40 +4,29 @@
 
 package com.tempus.Events;
 
-/* Imports section */
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.tempus.MainActivity;
 import com.tempus.R;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EventFragment extends Fragment {
 
     private static ArrayList<Event> events = new ArrayList<>();
     private Context context;
-
-    //Events Array - List of Elements in the database
     private static final String[] EVENT_PROJECTION = new String[] {
             CalendarContract.Events.TITLE,
             CalendarContract.Events.EVENT_LOCATION,
@@ -46,8 +35,6 @@ public class EventFragment extends Fragment {
             CalendarContract.Events.DURATION,
             CalendarContract.Events.ALL_DAY
     };
-
-    // Array Event Projection keys
     private static final int PROJECTION_TITLE = 0;
     private static final int PROJECTION_LOCATION = 1;
     private static final int PROJECTION_DTSTART = 2;
@@ -56,9 +43,7 @@ public class EventFragment extends Fragment {
     private static final int ALL_DAY = 5;
 
 
-    public EventFragment() {
-        // Required empty public constructor
-    }
+    public EventFragment() {}
 
     public static EventFragment newInstance(){ return new EventFragment(); }
 
@@ -71,7 +56,6 @@ public class EventFragment extends Fragment {
         ListView listViewEvent;
         listViewEvent = (ListView) fragmentLayout.findViewById(R.id.listViewsEvents);
 
-        //If to prevent add same items to the ArrayList
         if(savedInstanceState != null) {
             events = (ArrayList<Event>) savedInstanceState.get(MainActivity.SAVE_EVENT_LIST);
         }
@@ -110,16 +94,19 @@ public class EventFragment extends Fragment {
             calendar.add(Calendar.DATE, 6); // Add 6 days to current date
             long endDay = calendar.getTimeInMillis();
 
-            // Constructs a selection clause with a replaceable parameter
-            String selection = CalendarContract.Events.DTSTART + " >= ? AND "
-                    + CalendarContract.Events.DTSTART + "<= ?"; //Selection String == WHERE in SQL
+            StringBuilder selection = new StringBuilder();
+            selection.append(CalendarContract.Events.DTSTART)
+                    .append(" >= ? AND ")
+                    .append(CalendarContract.Events.DTSTART)
+                    .append(" <= ? ");
 
-            String sortOrder = CalendarContract.Events.DTSTART + " ASC";
+            StringBuilder sortOrder = new StringBuilder();
+            sortOrder.append(CalendarContract.Events.DTSTART)
+                     .append(" ASC ");
 
-            // Defines an array to contain the selection arguments
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
 
-            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
+            cur = cr.query(uri, EVENT_PROJECTION, selection.toString(), selectionArgs, sortOrder.toString());
             addEventsToArrayList(cur);
         }
 
@@ -141,7 +128,7 @@ public class EventFragment extends Fragment {
                 Calendar cal = Calendar.getInstance();
                 Long val = Long.parseLong(cur.getString(PROJECTION_DTSTART), 10);
                 cal.setTimeInMillis(val);
-                cal.add(cal.DATE, 1);
+                cal.add(Calendar.DATE, 1);
                 event.setDay_start(String.valueOf(cal.getTimeInMillis()));
             }else {
                 event.setDay_start(cur.getString(PROJECTION_DTSTART));

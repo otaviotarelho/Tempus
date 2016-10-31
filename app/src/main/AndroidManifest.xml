@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -19,13 +19,16 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".MainActivity"
             android:configChanges="locale"
             android:label="@string/app_title"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar">  
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,7 +64,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tempus.MainActivity" />
         </activity>
-
+        <receiver android:name=".Alarm.AlarmReceiver"/>
+        <service android:name=".Alarm.RingtonePlayingService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

@@ -57,13 +57,6 @@
             android:key="event_loc"
             android:title="@string/event_location"/>
 
-        <!--<EditTextPreference-->
-            <!--android:title="@string/event_location"-->
-            <!--android:key="event_location"-->
-            <!--android:dialogTitle="Alarm name"-->
-            <!--android:dialogMessage="Set a new name for the alarm"-->
-            <!--android:defaultValue="Alarm"/> &lt;!&ndash; fazer um location picker &ndash;&gt;-->
-
         <com.tempus.auxiliars.TimePreference
             android:key="event_start_time"
             android:title="@string/event_start_time"

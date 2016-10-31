@@ -5,7 +5,6 @@
 package com.tempus;
 
 /* Imports section */
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +27,6 @@ import android.view.MenuItem;
 import com.tempus.Alarm.AlarmFragment;
 import com.tempus.Alarm.NewAlarmActivity;
 import com.tempus.Events.EventFragment;
-import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.Preferences.TempusSettingsActivity;
 
 import java.util.Locale;
@@ -38,47 +36,37 @@ public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.tempus.NEW";
     public final static String EXTRA_MESSAGE_EDIT = "com.tempus.EDIT";
     public final static String EXTRA_MESSAGE_ADD_EVENT = "com.tempus.EVENT";
-
-
-    private SectionAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-
+    public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
+    public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
+    private static final int MY_PERMISSIONS = 5;
     private final int[] ICON = {
             R.drawable.ic_alarm_white_36dp,
             R.drawable.ic_event_white_36dp,
             R.drawable.ic_pie_chart_white_36dp
-    }; // ICON LIST
-
-    public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
-    public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
-    private static final int MY_PERMISSIONS = 0005;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SectionAdapter mSectionsPagerAdapter;
+        ViewPager mViewPager;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        //Set icon to tablayout
-        for(int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-
+        for(int i = 0; i < 2; i++) {
             tabLayout.getTabAt(i).setIcon(ICON[i]);
+        }
 
-        } // end of for
-
-    } // end of onCreate
+    }
 
     public void restartIntent(){
         Intent intent = this.getIntent();
@@ -93,11 +81,10 @@ public class MainActivity extends AppCompatActivity {
         Configuration config = getBaseContext().getResources().getConfiguration();
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        config.locale = locale;
+        config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
 
-        //Get Permission to access database in the first usage
         if((ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED )
                 || (ContextCompat.checkSelfPermission(this,
@@ -116,19 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    } // end of onCreateOptionMenu
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if(id == R.id.action_add_new_alarm){
             Intent newAlarm = new Intent(this, NewAlarmActivity.class);
             newAlarm.putExtra("ALARM", EXTRA_MESSAGE);
@@ -143,17 +125,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    } // end of onOptionItemSelected
+    }
 
 
 
     public class SectionAdapter extends FragmentPagerAdapter {
 
-        public SectionAdapter(FragmentManager fm) { super(fm); } // end of constructor
+        private SectionAdapter(FragmentManager fm) { super(fm); }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
             switch(position) {
                 case 0:
                     return AlarmFragment.newInstance();
@@ -162,20 +143,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return null;
-        } // end of getItem method
+        }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 2;
-        } // end of getCount method
+        }
 
-        //Method that set title based on the file String.XML in resource folder
         @Override
         public CharSequence getPageTitle(int position) {
             return null;
-        } // end of getPageTitle method
-
-    } // end of SectionAdapter method
+        }
+    }
 
 }

@@ -37,19 +37,13 @@ public class AlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //If to prevent add same items to the ArrayList
-
         if(savedInstanceState != null) {
-
             alarms = (ArrayList<Alarm>) savedInstanceState.get(MainActivity.SAVE_ALARM_LIST);
-
         }
         else {
-
             if(alarms.size() == 0) {
                 setAlarms();
             }
-
         }
 
         View fragmentLayout = inflater.inflate(R.layout.fragment_alarm, container, false);

@@ -113,7 +113,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
                 Configuration config = getBaseContext().getResources().getConfiguration();
                 Locale locale = new Locale(lang);
                 Locale.setDefault(locale);
-                config.locale = locale;
+                config.setLocale(locale);
                 getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
                 Intent myIntent = getIntent();

@@ -16,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import com.tempus.R;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -28,12 +27,9 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
             String stringValue = value.toString();
 
             if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
 
-                // Set the summary to reflect the new value.
                 preference.setSummary(
                         index >= 0
                                 ? listPreference.getEntries()[index]
@@ -41,8 +37,6 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
 
             }
             else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
                 preference.setSummary(stringValue);
             }
             return true;
@@ -50,11 +44,7 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
     };
 
     private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        // Trigger the listener immediately with the preference's
-        // current value.
         sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
@@ -73,7 +63,7 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
         Configuration config = getBaseContext().getResources().getConfiguration();
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        config.locale = locale;
+        config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
     }

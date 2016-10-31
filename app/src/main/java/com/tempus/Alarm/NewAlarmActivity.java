@@ -125,14 +125,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         Configuration config = getBaseContext().getResources().getConfiguration();
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        config.locale = locale;
+        config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_new_alarm, menu);
         return true;
     }
@@ -161,7 +160,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    } // end of onOptionItemSelected
+    }
 
     @SuppressWarnings("deprecation")
     public void saveData() {
@@ -172,7 +171,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         TimePicker alarmTime = (TimePicker) findViewById(R.id.timePicker);
         String time;
         time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour()); // HOUR SAVED IN 24
-
         String title = settings.getString("alarm_name", "");
         Set<String> repeat = settings.getStringSet("alarm_repeat", to_solve);
         String ringtone = settings.getString("alarm_ringtone", "");
@@ -188,7 +186,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             // in case new normal alarm change
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
-                    time, ringtone,repeat,type,snooze, true, e);
+                    time, ringtone,repeat,type,snooze, false, e);
         }
         else if (type.equals("1")) {
             //in case new alarm from menu and traffic based
@@ -206,7 +204,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
             a = new Alarm(title, ExpectedTimeOfArrivel(event_location)
                     + getResources().getString(R.string.hour)
-                    , time, ringtone,repeat,type,snooze, true, ev);
+                    , time, ringtone,repeat,type,snooze, false, ev);
         }
 
 
@@ -221,11 +219,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             AlarmFragment.alarms.add(a);
         }
 
-        // return to home
         endIntentToMain();
-        //Set toast mensage
-        toastMessage();
-        //Finish this activity
         finish();
     }
 
@@ -257,14 +251,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         Long mili = Long.valueOf(longDTSTART);
         c.setTimeInMillis(mili);
         return sdf.format(c.getTime());
-    }
-
-    private void toastMessage(){
-        Context context = getApplicationContext();
-        CharSequence text = getResources().getString(R.string.save_alarm_toast);
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 
     private String getStringTime(int minutes, int hour){
