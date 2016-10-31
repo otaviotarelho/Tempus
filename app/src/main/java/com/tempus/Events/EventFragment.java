@@ -55,21 +55,21 @@ public class EventFragment extends Fragment {
         context = getActivity();
         ListView listViewEvent;
         listViewEvent = (ListView) fragmentLayout.findViewById(R.id.listViewsEvents);
-
-        if(savedInstanceState != null) {
-            events = (ArrayList<Event>) savedInstanceState.get(MainActivity.SAVE_EVENT_LIST);
-        }
-        else {
-            events.clear();
-            getEvents();
-        }
-
+        events.clear();
+        getEvents();
         listViewEvent.setAdapter(new EventAdapter(getActivity(), events));
 
 
 
         // Inflate the layout for this fragment
         return fragmentLayout;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        events.clear();
+        getEvents();
     }
 
     @Override
