@@ -114,4 +114,9 @@
     <string name="traffic_view_sum_alart">Essa operação não pôde ser concluida!</string>
     <string name="traffic_view_title_alart">Alerta!</string>
     <string name="title_activity_view_map">Visualizar Tráfego Atual</string>
+    <string name="turn_off">Desligar</string>
+    <string name="same_time">Mesmo início e fim de eventos foram usados, voçê não pode continuar</string>
+    <string name="error_maps">Não foi possível calcular o tempo de trafego. Verifique sua internet e tente novamente.</string>
+    <string name="error">Erro</string>
+    <string name="edit_alarm">Editar Alarm</string>
 </resources>

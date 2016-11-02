@@ -58,8 +58,8 @@
     <string name="turn_off">Turn Off</string>
     <string name="error">Error</string>
     <string name="same_time">Same event start and end time were used, you cannot continue. </string>
-    <string name="error_maps">Couldn't calculate traffic time. Verify your internet and try again.</string>
-
+    <string name="error_maps">Failed to calculate traffic time. Verify your internet and try again.</string>
+    <string name="title_activity_alarm_ringing" translatable="false">AlarmRingingActivity</string>
     <string-array name="pref_lang_titles">
         <item>English</item>
         <item>Portuguese (BRA)</item>
@@ -122,8 +122,6 @@
         <item>1</item>
     </string-array>
 
-    <string name="title_activity_alarm_ringing">AlarmRingingActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 
 </resources>
