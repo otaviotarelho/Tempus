@@ -29,8 +29,13 @@ import static android.content.Context.ALARM_SERVICE;
 public class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
     private ArrayList<Alarm> alarm;
-    private Context context;
     private PendingIntent pendingIntent;
+
+    private static Context context;
+
+    public static Context getAppContext(){
+        return AlarmAdapter.context;
+    }
 
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
         super(context,0,alarms);
@@ -72,6 +77,8 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
             public void onClick(View view) {
                 Intent my_intent = new Intent(context, AlarmReceiver.class);
                 my_intent.putExtra("RINGTONE", a.getRingtone());
+                my_intent.putExtra("TIME", a.getAlarmTime());
+                my_intent.putExtra("ALARM_NAME", a.getAlarmName());
 
                 if(elements.active.isChecked()){
                     my_intent.putExtra("ALARM_SELECTED", "alarm_on");
@@ -81,7 +88,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time[0]));
                     calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
                     calendar.set(Calendar.SECOND, 0);
-
+                    final int _id = (int) System.currentTimeMillis();
                     pendingIntent = PendingIntent.getBroadcast(context, 0, my_intent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_alarm_ringing"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.tempus.Alarm.AlarmRingingActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:id="@+id/alarmClockRing"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="76sp"
+        android:textColor="@color/colorClock"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:id="@+id/alarmName"
+        android:textColor="@color/colorWhite"
+        android:layout_below="@+id/alarmClockRing"
+        android:layout_alignEnd="@+id/alarmClockRing" />
+
+    <Button
+        android:text="@string/turn_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/turn_off"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="sans-serif-thin"
+        android:textSize="30sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="95dp" />
+</RelativeLayout>

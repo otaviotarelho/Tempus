@@ -15,7 +15,6 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -28,7 +27,8 @@
             android:configChanges="locale"
             android:label="@string/app_title"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">  
+            android:theme="@style/AppTheme.NoActionBar">
+              
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,9 +64,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tempus.MainActivity" />
         </activity>
-        <receiver android:name=".Alarm.AlarmReceiver"/>
-        <service android:name=".Alarm.RingtonePlayingService"
-            android:enabled="true"/>
+
+        <receiver android:name=".Alarm.AlarmReceiver" />
+
+        <service
+            android:name=".Alarm.RingtonePlayingService"
+            android:enabled="true" />
+
+        <activity android:name=".Alarm.AlarmRingingActivity"></activity>
     </application>
 
 </manifest>

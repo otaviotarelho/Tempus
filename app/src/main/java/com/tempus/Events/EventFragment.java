@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.tempus.MainActivity;
 import com.tempus.R;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,8 +40,6 @@ public class EventFragment extends Fragment {
     private static final int PROJECTION_DTEND = 3;
     private static final int PROJECTION_DURATION = 4;
     private static final int ALL_DAY = 5;
-
-
     public EventFragment() {}
 
     public static EventFragment newInstance(){ return new EventFragment(); }
@@ -58,10 +55,6 @@ public class EventFragment extends Fragment {
         events.clear();
         getEvents();
         listViewEvent.setAdapter(new EventAdapter(getActivity(), events));
-
-
-
-        // Inflate the layout for this fragment
         return fragmentLayout;
     }
 
@@ -75,23 +68,18 @@ public class EventFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putSerializable(MainActivity.SAVE_EVENT_LIST, events);  //Save current list of vents
     }
-
-    //Get events from User calendar database;
 
     public void getEvents(){
 
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) !=
-                PackageManager.PERMISSION_DENIED) { // if permission is grated
+                PackageManager.PERMISSION_DENIED) {
             Cursor cur;
             ContentResolver cr = context.getContentResolver();
-            Uri uri = CalendarContract.Events.CONTENT_URI; // API Address in the System
-
-            //Week Dates
+            Uri uri = CalendarContract.Events.CONTENT_URI;
             Calendar calendar = Calendar.getInstance();
             long startDay = calendar.getTimeInMillis();
-            calendar.add(Calendar.DATE, 6); // Add 6 days to current date
+            calendar.add(Calendar.DATE, 6);
             long endDay = calendar.getTimeInMillis();
 
             StringBuilder selection = new StringBuilder();

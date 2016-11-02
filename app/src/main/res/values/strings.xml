@@ -55,6 +55,10 @@
     <string name="title_activity_view_map">View Atual Traffic</string>
     <string name="traffic_view_title_alart">Alert!</string>
     <string name="traffic_view_sum_alart">This operation cannot be done!</string>
+    <string name="turn_off">Turn Off</string>
+    <string name="error">Error</string>
+    <string name="same_time">Same event start and end time were used, you cannot continue. </string>
+    <string name="error_maps">Couldn't calculate traffic time. Verify your internet and try again.</string>
 
     <string-array name="pref_lang_titles">
         <item>English</item>
@@ -117,5 +121,9 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+
+    <string name="title_activity_alarm_ringing">AlarmRingingActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

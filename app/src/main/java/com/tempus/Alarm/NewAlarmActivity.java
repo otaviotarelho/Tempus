@@ -85,7 +85,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
                 settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
             }
 
-            positionArray = i.getIntExtra("POSITION", 0); // get array position
+            positionArray = i.getIntExtra("POSITION", 0);
             int[] hour = changeTime(alarm.getAlarmTime());
             textClock.setCurrentHour(hour[0]);
             textClock.setCurrentMinute(hour[1]);
@@ -107,7 +107,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
             settings.edit().putLong("event_start_time", Long.parseLong(e.getDay_start(), 10)).apply();
             settings.edit().putLong("event_end_time", Long.parseLong(e.getDay_end(), 10)).apply();
-            settings.edit().putString("event_location", e.getLocation()).apply(); // corrigir isso
+            settings.edit().putString("event_location", e.getLocation()).apply();
 
             textClock.setCurrentHour(Integer.valueOf(getStringFromDate("H", e.getDay_start())));
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
@@ -128,6 +128,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
+        
     }
 
     @Override
@@ -165,6 +166,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     @SuppressWarnings("deprecation")
     public void saveData() {
         //saveData in the database
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         HashSet<String> to_solve = new HashSet<>();
 
@@ -180,47 +182,52 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
         String event_location = locationPicked;
+        if(!time_event.equals(time_event_end)){
+            //Hardcoded ALARMS
+            if(type.equals("0")) {
+                // in case new normal alarm change
+                e = new Event();
+                a = new Alarm(title, getResources().getString(R.string.normal_alarm),
+                        time, ringtone,repeat,type,snooze, false, e);
+            }
+            else if (type.equals("1")) {
+                //in case new alarm from menu and traffic based
+                Event ev = new Event();
+                ev.setDay_start(time_event);
+                ev.setDay_end(time_event_end);
+                ev.setLocation(event_location);
+                ev.setName(title);
 
-        //Hardcoded ALARMS
-        if(type.equals("0")) {
-            // in case new normal alarm change
-            e = new Event();
-            a = new Alarm(title, getResources().getString(R.string.normal_alarm),
-                    time, ringtone,repeat,type,snooze, false, e);
-        }
-        else if (type.equals("1")) {
-            //in case new alarm from menu and traffic based
-            Event ev = new Event();
-            ev.setDay_start(time_event);
-            ev.setDay_end(time_event_end);
-            ev.setLocation(event_location);
-            ev.setName(title);
+                if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)){
+                    ev.setDuration(e.getDuration());
+                }else{
+                    ev.setDuration("");
+                }
 
-            if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)){
-                ev.setDuration(e.getDuration());
-            }else{
-                ev.setDuration("");
+                a = new Alarm(title, ExpectedTimeOfArrivel(event_location)
+                        + getResources().getString(R.string.hour)
+                        , time, ringtone,repeat,type,snooze, false, ev);
             }
 
-            a = new Alarm(title, ExpectedTimeOfArrivel(event_location)
-                    + getResources().getString(R.string.hour)
-                    , time, ringtone,repeat,type,snooze, false, ev);
+
+            if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
+                    come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
+                AlarmFragment.alarms.add(a);
+
+            }
+            else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+                //in case new alarm from events tab
+                AlarmFragment.alarms.remove(positionArray);
+                AlarmFragment.alarms.add(a);
+            }
+
+            endIntentToMain();
+            finish();
+        }else {
+            buildConformDialogError();
+            confirmDialogObj.show();
         }
 
-
-        if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
-                come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
-            AlarmFragment.alarms.add(a);
-
-        }
-        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
-            //in case new alarm from events tab
-            AlarmFragment.alarms.remove(positionArray);
-            AlarmFragment.alarms.add(a);
-        }
-
-        endIntentToMain();
-        finish();
     }
 
     private int ExpectedTimeOfArrivel(String event_location) {
@@ -278,13 +285,35 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
                 saveData();
             }
         });
-
         confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
             }
         });
+        confirmDialogObj = confirmBuilder.create();
+    }
 
+    private void buildConformDialogError(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle(R.string.error);
+        confirmBuilder.setMessage(R.string.same_time);
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+            }
+        });
+        confirmDialogObj = confirmBuilder.create();
+    }
+
+    private void buildConformDialogErrorMaps(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle(R.string.error);
+        confirmBuilder.setMessage(R.string.error_maps);
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+            }
+        });
         confirmDialogObj = confirmBuilder.create();
     }
 
