@@ -17,7 +17,7 @@
         android:layout_marginTop="51dp"
         android:id="@+id/alarmClockRing"
         android:fontFamily="sans-serif-thin"
-        android:textSize="76sp"
+        android:textSize="80sp"
         android:textColor="@color/colorClock"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

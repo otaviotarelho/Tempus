@@ -60,7 +60,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
             elements.time.setFormat24Hour(getStringFromDate("H:mm", ev.getDay_start()));
         }
         else {
-
             if(Locale.getDefault().getCountry().equals("US")){
                 elements.date.setText(getStringFromDate("MM/dd/yyyy", ev.getDay_start()));
             }
@@ -77,10 +76,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), NewAlarmActivity.class);
-                //send information to new activity about the event
                 intent.putExtra("ALARM", MainActivity.EXTRA_MESSAGE_ADD_EVENT);
                 intent.putExtra("DATA", e.get(position));
-                //start activity
                 getContext().startActivity(intent);
             }
 
@@ -89,16 +86,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
         return convertView;
     }
 
-    // Format Calender Content Provider into readable format -- Current format in milliseconds from epoch
     private String getStringFromDate(String pattern, String longDTSTART){
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
         Calendar c = Calendar.getInstance();
         Long mili = Long.parseLong(longDTSTART, 10);
         c.setTimeInMillis(mili);
         return sdf.format(c.getTime());
     }
 
-    //elements class to make it more organized and reusable
     private class ErowsElements {
         TextView name, date;
         TextClock time;

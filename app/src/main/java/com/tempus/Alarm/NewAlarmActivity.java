@@ -39,6 +39,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     private String come_from;
     private int positionArray;
     public static String locationPicked;
+    private Boolean saved = false;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -113,7 +114,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
-
     }
 
     @SuppressWarnings("deprecation")
@@ -167,6 +167,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     public void saveData() {
         //saveData in the database
 
+        int error_motivo = 0;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         HashSet<String> to_solve = new HashSet<>();
 
@@ -182,57 +183,107 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
         String event_location = locationPicked;
-        if(!time_event.equals(time_event_end)){
-            //Hardcoded ALARMS
-            if(type.equals("0")) {
-                // in case new normal alarm change
-                e = new Event();
-                a = new Alarm(title, getResources().getString(R.string.normal_alarm),
-                        time, ringtone,repeat,type,snooze, false, e);
+
+        if(type.equals("0")) {
+            e = new Event();
+            a = new Alarm(title, getResources().getString(R.string.normal_alarm),
+                    time, ringtone,repeat,type,snooze, false, e);
+            if("".equals(ringtone)) {
+                buildConformDialogAlertSilentAlarm();
+                confirmDialogObj.show();
+            } else {
+                saved = true;
             }
-            else if (type.equals("1")) {
-                //in case new alarm from menu and traffic based
+        }
+        else if (type.equals("1")) {
+
+            if(time_event.equals(time_event_end) ||
+                    getCurrentHourFromLong(time_event) > getCurrentHourFromLong(time_event_end)) {
+                saved = false;
+                error_motivo = 1;
+            }
+            else if(expectedTimeOfArrivel(event_location) == -1){
+                error_motivo = 2;
+                saved = false;
+            }
+            else if("".equals(event_location)){
+                error_motivo = 3;
+                saved = false;
+            }
+            else {
+
+                if("".equals(ringtone)){
+                    buildConformDialogAlertSilentAlarm();
+                    confirmDialogObj.show();
+                } else{
+                    saved = true;
+                }
+
                 Event ev = new Event();
                 ev.setDay_start(time_event);
                 ev.setDay_end(time_event_end);
                 ev.setLocation(event_location);
                 ev.setName(title);
 
-                if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)){
+                if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
                     ev.setDuration(e.getDuration());
-                }else{
+                }
+                else {
                     ev.setDuration("");
                 }
 
-                a = new Alarm(title, ExpectedTimeOfArrivel(event_location)
+                a = new Alarm(title, expectedTimeOfArrivel(event_location)
                         + getResources().getString(R.string.hour)
                         , time, ringtone,repeat,type,snooze, false, ev);
+
             }
+        }
 
-
+        if(saved){
+            endIntentToMain();
+            finish();
             if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
                     come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
                 AlarmFragment.alarms.add(a);
 
             }
             else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
-                //in case new alarm from events tab
                 AlarmFragment.alarms.remove(positionArray);
                 AlarmFragment.alarms.add(a);
             }
-
-            endIntentToMain();
-            finish();
-        }else {
-            buildConformDialogError();
-            confirmDialogObj.show();
+        } else {
+            buildDialogError(error_motivo);
         }
-
     }
 
-    private int ExpectedTimeOfArrivel(String event_location) {
+    private void buildDialogError(int motivo){
+        switch (motivo){
+            case 1:
+                buildConformDialogError();
+                confirmDialogObj.show();
+                break;
+            case 2:
+                buildConformDialogErrorMaps();
+                confirmDialogObj.show();
+                break;
+            case 3:
+                buildConformDialogErrorPlace();
+                break;
+        }
+    }
+
+    private int expectedTimeOfArrivel(String event_location) {
         //fazer o maps here
-        return 122;
+        return -1;
+    }
+
+    @SuppressWarnings("deprecation")
+    private int getCurrentHourFromLong(String hour){
+        Calendar c = Calendar.getInstance();
+        Long h = Long.parseLong(hour);
+        c.setTimeInMillis(h);
+        Date d = c.getTime();
+        return d.getHours();
     }
 
     @SuppressWarnings("deprecation")
@@ -312,6 +363,37 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
+            }
+        });
+        confirmDialogObj = confirmBuilder.create();
+    }
+
+    private void buildConformDialogErrorPlace(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle(R.string.error);
+        confirmBuilder.setMessage(R.string.error_place);
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+            }
+        });
+        confirmDialogObj = confirmBuilder.create();
+    }
+
+    private void buildConformDialogAlertSilentAlarm(){
+        AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
+        confirmBuilder.setTitle(R.string.error);
+        confirmBuilder.setMessage(R.string.error_ringtone);
+        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                saved = true;
+            }
+        });
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                saved = false;
             }
         });
         confirmDialogObj = confirmBuilder.create();

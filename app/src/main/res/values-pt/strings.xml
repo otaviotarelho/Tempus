@@ -119,4 +119,6 @@
     <string name="error_maps">Não foi possível calcular o tempo de trafego. Verifique sua internet e tente novamente.</string>
     <string name="error">Erro</string>
     <string name="edit_alarm">Editar Alarm</string>
+    <string name="error_place">Local de evento não selecionado! Selecione um local para continuar.</string>
+    <string name="error_ringtone">Seu ringtone foi configurado para Silencioso. Você tem certeza que deseja continuar?</string>
 </resources>

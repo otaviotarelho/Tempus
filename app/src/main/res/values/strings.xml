@@ -57,8 +57,10 @@
     <string name="traffic_view_sum_alart">This operation cannot be done!</string>
     <string name="turn_off">Turn Off</string>
     <string name="error">Error</string>
-    <string name="same_time">Same event start and end time were used, you cannot continue. </string>
+    <string name="same_time">Same or bigger event start time was used, you cannot continue. </string>
     <string name="error_maps">Failed to calculate traffic time. Verify your internet and try again.</string>
+    <string name="error_place">Place not selected! Select a place to continue.</string>
+    <string name="error_ringtone">Your ringtone was set to Silent. Are you sure you want to continue?</string>
     <string name="title_activity_alarm_ringing" translatable="false">AlarmRingingActivity</string>
     <string-array name="pref_lang_titles">
         <item>English</item>

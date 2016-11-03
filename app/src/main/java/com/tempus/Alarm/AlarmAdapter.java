@@ -88,7 +88,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time[0]));
                     calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
                     calendar.set(Calendar.SECOND, 0);
-                    final int _id = (int) System.currentTimeMillis();
+                    final int _id = (int) System.currentTimeMillis(); //pegar do banco de dados
                     pendingIntent = PendingIntent.getBroadcast(context, 0, my_intent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);

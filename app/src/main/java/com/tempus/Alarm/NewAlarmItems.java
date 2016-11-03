@@ -54,7 +54,7 @@ public class NewAlarmItems extends PreferenceFragment {
                     e.printStackTrace();
                 }
 
-                return true;
+            return true;
             }
         });
     }
@@ -114,24 +114,10 @@ public class NewAlarmItems extends PreferenceFragment {
                     }
                 }
             }
-            else if(preference instanceof DialogPreference){
-                DialogPreference dialogPreference = (DialogPreference) preference;
-                if(dialogPreference.getKey().equals("event_start_time")){
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    String start = prefs.getString("event_start_time", "");
-                    String end = prefs.getString("event_end_time", "");
-                    if(!start.equals(end)){
-                        preference.setSummary(stringValue);
-                        Log.e("teste", "");
-                    }
-                    else {
-                        //dialog
-                    }
-                }
-            }
             else {
                 preference.setSummary(stringValue);
             }
+
             return true;
         }
     };
