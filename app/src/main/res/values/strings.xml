@@ -58,7 +58,8 @@
     <string name="turn_off">Turn Off</string>
     <string name="error">Error</string>
     <string name="same_time">Same event start and end time were used, you cannot continue. </string>
-    <string name="error_maps">Couldn't calculate traffic time. Verify your internet and try again.</string>
+    <string name="error_maps">Couldn\'t calculate traffic time. Verify your internet and try again.</string>
+    <string name="location_permission">This app requires location permission to be granted</string>
 
     <string-array name="pref_lang_titles">
         <item>English</item>
