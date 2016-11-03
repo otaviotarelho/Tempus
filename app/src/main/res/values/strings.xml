@@ -58,14 +58,10 @@
     <string name="turn_off">Turn Off</string>
     <string name="error">Error</string>
     <string name="same_time">Same event start and end time were used, you cannot continue. </string>
-<<<<<<< HEAD
-    <string name="error_maps">Couldn\'t calculate traffic time. Verify your internet and try again.</string>
     <string name="location_permission">This app requires location permission to be granted</string>
-
-=======
     <string name="error_maps">Failed to calculate traffic time. Verify your internet and try again.</string>
     <string name="title_activity_alarm_ringing" translatable="false">AlarmRingingActivity</string>
->>>>>>> origin/master
+
     <string-array name="pref_lang_titles">
         <item>English</item>
         <item>Portuguese (BRA)</item>
