@@ -22,7 +22,6 @@ public class AlarmRingingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_ringing);
-        getActionBar().setTitle("");
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
@@ -47,12 +46,13 @@ public class AlarmRingingActivity extends AppCompatActivity {
                 Intent my_intent = new Intent(AlarmAdapter.getAppContext(), AlarmReceiver.class);
                 my_intent.putExtra("RINGTONE", song);
                 my_intent.putExtra("TIME", time);
-                my_intent.putExtra("ALARM_SELECTED", state);
+                my_intent.putExtra("ALARM_SELECTED", "alarm_off");
                 my_intent.putExtra("ALARM_NAME", alarm);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmAdapter.getAppContext(), 0, my_intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) AlarmAdapter.getAppContext().getSystemService(ALARM_SERVICE);
                 alarmManager.cancel(pendingIntent);
+                context.sendBroadcast(my_intent);
                 Intent main = new Intent(context, MainActivity.class);
                 startActivity(main);
             }
