@@ -61,7 +61,7 @@
     <string name="error_maps">Failed to calculate traffic time. Verify your internet and try again.</string>
     <string name="error_place">Place not selected! Select a place to continue.</string>
     <string name="error_ringtone">Your ringtone was set to Silent. Are you sure you want to continue?</string>
-    <string name="title_activity_alarm_ringing" translatable="false">AlarmRingingActivity</string>
+    <string name="title_activity_alarm_ringing" translatable="false">.</string>
     <string-array name="pref_lang_titles">
         <item>English</item>
         <item>Portuguese (BRA)</item>

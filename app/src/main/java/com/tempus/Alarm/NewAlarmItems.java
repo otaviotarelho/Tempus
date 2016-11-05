@@ -115,6 +115,10 @@ public class NewAlarmItems extends PreferenceFragment {
                 }
             }
             else {
+                if(preference instanceof DialogPreference){
+                    DialogPreference dialogPreference = (DialogPreference) preference;
+                    Log.e("DialogPreference", dialogPreference.getKey());
+                }
                 preference.setSummary(stringValue);
             }
 
