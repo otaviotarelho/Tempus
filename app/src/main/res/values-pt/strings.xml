@@ -36,6 +36,7 @@
     <string name="pref_ringtone_silent">Silecioso</string>
     <string name="pref_title_vibrate">Vibrar</string>
     <string name="new_alarm">Novo Alarme</string>
+    <string name="location_permission">Esta aplicação requer permissão para acessar o seu local</string>
 
     <string-array name="repeat_label">
         <item>Nunca</item>

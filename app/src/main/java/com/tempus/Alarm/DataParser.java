@@ -13,6 +13,29 @@ import java.util.List;
 
 public class DataParser {
 
+    public String[] parseRouteInfo(JSONObject jObject) {
+        JSONArray jRoutes;
+        JSONArray jLegs;
+        String[] routeInfo = new String[2];
+        try {
+            jRoutes = jObject.getJSONArray("routes");
+
+            /** Traversing all routes */
+            for (int i = 0; i < jRoutes.length(); i++) {
+                jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
+
+                /* Getting distance and duration info*/
+                JSONObject info = jLegs.getJSONObject(0);
+                routeInfo[0] = info.getString("distance");
+                routeInfo[1] = info.getString("duration");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+        }
+        return routeInfo;
+    }
+
     /**
      * Recebe um objeto JSONO e retorna uma lista de listas contendo latitude and longitude
      */
