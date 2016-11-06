@@ -27,8 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 
@@ -222,10 +220,9 @@ public class TravelTimeProvider implements
         return data;
     }
 
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+    private class ParserTask extends AsyncTask<String, Void, String> {
         @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
+        protected String doInBackground(String... jsonData) {
             JSONObject jObject;
             try {
                 jObject = new JSONObject(jsonData[0]);
@@ -237,7 +234,6 @@ public class TravelTimeProvider implements
             }
             return null;
         }
-
     }
 
     public void setRouteInfo() {
