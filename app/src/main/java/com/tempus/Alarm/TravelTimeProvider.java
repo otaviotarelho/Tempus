@@ -228,11 +228,16 @@ public class TravelTimeProvider implements
                 jObject = new JSONObject(jsonData[0]);
                 DataParser parser = new DataParser();
                 routeInfo = parser.parseRouteInfo(jObject);
-                setRouteInfo();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            setRouteInfo();
         }
     }
 
