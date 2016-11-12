@@ -52,8 +52,6 @@ public class TravelTimeProvider implements
     private LocationRequest mLocationRequest;
 
     String url;
-    String duration;
-    String routeInfo[];
 
     LatLng myCurrentLocation;
     LatLng destLat;
@@ -223,29 +221,27 @@ public class TravelTimeProvider implements
     private class ParserTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... jsonData) {
+            String travelTime = "";
             JSONObject jObject;
             try {
                 jObject = new JSONObject(jsonData[0]);
                 DataParser parser = new DataParser();
-                routeInfo = parser.parseRouteInfo(jObject);
+                travelTime = parser.parseTravelTime(jObject);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return travelTime;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            setRouteInfo();
+            setRouteInfo(s);
         }
     }
 
-    public void setRouteInfo() {
-        duration = routeInfo[1];
-        routeInfo = duration.split(",");
-        duration = routeInfo[0].substring(9, (routeInfo[0].length() - 1));
-        mTravelTimeCallback.handleNewTravelTime(duration);
+    public void setRouteInfo(String routeInfo) {
+        String[] aux = routeInfo.split(",");
+        routeInfo = aux[0].substring(9, (aux[0].length() - 1));
+        mTravelTimeCallback.handleNewTravelTime(routeInfo);
     }
-
 }
