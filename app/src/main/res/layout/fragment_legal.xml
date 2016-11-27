@@ -8,9 +8,22 @@
     android:layout_height="match_parent"
     tools:context="com.tempus.Preferences.Legal">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/legal_info"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:textSize="21sp"
+
+            />
+
+    </ScrollView>
+
 
 </FrameLayout>

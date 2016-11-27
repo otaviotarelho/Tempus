@@ -15,7 +15,7 @@
             android:dialogMessage="@string/new_alarm_title_dialog_sum"
             android:defaultValue="@string/new_alarm_default_name"/>
 
-        <MultiSelectListPreference
+        <!--<MultiSelectListPreference
             android:entries="@array/repeat_label"
             android:entryValues="@array/repeat_values"
             android:defaultValue="@array/repeat_values_def"
@@ -25,6 +25,7 @@
             android:negativeButtonText="@string/cancel"
             android:positiveButtonText="@string/set"
             android:title="@string/new_alarm_repeat" />
+            -->
 
         <RingtonePreference
             android:title="Ringtone"
@@ -32,10 +33,11 @@
             android:ringtoneType="all"
             />
 
-        <SwitchPreference
+        <!--<SwitchPreference
             android:defaultValue="true"
             android:key="alarm_snooze"
             android:title="@string/snooze_title" />
+            -->
 
         <ListPreference
             android:defaultValue="0"

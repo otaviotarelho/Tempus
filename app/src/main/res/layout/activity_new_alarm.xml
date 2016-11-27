@@ -17,7 +17,7 @@
         android:paddingBottom="5dp"
        />
 
-\    <fragment
+    <fragment
         android:id="@+id/preferences_alarm"
         android:name="com.tempus.Alarm.NewAlarmItems"
         android:layout_height="wrap_content"

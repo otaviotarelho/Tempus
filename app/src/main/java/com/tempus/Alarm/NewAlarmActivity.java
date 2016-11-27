@@ -4,34 +4,32 @@
 
 package com.tempus.Alarm;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.preference.Preference;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
-import android.widget.Toast;
+
 import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
-public class NewAlarmActivity extends AppCompatPreferenceActivity {
+public class NewAlarmActivity extends AppCompatPreferenceActivity implements TravelTimeProvider.TravelTimeCallback {
 
     private AlertDialog confirmDialogObj;
     private Alarm a;
@@ -40,6 +38,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
     private int positionArray;
     public static String locationPicked;
     private Boolean saved = false;
+    private TravelTimeProvider mTravelTimeProvider;
+    private String travelTime = null;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -73,9 +73,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
             settings.edit().putString("alarm_name", alarm.getAlarmName()).apply();
-            settings.edit().putStringSet("alarm_repeat", alarm.getRepeat()).apply();
+            //settings.edit().putStringSet("alarm_repeat", alarm.getRepeat()).apply();
             settings.edit().putString("alarm_ringtone", alarm.getRingtone()).apply();
-            settings.edit().putBoolean("alarm_snooze", alarm.isSnooze()).apply();
+            //settings.edit().putBoolean("alarm_snooze", alarm.isSnooze()).apply();
             settings.edit().putString("alarm_type", alarm.getType()).apply();
 
             if(settings.getString("alarm_type", "").equals("1")){
@@ -101,9 +101,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             to_solve.add("-1");
 
             settings.edit().putString("alarm_name", e.getName()).apply();
-            settings.edit().putStringSet("alarm_repeat", to_solve).apply();
+            //settings.edit().putStringSet("alarm_repeat", to_solve).apply();
             settings.edit().putString("alarm_ringtone", "").apply();
-            settings.edit().putBoolean("alarm_snooze", true).apply();
+            //settings.edit().putBoolean("alarm_snooze", true).apply();
             settings.edit().putString("alarm_type", "1").apply();
 
             settings.edit().putLong("event_start_time", Long.parseLong(e.getDay_start(), 10)).apply();
@@ -114,12 +114,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
-    }
+        mTravelTimeProvider = new TravelTimeProvider(this, this, null);
+
+    } //fim do oncreate
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onResume() {
-
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String lang = settings.getString("lang_setting", "");
         Configuration config = getBaseContext().getResources().getConfiguration();
@@ -128,8 +129,15 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
-        
+        mTravelTimeProvider.connect();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mTravelTimeProvider.disconnect();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,9 +183,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         String time;
         time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour()); // HOUR SAVED IN 24
         String title = settings.getString("alarm_name", "");
-        Set<String> repeat = settings.getStringSet("alarm_repeat", to_solve);
+        //Set<String> repeat = settings.getStringSet("alarm_repeat", to_solve);
         String ringtone = settings.getString("alarm_ringtone", "");
-        Boolean snooze = settings.getBoolean("alarm_snooze", true);
+        //Boolean snooze = settings.getBoolean("alarm_snooze", true);
         String type = settings.getString("alarm_type", "");
 
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
@@ -187,7 +195,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         if(type.equals("0")) {
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
-                    time, ringtone,repeat,type,snooze, false, e);
+                    time, ringtone,/*repeat,*/type,/*snooze,*/ false, e);
             if("".equals(ringtone)) {
                 buildConformDialogAlertSilentAlarm();
                 confirmDialogObj.show();
@@ -234,7 +242,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
                 a = new Alarm(title, expectedTimeOfArrivel(event_location)
                         + getResources().getString(R.string.hour)
-                        , time, ringtone,repeat,type,snooze, false, ev);
+                        , time, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
 
             }
         }
@@ -274,7 +282,15 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
 
     private int expectedTimeOfArrivel(String event_location) {
         //fazer o maps here
-        return -1;
+        mTravelTimeProvider.connect();
+
+        mTravelTimeProvider = new TravelTimeProvider(this, this, event_location);
+
+        if(travelTime == null){
+            return -1;
+        }
+        Log.d("tempo de duração: ", travelTime);
+        return 1;
     }
 
     @SuppressWarnings("deprecation")
@@ -403,11 +419,15 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity {
         edit.remove("alarm_name");
         edit.remove("alarm_ringtone");
         edit.remove("alarm_type");
-        edit.remove("alarm_snooze");
-        edit.remove("alarm_repeat");
+        //edit.remove("alarm_snooze");
+        //edit.remove("alarm_repeat");
         edit.remove("event_location");
         edit.commit();
     }
 
+    @Override
+    public void handleNewTravelTime(String duration) {
+        this.travelTime = duration;
+    }
 }
 

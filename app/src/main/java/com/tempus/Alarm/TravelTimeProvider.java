@@ -51,26 +51,26 @@ public class TravelTimeProvider implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
-    String url;
+    String url, destination;
 
     LatLng myCurrentLocation;
-    LatLng destLat;
+    LatLng destLat = null;
 
 
     public TravelTimeProvider(Context context, TravelTimeCallback callback, String destination) {
+        this.destination = destination;
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
         getDestinationPosition(destination);
 
         mTravelTimeCallback = callback;
 
         mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(50 * 1000)
-                .setFastestInterval(10 * 1000);
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mContext = context;
     }
 
@@ -86,10 +86,12 @@ public class TravelTimeProvider implements
     }
 
     protected void getDestinationPosition(String destination) {
-        String aux[] = destination.split(":");
-        destination = aux[1].substring(2, (aux[1].length() - 1));
-        String aux2[] = destination.split(",");
-        destLat = new LatLng(Double.valueOf(aux2[0]), Double.valueOf(aux2[1]));
+        if(destination != null){
+            String aux[] = destination.split(":");
+            destination = aux[1].substring(2, (aux[1].length() - 1));
+            String aux2[] = destination.split(",");
+            destLat = new LatLng(Double.valueOf(aux2[0]), Double.valueOf(aux2[1]));
+        }
     }
 
     @Override
@@ -133,24 +135,26 @@ public class TravelTimeProvider implements
 
     @Override
     public void onLocationChanged(Location location) {
-        myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
-        url = getUrl(myCurrentLocation, destLat);
-        Log.d("URL", url);
-        FetchUrl FetchUrl = new FetchUrl();
-        FetchUrl.execute(url);
+        if(destLat != null) {
+            myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            url = getUrl(myCurrentLocation, destLat);
+            Log.d("URL", url);
+            FetchUrl FetchUrl = new FetchUrl();
+            FetchUrl.execute(url);
+        }
     }
 
     private String getUrl(LatLng origin, LatLng dest) {
-
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        String sensor = "sensor=false";
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;
-        String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-
-        return url;
+        if(dest != null) {
+            String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+            String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+            String sensor = "sensor=false";
+            String parameters = str_origin + "&" + str_dest + "&" + sensor;
+            String output = "json";
+            String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+            return url;
+        }
+        return null;
     }
 
     // Fetches data from url passed
