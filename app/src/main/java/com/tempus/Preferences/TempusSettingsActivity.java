@@ -3,21 +3,21 @@
  */
 
 package com.tempus.Preferences;
+
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
+
 import com.tempus.R;
+
 import java.util.List;
-import java.util.Locale;
 
 public class TempusSettingsActivity extends AppCompatPreferenceActivity {
 
@@ -58,13 +58,13 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     protected void onResume() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String lang = settings.getString("lang_setting", "");
+        /*SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = settings.getString("", "");
         Configuration config = getBaseContext().getResources().getConfiguration();
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         config.setLocale(locale);
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());*/
         super.onResume();
     }
 
@@ -101,9 +101,9 @@ public class TempusSettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_app_options);
-            setHasOptionsMenu(true);
-            bindPreferenceSummaryToValue(findPreference("lang_setting")); // information of selected item
+            //addPreferencesFromResource(R.xml.pref_app_options);
+            //setHasOptionsMenu(true);
+            //bindPreferenceSummaryToValue(findPreference("lang_setting")); // information of selected item
 
         }
 

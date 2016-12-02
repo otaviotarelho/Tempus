@@ -5,7 +5,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <ListPreference
+<!--    <ListPreference
         android:defaultValue="en"
         android:entries="@array/pref_lang_titles"
         android:entryValues="@array/pref_lang_values"
@@ -14,5 +14,6 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_header_lang_options"
         android:persistent="true"/>
+-->
 
 </PreferenceScreen>

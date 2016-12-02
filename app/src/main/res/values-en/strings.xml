@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Tempus</string>
     <string name="app_title" translatable="false">Tempus</string>
@@ -64,7 +65,7 @@
     <string name="how_it_works">Tempus is an incredible alarm clock that uses the traffic information to help you never be late for any further engagement. Through an incredible traffic monitoring system, Tempus can estimate the time it takes for you to reach a marked event on your calendar.</string>
     <string name="general_conditions">General Conditions</string>
     <string name="legal_info">These legal prescriptions regulate the access and use of the Tempus application, available free of charge by Diego Nunes Reis and Otávio Tarelho.\n\nThe Developers reserve the right to change and update, at any time and without prior notice, the information contained in the application, its configuration and format, as well as the respective conditions of use.\n\nCreators do not warrant that there are no interruptions or errors in using the Application or its content. They also don\'t guarantee that it is up-to-date, even though they use their greatest efforts to avoid and correct failures, as well as to update the content.\n\nThe access to this Application and use of the information contained therein is the sole responsibility of the person making use of it. Developers shall not be liable for any consequences, damages or losses arising from such access or use of the information. Developers are not responsible for possible security breaches that may be produced, nor for possible damages that may be generated on the user\'s device, files or documents that are stored in it, as a result of the presence of viruses in the employee\'s device To connect to or use outdated versions of the latter.\n\nDevelopers do not guarantee the absence of viruses or other items that may cause changes in user\'s equipment, documents or user files, and disclaims any liability for any damages suffered by the user for that reason.\n\n\n</string>
-    <string name="location_permission">This app requires access to your location</string>
+
 
     <string name="title_activity_alarm_ringing" translatable="false">.</string>
     <string-array name="pref_lang_titles">
