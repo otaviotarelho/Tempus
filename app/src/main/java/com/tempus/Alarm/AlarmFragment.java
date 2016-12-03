@@ -47,6 +47,12 @@ public class AlarmFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setAlarms();
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerForContextMenu(listView);
