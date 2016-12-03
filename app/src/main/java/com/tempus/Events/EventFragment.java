@@ -82,19 +82,14 @@ public class EventFragment extends Fragment {
             calendar.add(Calendar.DATE, 6);
             long endDay = calendar.getTimeInMillis();
 
-            StringBuilder selection = new StringBuilder();
-            selection.append(CalendarContract.Events.DTSTART)
-                    .append(" >= ? AND ")
-                    .append(CalendarContract.Events.DTSTART)
-                    .append(" <= ? ");
+            String selection = CalendarContract.Events.DTSTART + " >= ? AND "
+                    + CalendarContract.Events.DTSTART + " <= ? ";
 
-            StringBuilder sortOrder = new StringBuilder();
-            sortOrder.append(CalendarContract.Events.DTSTART)
-                     .append(" ASC ");
+            String sortOrder = CalendarContract.Events.DTSTART + " ASC ";
 
             String[] selectionArgs = new String[] { Long.toString(startDay), Long.toString(endDay) };
 
-            cur = cr.query(uri, EVENT_PROJECTION, selection.toString(), selectionArgs, sortOrder.toString());
+            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
             addEventsToArrayList(cur);
         }
 

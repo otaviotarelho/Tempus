@@ -8,6 +8,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,25 +28,28 @@ import java.util.Locale;
 
 import static android.content.Context.ALARM_SERVICE;
 
-public class AlarmAdapter extends  ArrayAdapter<Alarm> {
+class AlarmAdapter extends  ArrayAdapter<Alarm> {
 
     private ArrayList<Alarm> alarm;
     private PendingIntent pendingIntent;
 
     private static Context context;
 
-    public static Context getAppContext(){
+    static Context getAppContext(){
         return AlarmAdapter.context;
     }
 
-    public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
+    AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
         super(context,0,alarms);
         alarm = alarms;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarms_rows, parent, false);
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent){
+        if(convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarms_rows, parent, false);
+        }
         context = getContext();
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         final rowsElements elements = new rowsElements();
@@ -79,6 +84,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
                 my_intent.putExtra("RINGTONE", a.getRingtone());
                 my_intent.putExtra("TIME", a.getAlarmTime());
                 my_intent.putExtra("ALARM_NAME", a.getAlarmName());
+                my_intent.putExtra("ALARM_ID", a.getID());
 
                 if(elements.active.isChecked()){
                     my_intent.putExtra("ALARM_SELECTED", "alarm_on");
@@ -88,8 +94,8 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time[0]));
                     calendar.set(Calendar.MINUTE, Integer.valueOf(time[1]));
                     calendar.set(Calendar.SECOND, 0);
-                    final int _id = (int) System.currentTimeMillis(); //pegar do banco de dados
-                    pendingIntent = PendingIntent.getBroadcast(context, 0, my_intent,
+                    final int _id = (int) a.getID();
+                    pendingIntent = PendingIntent.getBroadcast(context, _id, my_intent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }

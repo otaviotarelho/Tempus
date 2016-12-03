@@ -7,8 +7,7 @@ package com.tempus.Events;
 /* Imports section */
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,22 +25,22 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EventAdapter extends ArrayAdapter<Event> {
+class EventAdapter extends ArrayAdapter<Event> {
 
     private final ArrayList<Event> e;
 
-    public EventAdapter(Context context, ArrayList<Event> events) {
+    EventAdapter(Context context, ArrayList<Event> events) {
         super(context,0,events);
         e = events;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent){
 
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.events_rows, parent, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Boolean hour_system = sharedPref.getBoolean("hour_system", true);
-        String day = sharedPref.getString("lang_setting", "en");
+        if(convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.events_rows, parent, false);
+        }
 
         ErowsElements elements = new ErowsElements();
 

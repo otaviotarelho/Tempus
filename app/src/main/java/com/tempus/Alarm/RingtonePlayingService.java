@@ -29,19 +29,22 @@ public class RingtonePlayingService extends Service {
         String song = intent.getExtras().getString("RINGTONE");
         String time = intent.getExtras().getString("TIME");
         String alarmName = intent.getExtras().getString("ALARM_NAME");
+        int id = intent.getExtras().getInt("ALARM_ID");
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        switch (state) {
-            case "alarm_on":
-                this.startId = 1;
-                break;
-            case ("alarm_off"):
-                this.startId = 0;
-                break;
-            default:
-                this.startId = 0;
-                break;
+        if(state != null){
+            switch (state) {
+                case "alarm_on":
+                    this.startId = 1;
+                    break;
+                case ("alarm_off"):
+                    this.startId = 0;
+                    break;
+            }
+        } else {
+            this.startId = 0;
         }
+
 
         if(!this.isRunning && this.startId == 1){
 
@@ -51,6 +54,7 @@ public class RingtonePlayingService extends Service {
             alarm.putExtra("RINGTONE", song);
             alarm.putExtra("TIME", time);
             alarm.putExtra("ALARM_NAME", alarmName);
+            alarm.putExtra("ALARM_ID", id);
             PendingIntent pandingAlarm = PendingIntent.getActivity(this, 0, alarm, 0);
             Notification notification = new Notification.Builder(this)
                     .setContentText("Select an action to this alarm")
@@ -89,7 +93,7 @@ public class RingtonePlayingService extends Service {
             this.isRunning = false;
             this.startId = 0;
         }
-        else if(this.isRunning && this.startId == 1) {
+        else {
             this.isRunning = false;
             this.startId = 1;
         }

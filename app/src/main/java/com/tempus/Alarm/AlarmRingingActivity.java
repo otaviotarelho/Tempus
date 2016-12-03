@@ -28,10 +28,10 @@ public class AlarmRingingActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         Button btn_off = (Button) findViewById(R.id.turn_off);
         Intent intent = getIntent();
-        final String state = intent.getExtras().getString("ALARM_SELECTED");
         final String song = intent.getExtras().getString("RINGTONE");
         final String time = intent.getExtras().getString("TIME");
         final String alarm = intent.getExtras().getString("ALARM_NAME");
+        final int id = intent.getExtras().getInt("ALARM_ID");
         final Context context = this;
 
         TextClock textClock = (TextClock) findViewById(R.id.alarmClockRing);
@@ -48,7 +48,8 @@ public class AlarmRingingActivity extends AppCompatActivity {
                 my_intent.putExtra("TIME", time);
                 my_intent.putExtra("ALARM_SELECTED", "alarm_off");
                 my_intent.putExtra("ALARM_NAME", alarm);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmAdapter.getAppContext(), 0, my_intent,
+                my_intent.putExtra("ALARM_ID", id);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmAdapter.getAppContext(), id, my_intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) AlarmAdapter.getAppContext().getSystemService(ALARM_SERVICE);
                 alarmManager.cancel(pendingIntent);

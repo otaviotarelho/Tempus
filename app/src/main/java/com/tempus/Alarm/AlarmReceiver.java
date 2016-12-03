@@ -12,11 +12,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         String ringtone = intent.getExtras().getString("RINGTONE");
         String time = intent.getExtras().getString("TIME");
         String alarm = intent.getExtras().getString("ALARM_NAME");
+        int id = intent.getExtras().getInt("ALARM_ID");
         Intent serviceIntent = new Intent(context, RingtonePlayingService.class);
         serviceIntent.putExtra("ALARM_SELECTED", get_type);
         serviceIntent.putExtra("RINGTONE", ringtone);
         serviceIntent.putExtra("TIME", time);
         serviceIntent.putExtra("ALARM_NAME", alarm);
+        serviceIntent.putExtra("ALARM_ID", id);
         context.startService(serviceIntent);
     }
 }

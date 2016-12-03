@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "376060294146",
+    "firebase_url": "https://tempus-5857d.firebaseio.com",
+    "project_id": "tempus-5857d",
+    "storage_bucket": "tempus-5857d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376060294146:android:4c5481461e0e02e1",
+        "android_client_info": {
+          "package_name": "com.tempus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376060294146-3p1k6g5jpr2t2pqc026p6a8pdkh75crc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6FG5vKOt-wiK5rZd37fsHuvdLrkRnhbk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
