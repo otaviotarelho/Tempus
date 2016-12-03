@@ -19,18 +19,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.tempus.MainActivity;
 import com.tempus.R;
+import com.tempus.auxiliars.DatabaseHelper;
+
 import java.util.ArrayList;
 
 public class AlarmFragment extends Fragment {
-
-    public static ArrayList<Alarm> alarms = new ArrayList<>();
+    private DatabaseHelper tempusDB;
+    public  ArrayList<Alarm> alarms = new ArrayList<>();
     private AlarmAdapter adapter;
     private AlertDialog confirmDialogObj;
     private ListView listView;
 
-    public AlarmFragment() {
-        // Required empty public constructor
-    }
+    public AlarmFragment() {}
 
     public static AlarmFragment newInstance(){ return new AlarmFragment(); }
 
@@ -42,7 +42,8 @@ public class AlarmFragment extends Fragment {
         }
         else {
             if(alarms.size() == 0) {
-                setAlarms();
+                  tempusDB = new DatabaseHelper(getActivity());
+                   setAlarms();
             }
         }
 
@@ -62,9 +63,7 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         MenuInflater menuInflater = getActivity().getMenuInflater();
-
         menuInflater.inflate(R.menu.long_click_menu, menu);
     }
 
@@ -81,11 +80,10 @@ public class AlarmFragment extends Fragment {
                 getContext().startActivity(intent);
                 return true;
             case R.id.delete:
-                buildConformDialog(info.position);
+                buildConformDialog(alarms.get(info.position).getID());
                 confirmDialogObj.show();
                 return true;
             case R.id.view:
-
                 if(alarms.get(info.position).getType().equals("0")){
                     buildViewTrafficDialog();
                     confirmDialogObj.show();
@@ -107,22 +105,20 @@ public class AlarmFragment extends Fragment {
         savedInstanceState.putSerializable(MainActivity.SAVE_ALARM_LIST, alarms);
     }
 
-    public static void setAlarms(){
-        //pegar alarms do banco de dados e jogar no arraylist
+    public void setAlarms(){
+        alarms = tempusDB.savedAlarms();
     }
 
-    public static void deleteAlarm(){
-        //colocar deletar alarm aqui
-    }
-
-    private void buildConformDialog(final int position){
+    private void buildConformDialog(final long position){
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(getActivity());
         confirmBuilder.setTitle(R.string.delete_alarm_title);
         confirmBuilder.setMessage(R.string.delete_alarm_sum);
         confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                alarms.remove(position);
+                tempusDB.deleteAlarm(position);
+                alarms.clear();
+                alarms = tempusDB.savedAlarms();
                 adapter.notifyDataSetChanged();
             }
         });

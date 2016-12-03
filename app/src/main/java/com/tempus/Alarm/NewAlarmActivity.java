@@ -21,6 +21,7 @@ import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
 import com.tempus.R;
+import com.tempus.auxiliars.DatabaseHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,11 +32,12 @@ import java.util.Locale;
 
 public class NewAlarmActivity extends AppCompatPreferenceActivity implements TravelTimeProvider.TravelTimeCallback {
 
+    private DatabaseHelper tempusDB;
     private AlertDialog confirmDialogObj;
     private Alarm a;
     private Event e;
     private String come_from;
-    private int positionArray;
+    private long id;
     public static String locationPicked;
     private Boolean saved = false;
     private TravelTimeProvider mTravelTimeProvider;
@@ -51,7 +53,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
 
         Bundle extras = getIntent().getExtras();
         come_from = extras.getString("ALARM");
-
+        tempusDB = new DatabaseHelper(this);
         this.setTitle(R.string.new_alarm);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -70,8 +72,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
             Intent i = getIntent();
             this.setTitle(R.string.edit_alarm);
             Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
+            id = alarm.getID();
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-
             settings.edit().putString("alarm_name", alarm.getAlarmName()).apply();
             //settings.edit().putStringSet("alarm_repeat", alarm.getRepeat()).apply();
             settings.edit().putString("alarm_ringtone", alarm.getRingtone()).apply();
@@ -85,8 +87,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
                         Long.parseLong(alarm.getEvent().getDay_end(), 10)).apply();
                 settings.edit().putString("event_location", alarm.getEvent().getLocation()).apply();
             }
-
-            positionArray = i.getIntExtra("POSITION", 0);
             int[] hour = changeTime(alarm.getAlarmTime());
             textClock.setCurrentHour(hour[0]);
             textClock.setCurrentMinute(hour[1]);
@@ -97,9 +97,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
             e = (Event) i.getSerializableExtra("DATA");
 
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-            HashSet<String> to_solve = new HashSet<>();
-            to_solve.add("-1");
-
+            // HashSet<String> to_solve = new HashSet<>();
+            // to_solve.add("-1");
             settings.edit().putString("alarm_name", e.getName()).apply();
             //settings.edit().putStringSet("alarm_repeat", to_solve).apply();
             settings.edit().putString("alarm_ringtone", "").apply();
@@ -116,7 +115,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         }
         mTravelTimeProvider = new TravelTimeProvider(this, this, null);
 
-    } //fim do oncreate
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -173,12 +172,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
 
     @SuppressWarnings("deprecation")
     public void saveData() {
-        //saveData in the database
-
         int error_motivo = 0;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        HashSet<String> to_solve = new HashSet<>();
-
+        //HashSet<String> to_solve = new HashSet<>();
         TimePicker alarmTime = (TimePicker) findViewById(R.id.timePicker);
         String time;
         time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour()); // HOUR SAVED IN 24
@@ -191,7 +187,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
         String event_location = locationPicked;
-
+        Log.e("SAVING DATA", "TRUE");
         if(type.equals("0")) {
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
@@ -210,7 +206,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
                 saved = false;
                 error_motivo = 1;
             }
-            else if(expectedTimeOfArrivel(event_location) == -1){
+            else if("-1".equals(expectedTimeOfArrivel(event_location))){
                 error_motivo = 2;
                 saved = false;
             }
@@ -219,7 +215,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
                 saved = false;
             }
             else {
-
                 if("".equals(ringtone)){
                     buildConformDialogAlertSilentAlarm();
                     confirmDialogObj.show();
@@ -241,7 +236,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
                 }
 
                 a = new Alarm(title, expectedTimeOfArrivel(event_location)
-                        + getResources().getString(R.string.hour)
                         , time, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
 
             }
@@ -252,12 +246,12 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
             finish();
             if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
                     come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
-                AlarmFragment.alarms.add(a);
+                tempusDB.insertAlarm(a);
 
             }
             else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
-                AlarmFragment.alarms.remove(positionArray);
-                AlarmFragment.alarms.add(a);
+                a.setID(id);
+                tempusDB.updateAlarm(a);
             }
         } else {
             buildDialogError(error_motivo);
@@ -280,17 +274,17 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         }
     }
 
-    private int expectedTimeOfArrivel(String event_location) {
+    private String expectedTimeOfArrivel(String event_location) {
         //fazer o maps here
         mTravelTimeProvider.connect();
 
         mTravelTimeProvider = new TravelTimeProvider(this, this, event_location);
 
         if(travelTime == null){
-            return -1;
+            return "-1";
         }
         Log.d("tempo de duração: ", travelTime);
-        return 1;
+        return travelTime;
     }
 
     @SuppressWarnings("deprecation")
