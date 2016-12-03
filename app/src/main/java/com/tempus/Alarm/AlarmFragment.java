@@ -37,16 +37,8 @@ public class AlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedInstanceState != null) {
-            alarms = (ArrayList<Alarm>) savedInstanceState.get(MainActivity.SAVE_ALARM_LIST);
-        }
-        else {
-            if(alarms.size() == 0) {
-                  tempusDB = new DatabaseHelper(getActivity());
-                   setAlarms();
-            }
-        }
 
+        setAlarms();
         View fragmentLayout = inflater.inflate(R.layout.fragment_alarm, container, false);
         listView = (ListView) fragmentLayout.findViewById(R.id.listView);
         adapter = new AlarmAdapter(getActivity(), alarms);
@@ -106,6 +98,7 @@ public class AlarmFragment extends Fragment {
     }
 
     public void setAlarms(){
+        tempusDB = new DatabaseHelper(getActivity());
         alarms = tempusDB.savedAlarms();
     }
 

@@ -115,7 +115,7 @@ public class AlarmAdapter extends  ArrayAdapter<Alarm> {
         final Date dateObj;
 
         try {
-            DateFormat displayFormat = new SimpleDateFormat("HH:mm", Locale.UK);
+            DateFormat displayFormat = new SimpleDateFormat("HH:mm aaa", Locale.getDefault());
             sdf = DateFormat.getTimeInstance(DateFormat.SHORT);
             dateObj = displayFormat.parse(hour);
             return sdf.format(dateObj);
