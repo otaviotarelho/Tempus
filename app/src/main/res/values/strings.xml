@@ -67,6 +67,8 @@
     <string name="location_permission">This app requires access to your location</string>
 
     <string name="title_activity_alarm_ringing" translatable="false">.</string>
+    <string name="getting_route_info_title">Please waite.</string>
+    <string name="getting_route_info_body">Getting route information...</string>
     <string-array name="pref_lang_titles">
         <item>English</item>
         <item>Portuguese (BRA)</item>

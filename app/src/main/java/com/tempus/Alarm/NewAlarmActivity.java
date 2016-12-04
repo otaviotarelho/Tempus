@@ -42,13 +42,12 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     private long id;
     public static String locationPicked;
     private Boolean saved = false;
-    //private TravelTimeProvider2 mTravelTimeProvider;
-    private String travelTime = null;
 
     ProgressDialog progress;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    String travelTime;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -70,14 +69,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         ClearPreferences(edit);
         TimePicker textClock = (TimePicker) findViewById(R.id.timePicker);
 
-        if(android.text.format.DateFormat.is24HourFormat(this)){
+        if (android.text.format.DateFormat.is24HourFormat(this)) {
             textClock.setIs24HourView(true);
-        }
-        else{
+        } else {
             textClock.setIs24HourView(false);
         }
 
-        if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+        if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
             Intent i = getIntent();
             this.setTitle(R.string.edit_alarm);
             Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
@@ -89,7 +87,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             //settings.edit().putBoolean("alarm_snooze", alarm.isSnooze()).apply();
             settings.edit().putString("alarm_type", alarm.getType()).apply();
 
-            if(settings.getString("alarm_type", "").equals("1")){
+            if (settings.getString("alarm_type", "").equals("1")) {
                 settings.edit().putLong("event_start_time",
                         Long.parseLong(alarm.getEvent().getDay_start(), 10)).apply();
                 settings.edit().putLong("event_end_time",
@@ -100,8 +98,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             textClock.setCurrentHour(hour[0]);
             textClock.setCurrentMinute(hour[1]);
 
-        }
-        else if(come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
+        } else if (come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
             Intent i = getIntent();
             e = (Event) i.getSerializableExtra("DATA");
 
@@ -122,8 +119,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
-        //mTravelTimeProvider = new TravelTimeProvider2(this, this, null);
-
     }
 
     @SuppressWarnings("deprecation")
@@ -137,13 +132,11 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
-        //mTravelTimeProvider.connect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // mTravelTimeProvider.disconnect();
     }
 
 
@@ -171,7 +164,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_save_alarm) {
+        if (id == R.id.action_save_alarm) {
             buildConformDialog();
             confirmDialogObj.show();
         }
@@ -179,7 +172,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveData(){
+    public void saveData() {
         int error_motivo = 0;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         //HashSet<String> to_solve = new HashSet<>();
@@ -197,68 +190,48 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         String event_location = locationPicked;
 
         Log.e("SAVING DATA", "TRUE");
-        if(type.equals("0")) {
+        if (type.equals("0")) {
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
                     time, ringtone,/*repeat,*/type,/*snooze,*/ false, e);
-            if("".equals(ringtone)) {
+            if ("".equals(ringtone)) {
                 buildConformDialogAlertSilentAlarm();
                 confirmDialogObj.show();
             } else {
                 saved = true;
             }
-        }
-        else if (type.equals("1")) {
-
-            if(time_event.equals(time_event_end) ||
-                    getCurrentHourFromLong(time_event) > getCurrentHourFromLong(time_event_end)) {
-                saved = false;
-                error_motivo = 1;
+        } else if (type.equals("1")) {
+            if ("".equals(ringtone)) {
+                buildConformDialogAlertSilentAlarm();
+                confirmDialogObj.show();
+            } else {
+                saved = true;
             }
-            else if("-1".equals(expectedTimeOfArrivel(event_location))){
-                error_motivo = 2;
-                saved = false;
+
+            Event ev = new Event();
+            ev.setDay_start(time_event);
+            ev.setDay_end(time_event_end);
+            ev.setLocation(event_location);
+            ev.setName(title);
+
+            if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+                ev.setDuration(e.getDuration());
+            } else {
+                ev.setDuration("");
             }
-            else if("".equals(event_location)){
-                error_motivo = 3;
-                saved = false;
-            }
-            else {
-                if("".equals(ringtone)){
-                    buildConformDialogAlertSilentAlarm();
-                    confirmDialogObj.show();
-                } else{
-                    saved = true;
-                }
 
-                Event ev = new Event();
-                ev.setDay_start(time_event);
-                ev.setDay_end(time_event_end);
-                ev.setLocation(event_location);
-                ev.setName(title);
+            a = new Alarm(title, travelTime, time, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
 
-                if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
-                    ev.setDuration(e.getDuration());
-                }
-                else {
-                    ev.setDuration("");
-                }
-
-                a = new Alarm(title, expectedTimeOfArrivel(event_location)
-                        , time, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
-
-            }
         }
 
-        if(saved){
+        if (saved) {
             endIntentToMain();
             finish();
-            if(come_from.equals(MainActivity.EXTRA_MESSAGE) ||
-                    come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)){
+            if (come_from.equals(MainActivity.EXTRA_MESSAGE) ||
+                    come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
                 tempusDB.insertAlarm(a);
 
-            }
-            else if(come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
+            } else if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
                 a.setID(id);
                 tempusDB.updateAlarm(a);
             }
@@ -266,25 +239,46 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             buildDialogError(error_motivo);
         }
     }
+
     @SuppressWarnings("deprecation")
     public void saveDataAction() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String type = settings.getString("alarm_type", "");
+        String time_event = String.valueOf(settings.getLong("event_start_time", 0));
+        String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
+        String event_location = locationPicked;
 
-        if(type.equals("1")){
-            String event_location = locationPicked;
-            Intent sendIntend = new Intent(NewAlarmActivity.this, TravelTimeProvider.class);
-            sendIntend.putExtra("EVENT_LOCATION", event_location);
-            startActivityForResult(sendIntend, 1);
-            progress = ProgressDialog.show(this, "Por favor, aguarde.", "Obtendo informações do trajeto...", true);
-        }
-        else{
+        int error_motivo = 0;
+
+        if (type.equals("1")) {
+            if (event_location == null) {
+                error_motivo = 3;
+            } else if (time_event.equals(time_event_end) ||
+                    getCurrentHourFromLong(time_event) > getCurrentHourFromLong(time_event_end)) {
+                error_motivo = 1;
+            }
+
+            if (error_motivo == 0) {
+                //Caso tenha o local de destino certinho, buscar o tempo de trajeto
+                Intent sendIntend = new Intent(NewAlarmActivity.this, TravelTimeProvider.class);
+                sendIntend.putExtra("EVENT_LOCATION", event_location);
+
+                /* Aqui enviaremos as coordenadas de destino, e o tempo de trajeto
+                *  será obtido no metodo onActivityResult, logo abaixo */
+                startActivityForResult(sendIntend, 1);
+                progress = ProgressDialog.show(this, getString(R.string.getting_route_info_title), getString(R.string.getting_route_info_body), true);
+            }
+        } else {
             saveData();
+        }
+        if (error_motivo != 0) {
+            buildDialogError(error_motivo);
         }
     }
 
-    private void buildDialogError(int motivo){
-        switch (motivo){
+
+    private void buildDialogError(int motivo) {
+        switch (motivo) {
             case 1:
                 buildConformDialogError();
                 confirmDialogObj.show();
@@ -295,6 +289,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
                 break;
             case 3:
                 buildConformDialogErrorPlace();
+                confirmDialogObj.show();
                 break;
         }
     }
@@ -302,37 +297,20 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                String result=data.getStringExtra("result");
-                Log.d("TEMPUS>", result);
+            if (resultCode == Activity.RESULT_OK) {
+                travelTime = data.getStringExtra("result");
+                Log.d("TEMPUS>ETA", travelTime);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-                Log.d("porra ta dando", "merda");
+                //mexer nisso em implementações futuras
             }
             progress.dismiss();
         }
         saveData();
     }
 
-    private String expectedTimeOfArrivel(String event_location) {
-        //fazer o maps here
-       /* mTravelTimeProvider.connect();
-
-        mTravelTimeProvider = new TravelTimeProvider2(this, this, event_location);
-
-        if(travelTime == null){
-            return "-1";
-        }
-
-        Log.d("tempo de duração: ", travelTime);*/
-        return travelTime;
-    }
-
-
-
     @SuppressWarnings("deprecation")
-    private int getCurrentHourFromLong(String hour){
+    private int getCurrentHourFromLong(String hour) {
         Calendar c = Calendar.getInstance();
         Long h = Long.parseLong(hour);
         c.setTimeInMillis(h);
@@ -341,7 +319,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     }
 
     @SuppressWarnings("deprecation")
-    private int[] changeTime(String hour){
+    private int[] changeTime(String hour) {
         final Date dateObj;
         int[] completeHour = new int[2];
 
@@ -357,7 +335,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         return completeHour;
     }
 
-    public String getStringFromDate(String pattern, String longDTSTART){
+    public String getStringFromDate(String pattern, String longDTSTART) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
         Calendar c = Calendar.getInstance();
         Long mili = Long.valueOf(longDTSTART);
@@ -365,95 +343,95 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         return sdf.format(c.getTime());
     }
 
-    private String getStringTime(int minutes, int hour){
+    private String getStringTime(int minutes, int hour) {
 
-        if(minutes < 10) {
+        if (minutes < 10) {
             return String.valueOf(hour) + ":0" + String.valueOf(minutes);
         }
         return String.valueOf(hour) + ":" + String.valueOf(minutes);
 
     }
 
-    private void endIntentToMain(){
+    private void endIntentToMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    private void buildConformDialog(){
+    private void buildConformDialog() {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.save_alarm_title);
         confirmBuilder.setMessage(R.string.save_alarm_sum);
 
-        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
                 saveDataAction();
             }
         });
-        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
         confirmDialogObj = confirmBuilder.create();
     }
 
-    private void buildConformDialogError(){
+    private void buildConformDialogError() {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.error);
         confirmBuilder.setMessage(R.string.same_time);
-        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
         confirmDialogObj = confirmBuilder.create();
     }
 
-    private void buildConformDialogErrorMaps(){
+    private void buildConformDialogErrorMaps() {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.error);
         confirmBuilder.setMessage(R.string.error_maps);
-        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
         confirmDialogObj = confirmBuilder.create();
     }
 
-    private void buildConformDialogErrorPlace(){
+    private void buildConformDialogErrorPlace() {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.error);
         confirmBuilder.setMessage(R.string.error_place);
-        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
         confirmDialogObj = confirmBuilder.create();
     }
 
-    private void buildConformDialogAlertSilentAlarm(){
+    private void buildConformDialogAlertSilentAlarm() {
         AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(this);
         confirmBuilder.setTitle(R.string.error);
         confirmBuilder.setMessage(R.string.error_ringtone);
-        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+        confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
                 saved = true;
             }
         });
-        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
+        confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(DialogInterface dialog, int which) {
                 saved = false;
             }
         });
         confirmDialogObj = confirmBuilder.create();
     }
 
-    public void ClearPreferences(SharedPreferences.Editor edit){
+    public void ClearPreferences(SharedPreferences.Editor edit) {
         edit.remove("alarm_name");
         edit.remove("alarm_ringtone");
         edit.remove("alarm_type");
@@ -462,11 +440,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         edit.remove("event_location");
         edit.commit();
     }
-/*
-    @Override
-    public void handleNewTravelTime(String duration) {
-        this.travelTime = duration;
-        Log.d("funcionou", duration);
-    }*/
+
 }
 
