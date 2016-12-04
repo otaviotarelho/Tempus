@@ -4,6 +4,8 @@
 
 package com.tempus.Alarm;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,10 +29,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
 
-public class NewAlarmActivity extends AppCompatPreferenceActivity implements TravelTimeProvider.TravelTimeCallback {
+public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements TravelTimeProvider2.TravelTimeCallback*/ {
 
     private DatabaseHelper tempusDB;
     private AlertDialog confirmDialogObj;
@@ -40,8 +41,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
     private long id;
     public static String locationPicked;
     private Boolean saved = false;
-    private TravelTimeProvider mTravelTimeProvider;
+    //private TravelTimeProvider2 mTravelTimeProvider;
     private String travelTime = null;
+
+    ProgressDialog progress;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -113,7 +116,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
             textClock.setCurrentMinute(Integer.valueOf(getStringFromDate("mm", e.getDay_start())));
 
         }
-        mTravelTimeProvider = new TravelTimeProvider(this, this, null);
+        //mTravelTimeProvider = new TravelTimeProvider2(this, this, null);
 
     }
 
@@ -128,13 +131,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         config.setLocale(locale);
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
-        mTravelTimeProvider.connect();
+        //mTravelTimeProvider.connect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mTravelTimeProvider.disconnect();
+       // mTravelTimeProvider.disconnect();
     }
 
 
@@ -170,8 +173,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("deprecation")
-    public void saveData() {
+    public void saveData(){
         int error_motivo = 0;
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         //HashSet<String> to_solve = new HashSet<>();
@@ -187,6 +189,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
         String event_location = locationPicked;
+
         Log.e("SAVING DATA", "TRUE");
         if(type.equals("0")) {
             e = new Event();
@@ -257,6 +260,22 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
             buildDialogError(error_motivo);
         }
     }
+    @SuppressWarnings("deprecation")
+    public void saveDataAction() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String type = settings.getString("alarm_type", "");
+
+        if(type.equals("1")){
+            String event_location = locationPicked;
+            Intent sendIntend = new Intent(NewAlarmActivity.this, TravelTimeProvider.class);
+            sendIntend.putExtra("EVENT_LOCATION", event_location);
+            startActivityForResult(sendIntend, 1);
+            progress = ProgressDialog.show(this, "Por favor, aguarde.", "Obtendo informações do trajeto...", true);
+        }
+        else{
+            saveData();
+        }
+    }
 
     private void buildDialogError(int motivo){
         switch (motivo){
@@ -274,18 +293,37 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                Log.d("TEMPUS>", result);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+                Log.d("porra ta dando", "merda");
+            }
+            progress.dismiss();
+        }
+        saveData();
+    }
+
     private String expectedTimeOfArrivel(String event_location) {
         //fazer o maps here
-        mTravelTimeProvider.connect();
+       /* mTravelTimeProvider.connect();
 
-        mTravelTimeProvider = new TravelTimeProvider(this, this, event_location);
+        mTravelTimeProvider = new TravelTimeProvider2(this, this, event_location);
 
         if(travelTime == null){
             return "-1";
         }
-        Log.d("tempo de duração: ", travelTime);
+
+        Log.d("tempo de duração: ", travelTime);*/
         return travelTime;
     }
+
+
 
     @SuppressWarnings("deprecation")
     private int getCurrentHourFromLong(String hour){
@@ -343,7 +381,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         confirmBuilder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which){
-                saveData();
+                saveDataAction();
             }
         });
         confirmBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
@@ -418,10 +456,11 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity implements Tra
         edit.remove("event_location");
         edit.commit();
     }
-
+/*
     @Override
     public void handleNewTravelTime(String duration) {
         this.travelTime = duration;
-    }
+        Log.d("funcionou", duration);
+    }*/
 }
 

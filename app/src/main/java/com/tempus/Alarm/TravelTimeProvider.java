@@ -1,16 +1,17 @@
 package com.tempus.Alarm;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -18,6 +19,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.tempus.R;
 
 import org.json.JSONObject;
 
@@ -28,17 +30,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static android.support.v4.app.ActivityCompat.requestPermissions;
-
-
-public class TravelTimeProvider implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
-
-    public abstract interface TravelTimeCallback {
-        public void handleNewTravelTime(String location);
-    }
+public class TravelTimeProvider extends Activity implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
 
     public static final String TAG = TravelTimeProvider.class.getSimpleName();
 
@@ -46,44 +38,81 @@ public class TravelTimeProvider implements
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 101;
     private boolean permissionIsGranted = false;
 
-    private TravelTimeCallback mTravelTimeCallback;
-    private Context mContext;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
-    String url, destination;
+
 
     LatLng myCurrentLocation;
     LatLng destLat = null;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        //setContentView(R.layout.activity_travel_time_provider);
+        Bundle data = getIntent().getExtras();
+        String destination = data.getString("EVENT_LOCATION");
 
-    public TravelTimeProvider(Context context, TravelTimeCallback callback, String destination) {
-        this.destination = destination;
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
 
         getDestinationPosition(destination);
 
-        mTravelTimeCallback = callback;
-
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mContext = context;
+        mLocationRequest = new LocationRequest();
+        //mLocationRequest.setInterval(60 * 1000);
+        //mLocationRequest.setFastestInterval(15 * 1000); não necessário, só util para testes
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    public void connect() {
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        requestLocationUpdates();
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         mGoogleApiClient.connect();
     }
 
-    public void disconnect() {
-        if (mGoogleApiClient.isConnected()) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (permissionIsGranted) {
+            if (mGoogleApiClient.isConnected()) {
+                requestLocationUpdates();
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (permissionIsGranted) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (permissionIsGranted) {
             mGoogleApiClient.disconnect();
         }
     }
+
 
     protected void getDestinationPosition(String destination) {
         if(destination != null){
@@ -94,15 +123,12 @@ public class TravelTimeProvider implements
         }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        requestLocationUpdates();
-    }
+
 
     private void requestLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
+                requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_FINE_LOCATION);
             } else {
                 permissionIsGranted = true;
             }
@@ -111,17 +137,29 @@ public class TravelTimeProvider implements
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
-
     @Override
-    public void onConnectionSuspended(int i) {
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSION_REQUEST_FINE_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permissão garantida
+                    permissionIsGranted = true;
+                } else {
+                    //permissão negada
+                    permissionIsGranted = false;
+                    Toast.makeText(getApplicationContext(), R.string.location_permission, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (connectionResult.hasResolution() && mContext instanceof Activity) {
+        if (connectionResult.hasResolution() && getApplicationContext() instanceof Activity) {
             try {
-                Activity activity = (Activity) mContext;
+                Activity activity = (Activity) getApplicationContext();
                 connectionResult.startResolutionForResult(activity, CONNECTION_FAILURE_RESOLUTION_REQUEST);
 
             } catch (IntentSender.SendIntentException e) {
@@ -137,7 +175,7 @@ public class TravelTimeProvider implements
     public void onLocationChanged(Location location) {
         if(destLat != null) {
             myCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            url = getUrl(myCurrentLocation, destLat);
+            String url = getUrl(myCurrentLocation, destLat);
             Log.d("URL", url);
             FetchUrl FetchUrl = new FetchUrl();
             FetchUrl.execute(url);
@@ -242,10 +280,12 @@ public class TravelTimeProvider implements
             setRouteInfo(s);
         }
     }
-
     public void setRouteInfo(String routeInfo) {
         String[] aux = routeInfo.split(",");
-        routeInfo = aux[0].substring(9, (aux[0].length() - 1));
-        mTravelTimeCallback.handleNewTravelTime(routeInfo);
+        routeInfo = aux[1].substring(8, (aux[1].length() - 1));
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",routeInfo);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
     }
 }

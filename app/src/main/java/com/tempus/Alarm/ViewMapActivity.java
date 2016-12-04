@@ -390,5 +390,4 @@ public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallb
                 break;
         }
     }
-
 }
