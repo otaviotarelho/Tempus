@@ -5,7 +5,6 @@
 package com.tempus.Alarm;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,13 +23,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.tempus.R;
-import com.tempus.auxiliars.TimePreference;
 
 import static android.app.Activity.RESULT_OK;
 
 public class NewAlarmItems extends PreferenceFragment {
 
     int PLACE_PICKER_REQUEST = 1;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
@@ -46,6 +47,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
 
     ProgressDialog progress;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         setContentView(R.layout.activity_new_alarm);
         getFragmentManager().beginTransaction().replace(R.id.preferences_alarm,
                 new NewAlarmItems()).commit();
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
         come_from = extras.getString("ALARM");
