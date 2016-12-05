@@ -29,7 +29,7 @@ public class AlarmRingingActivity extends AppCompatActivity {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
+        tempusDB = new DatabaseHelper(this);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);

@@ -57,6 +57,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarms_rows, parent, false);
         }
         context = getContext();
+        tempusDB = new DatabaseHelper(getContext());
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         final rowsElements elements = new rowsElements();
         elements.clock = (TextClock) convertView.findViewById(R.id.alarmClock);

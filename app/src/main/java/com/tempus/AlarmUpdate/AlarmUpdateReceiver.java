@@ -26,7 +26,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Alarm alarm = (Alarm) intent.getExtras().getSerializable("ALARM_INFORMATIONS");
-
+        tempusDB = new DatabaseHelper(context);
         Intent sendIntend = new Intent(context, TravelTimeProvider.class);
         sendIntend.putExtra("EVENT_LOCATION", alarm.getEvent().getLocation());
         ((Activity) context).startActivityForResult(sendIntend, 1);
