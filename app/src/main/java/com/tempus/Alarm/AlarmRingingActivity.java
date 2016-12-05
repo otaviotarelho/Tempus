@@ -14,12 +14,14 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.tempus.AlarmUpdate.AlarmUpdateReceiver;
 import com.tempus.MainActivity;
 import com.tempus.R;
+import com.tempus.auxiliars.DatabaseHelper;
 
 public class AlarmRingingActivity extends AppCompatActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    private DatabaseHelper tempusDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class AlarmRingingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent my_intent = new Intent(AlarmAdapter.getAppContext(), AlarmReceiver.class);
+                Intent my_Ajust = new Intent(AlarmAdapter.getAppContext(), AlarmUpdateReceiver.class);
                 my_intent.putExtra("RINGTONE", song);
                 my_intent.putExtra("TIME", time);
                 my_intent.putExtra("ALARM_SELECTED", "alarm_off");
@@ -57,9 +60,14 @@ public class AlarmRingingActivity extends AppCompatActivity {
                 my_intent.putExtra("ALARM_ID", id);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AlarmAdapter.getAppContext(), id, my_intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntentAjuste = PendingIntent.getBroadcast(AlarmAdapter.getAppContext(), id + 9000, my_Ajust,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) AlarmAdapter.getAppContext().getSystemService(ALARM_SERVICE);
+                alarmManager.cancel(pendingIntentAjuste);
+                context.sendBroadcast(my_Ajust);
                 alarmManager.cancel(pendingIntent);
                 context.sendBroadcast(my_intent);
+                tempusDB.updateStatus((long) id, false);
                 Intent main = new Intent(context, MainActivity.class);
                 startActivity(main);
             }

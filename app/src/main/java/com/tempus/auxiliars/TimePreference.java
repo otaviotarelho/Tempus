@@ -16,6 +16,8 @@ import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
+
+import com.tempus.Alarm.NewAlarmActivity;
 import com.tempus.R;
 
 public class TimePreference extends DialogPreference {

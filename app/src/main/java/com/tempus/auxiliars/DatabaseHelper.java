@@ -112,6 +112,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean updateStatus(Long id, boolean active){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMNS[6], (active == true) ? 1 : 0);
+        String selection = COLUMNS[0] + " = ? ";
+        String[] selectionArgs = {String.valueOf(id)};
+        long result = db.update(TABLE_NAME, contentValues, selection, selectionArgs);
+        return result != -1;
+    }
+
+    public boolean updateAlarmETAeTime(long id, String time, String ETA){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMNS[2], time);
+        contentValues.put(COLUMNS[5], ETA);
+        String selection = COLUMNS[0] + " = ? ";
+        String[] selectionArgs = {String.valueOf(id)};
+        long result = db.update(TABLE_NAME, contentValues, selection, selectionArgs);
+        return result != -1;
+    }
+
     public boolean updateAlarm(Alarm a){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();

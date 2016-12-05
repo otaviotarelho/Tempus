@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.tempus.R;
+import com.tempus.auxiliars.TimePreference;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -45,14 +46,12 @@ public class NewAlarmItems extends PreferenceFragment {
         myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                try {
-                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            try {
+                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+            }
             return true;
             }
         });
@@ -96,7 +95,6 @@ public class NewAlarmItems extends PreferenceFragment {
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
-
             }
             else if (preference instanceof RingtonePreference) {
                 if (TextUtils.isEmpty(stringValue)) {
@@ -114,13 +112,8 @@ public class NewAlarmItems extends PreferenceFragment {
                 }
             }
             else {
-                if(preference instanceof DialogPreference){
-                    DialogPreference dialogPreference = (DialogPreference) preference;
-                    Log.e("DialogPreference", dialogPreference.getKey());
-                }
                 preference.setSummary(stringValue);
             }
-
             return true;
         }
     };

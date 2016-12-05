@@ -127,4 +127,5 @@
     <string name="how_it_works">Tempus é um incrível despertador que utiliza informações de trânsito para ajudar você a nunca mais se atrasar para nenhum compromisso. Através de um incrível sistema de monitoramento de trânsito, Tempus consegue estimar o tempo necessário para que você chegue a um evento marcado em seu calendário.</string>
     <string name="getting_route_info_title">Por favor, aguarde.</string>
     <string name="getting_route_info_body">Obtendo informações do trajeto...</string>
+    <string name="updated_alarm_clock">Alarme atualizado com base nas informações de trafego e preferencias</string>
 </resources>

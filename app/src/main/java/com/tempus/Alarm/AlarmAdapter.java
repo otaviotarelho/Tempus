@@ -8,8 +8,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Switch;
 import android.widget.TextClock;
 import android.widget.TextView;
+
+import com.tempus.AlarmUpdate.AlarmChangeRules;
+import com.tempus.AlarmUpdate.AlarmUpdateReceiver;
 import com.tempus.R;
+import com.tempus.auxiliars.DatabaseHelper;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,10 +35,10 @@ import java.util.Locale;
 import static android.content.Context.ALARM_SERVICE;
 
 class AlarmAdapter extends  ArrayAdapter<Alarm> {
-
+    private DatabaseHelper tempusDB;
     private ArrayList<Alarm> alarm;
     private PendingIntent pendingIntent;
-
+    private PendingIntent pendingIntentAjusteAlarm;
     private static Context context;
 
     static Context getAppContext(){
@@ -86,6 +92,9 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                 my_intent.putExtra("ALARM_NAME", a.getAlarmName());
                 my_intent.putExtra("ALARM_ID", a.getID());
 
+                Intent my_ajust = new Intent(context, AlarmUpdateReceiver.class);
+                my_ajust.putExtra("ALARM_INFORMATIONS", alarm);
+
                 if(elements.active.isChecked()){
                     my_intent.putExtra("ALARM_SELECTED", "alarm_on");
                     elements.active.setText(R.string.alarm_on);
@@ -98,12 +107,23 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     pendingIntent = PendingIntent.getBroadcast(context, _id, my_intent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    tempusDB.updateStatus(a.getID(), true);
+
+                    pendingIntentAjusteAlarm = PendingIntent.getBroadcast(context, _id + 9000,
+                            my_ajust, PendingIntent.FLAG_UPDATE_CURRENT);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                    int sync = sharedPref.getInt("sync_frequency", 0);
+                    Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, setTimeUpdate,pendingIntent);
                 }
                 else {
                     my_intent.putExtra("ALARM_SELECTED", "alarm_off");
                     elements.active.setText(R.string.alarm_off);
                     alarmManager.cancel(pendingIntent);
                     context.sendBroadcast(my_intent);
+                    alarmManager.cancel(pendingIntentAjusteAlarm);
+                    context.sendBroadcast(my_ajust);
+                    tempusDB.updateStatus(a.getID(), false);
                 }
             }
 

@@ -11,15 +11,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.tempus.AlarmUpdate.AlarmChangeRules;
 import com.tempus.Events.Event;
 import com.tempus.MainActivity;
 import com.tempus.Preferences.AppCompatPreferenceActivity;
@@ -42,9 +47,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     private long id;
     public static String locationPicked;
     private Boolean saved = false;
-
     ProgressDialog progress;
-
+    public static TimePicker textClock = null;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     String travelTime;
@@ -67,7 +71,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor edit = sharedPref.edit();
         ClearPreferences(edit);
-        TimePicker textClock = (TimePicker) findViewById(R.id.timePicker);
+        textClock = (TimePicker) findViewById(R.id.timePicker);
 
         if (android.text.format.DateFormat.is24HourFormat(this)) {
             textClock.setIs24HourView(true);
@@ -75,12 +79,13 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             textClock.setIs24HourView(false);
         }
 
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
             Intent i = getIntent();
             this.setTitle(R.string.edit_alarm);
             Alarm alarm = (Alarm) i.getSerializableExtra("DATA");
             id = alarm.getID();
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+
             settings.edit().putString("alarm_name", alarm.getAlarmName()).apply();
             //settings.edit().putStringSet("alarm_repeat", alarm.getRepeat()).apply();
             settings.edit().putString("alarm_ringtone", alarm.getRingtone()).apply();
@@ -101,8 +106,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         } else if (come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
             Intent i = getIntent();
             e = (Event) i.getSerializableExtra("DATA");
-
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             // HashSet<String> to_solve = new HashSet<>();
             // to_solve.add("-1");
             settings.edit().putString("alarm_name", e.getName()).apply();
@@ -120,25 +123,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
 
         }
     }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    protected void onResume() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String lang = settings.getString("lang_setting", "");
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        config.setLocale(locale);
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,8 +172,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
         String event_location = locationPicked;
-
-        Log.e("SAVING DATA", "TRUE");
         if (type.equals("0")) {
             e = new Event();
             a = new Alarm(title, getResources().getString(R.string.normal_alarm),
@@ -220,8 +202,11 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
                 ev.setDuration("");
             }
 
-            a = new Alarm(title, travelTime, time, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
-
+            String timeUpdated;
+            String timeToPrepare = settings.getString("org_sync_frequency", "0");
+            timeUpdated = AlarmChangeRules.updateTimeNewAlarm(time, Integer.valueOf(timeToPrepare), Integer.valueOf(travelTime));
+            //Log.e("TIME UPDATED", timeUpdated);
+            a = new Alarm(title, travelTime, timeUpdated, ringtone,/*repeat,*/type,/*snooze,*/ false, ev);
         }
 
         if (saved) {
@@ -230,7 +215,9 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
             if (come_from.equals(MainActivity.EXTRA_MESSAGE) ||
                     come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
                 tempusDB.insertAlarm(a);
-
+                if(type.equals("1")){
+                    toastAlertNewTimeUpdated();
+                }
             } else if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
                 a.setID(id);
                 tempusDB.updateAlarm(a);
@@ -276,6 +263,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         }
     }
 
+    private void toastAlertNewTimeUpdated(){
+        Toast.makeText(getApplicationContext(),
+                R.string.updated_alarm_clock, Toast.LENGTH_LONG).show();
+    }
 
     private void buildDialogError(int motivo) {
         switch (motivo) {
@@ -299,7 +290,6 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 travelTime = data.getStringExtra("result");
-                Log.d("TEMPUS>ETA", travelTime);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //mexer nisso em implementações futuras
@@ -432,12 +422,12 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     }
 
     public void ClearPreferences(SharedPreferences.Editor edit) {
-        edit.remove("alarm_name");
-        edit.remove("alarm_ringtone");
-        edit.remove("alarm_type");
+        edit.remove("alarm_name").apply();
+        edit.remove("alarm_ringtone").apply();
+        edit.remove("alarm_type").apply();
         //edit.remove("alarm_snooze");
         //edit.remove("alarm_repeat");
-        edit.remove("event_location");
+        edit.remove("event_location").apply();
         edit.commit();
     }
 

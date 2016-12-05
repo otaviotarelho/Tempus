@@ -69,21 +69,12 @@
     <string name="title_activity_alarm_ringing" translatable="false">.</string>
     <string name="getting_route_info_title">Please waite.</string>
     <string name="getting_route_info_body">Getting route information...</string>
-    <string-array name="pref_lang_titles">
-        <item>English</item>
-        <item>Portuguese (BRA)</item>
-    </string-array>
-
-    <string-array name="pref_lang_values">
-        <item>en</item>
-        <item>pt</item>
-    </string-array>
 
     <string-array name="pref_sync_frequency_titles">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
-        <item>1 1/2 hours</item>
+        <item>1 hours 30 minutes</item>
         <item>2 hours</item>
     </string-array>
 
@@ -130,6 +121,6 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-
+    <string name="updated_alarm_clock">Alarm update based on informations of current traffic and preferences.</string>
 
 </resources>
