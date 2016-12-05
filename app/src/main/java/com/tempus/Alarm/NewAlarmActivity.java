@@ -50,7 +50,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
     ProgressDialog progress;
     public static TimePicker textClock = null;
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    Bundle bundle = new Bundle();
     String travelTime;
 
     @SuppressWarnings("deprecation")
@@ -216,11 +216,22 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
                     come_from.equals(MainActivity.EXTRA_MESSAGE_ADD_EVENT)) {
                 tempusDB.insertAlarm(a);
                 if(type.equals("1")){
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "5");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SALVOU ALARM COM TRAFFIC");
+                    mFirebaseAnalytics.logEvent("NEW_ALARM", bundle);
                     toastAlertNewTimeUpdated();
+                }
+                else {
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "6");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SALVOU ALARM NORMAL");
+                    mFirebaseAnalytics.logEvent("NEW_ALARM", bundle);
                 }
             } else if (come_from.equals(MainActivity.EXTRA_MESSAGE_EDIT)) {
                 a.setID(id);
                 tempusDB.updateAlarm(a);
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "7");
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SALVOU UPDATE ALARM");
+                mFirebaseAnalytics.logEvent("NEW_ALARM", bundle);
             }
         } else {
             buildDialogError(error_motivo);

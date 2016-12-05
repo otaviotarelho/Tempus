@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tempus.R;
 
 import org.json.JSONObject;
@@ -50,6 +51,8 @@ import java.util.List;
 
 public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+    Bundle bundle = new Bundle();
     LatLng myCurrentLocation;
     LatLng destLat;
 
@@ -95,6 +98,10 @@ public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallb
         getDestinationPosition();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.viewMap);
+
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "8");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "VISUALIZOU TRAFEGO");
+        mFirebaseAnalytics.logEvent("VIEW TRAFFIC", bundle);
     }
 
     @Override

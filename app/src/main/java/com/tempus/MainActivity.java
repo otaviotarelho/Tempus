@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tempus.Alarm.AlarmFragment;
 import com.tempus.Alarm.NewAlarmActivity;
 import com.tempus.Events.EventFragment;
@@ -39,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String SAVE_ALARM_LIST = "Alarmes"; // TAG
     public static final String SAVE_EVENT_LIST = "Eventos"; // TAG
     private static final int MY_PERMISSIONS = 5;
+    private FirebaseAnalytics mFirebaseAnalytics;
     private final int[] ICON = {
             R.drawable.ic_alarm_white_36dp,
             R.drawable.ic_event_white_36dp,
             R.drawable.ic_pie_chart_white_36dp
     };
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         for(int i = 0; i < 2; i++) {
             tabLayout.getTabAt(i).setIcon(ICON[i]);
         }
@@ -76,13 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String lang = settings.getString("lang_setting", "");
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        config.setLocale(locale);
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         super.onResume();
 
         if((ContextCompat.checkSelfPermission(this,
@@ -109,18 +105,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         int id = item.getItemId();
+
+
+        int id = item.getItemId();
 
         if(id == R.id.action_add_new_alarm){
             Intent newAlarm = new Intent(this, NewAlarmActivity.class);
             newAlarm.putExtra("ALARM", EXTRA_MESSAGE);
             startActivity(newAlarm);
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "1");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "New Alarm");
+            mFirebaseAnalytics.logEvent("NEW_ALARM_FRAGMENT_SELECTED", bundle);
             return true;
         }
 
         else if (id == R.id.action_settings) {
             Intent settings = new Intent(this, TempusSettingsActivity.class);
             startActivity(settings);
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "2");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SETTINGS");
+            mFirebaseAnalytics.logEvent("SETTINGS", bundle);
             return true;
         }
 
@@ -137,8 +141,14 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position) {
                 case 0:
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "3");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "ALARMS");
+                    mFirebaseAnalytics.logEvent("ALARMS_VIEW", bundle);
                     return AlarmFragment.newInstance();
                 case 1:
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "4");
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Events");
+                    mFirebaseAnalytics.logEvent("EVENTS_VIEW", bundle);
                     return EventFragment.newInstance();
             }
 
