@@ -9,11 +9,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -22,7 +19,6 @@ import android.view.MenuItem;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tempus.AlarmUpdate.AlarmChangeRules;
 import com.tempus.Events.Event;
@@ -301,6 +297,7 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 travelTime = data.getStringExtra("result");
+                Log.d("TEMPUS>", travelTime);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //mexer nisso em implementações futuras

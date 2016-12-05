@@ -283,8 +283,10 @@ public class TravelTimeProvider extends Activity implements LocationListener, Go
     public void setRouteInfo(String routeInfo) {
         String[] aux = routeInfo.split(",");
         routeInfo = aux[1].substring(8, (aux[1].length() - 1));
+        int seconds = Integer.parseInt(routeInfo);
+        int minutes = seconds / 60;
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("result",routeInfo);
+        returnIntent.putExtra("result", String.valueOf(minutes));
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }
