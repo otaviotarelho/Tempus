@@ -167,6 +167,12 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
 
         String time_event = String.valueOf(settings.getLong("event_start_time", 0));
         String time_event_end = String.valueOf(settings.getLong("event_end_time", 0));
+        int h =  getCurrentHourFromLong(time_event);
+        int m = getCurrentMinuteFromLong(time_event);
+        Log.d("TEMPUS>HORA", String.valueOf(h));
+        Log.d("TEMPUS>MIN", String.valueOf(m));
+
+
         String event_location = locationPicked;
         if (type.equals("0")) {
             e = new Event();
@@ -179,6 +185,10 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
                 saved = true;
             }
         } else if (type.equals("1")) {
+            alarmTime.setCurrentHour(h);
+            alarmTime.setCurrentMinute(m);
+            time = getStringTime(alarmTime.getCurrentMinute(), alarmTime.getCurrentHour());
+
             if ("".equals(ringtone)) {
                 buildConformDialogAlertSilentAlarm();
                 confirmDialogObj.show();
@@ -314,6 +324,15 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
         c.setTimeInMillis(h);
         Date d = c.getTime();
         return d.getHours();
+    }
+
+    @SuppressWarnings("deprecation")
+    private int getCurrentMinuteFromLong(String minute) {
+        Calendar c = Calendar.getInstance();
+        Long m = Long.parseLong(minute);
+        c.setTimeInMillis(m);
+        Date d = c.getTime();
+        return d.getMinutes();
     }
 
     @SuppressWarnings("deprecation")

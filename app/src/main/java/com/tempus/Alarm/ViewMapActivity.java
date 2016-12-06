@@ -98,7 +98,7 @@ public class ViewMapActivity extends FragmentActivity implements OnMapReadyCallb
         getDestinationPosition();
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.viewMap);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "8");
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "VISUALIZOU TRAFEGO");
         mFirebaseAnalytics.logEvent("VIEW TRAFFIC", bundle);

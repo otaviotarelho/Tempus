@@ -80,8 +80,12 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
         } else {
             elements.active.setText(R.string.alarm_off);
         }
-
-        elements.eta.setText(a.getAlarmETA());
+        int timeInMinutes = Integer.parseInt(a.getAlarmETA());
+        String hours = String.valueOf(timeInMinutes / 60);
+        String minutes = String.valueOf(timeInMinutes % 60);
+        minutes = minutes.length() == 1 ? "0" + minutes : minutes;
+        String tempo = hours + ":" + minutes;
+        elements.eta.setText(tempo);
         elements.name.setText(a.getAlarmName());
         elements.active.setOnClickListener(new View.OnClickListener(){
 
@@ -113,7 +117,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     pendingIntentAjusteAlarm = PendingIntent.getBroadcast(context, _id + 9000,
                             my_ajust, PendingIntent.FLAG_UPDATE_CURRENT);
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-                    int sync = sharedPref.getInt("sync_frequency", 0);
+                    int sync = Integer.valueOf(sharedPref.getString("sync_frequency",""));
                     Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
                     alarmManager.set(AlarmManager.RTC_WAKEUP, setTimeUpdate,pendingIntent);
                 }
