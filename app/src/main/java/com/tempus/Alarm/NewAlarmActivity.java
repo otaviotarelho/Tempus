@@ -237,7 +237,8 @@ public class NewAlarmActivity extends AppCompatPreferenceActivity /*implements T
                 tempusDB.updateAlarm(a);
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "7");
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SALVOU UPDATE ALARM");
-                mFirebaseAnalytics.logEvent("NEW_ALARM", bundle);
+                mFirebaseAnalytics.logEvent("EDIT_ALARM", bundle);
+                toastAlertNewTimeUpdated();
             }
         } else {
             buildDialogError(error_motivo);

@@ -2,10 +2,13 @@ package com.tempus.AlarmUpdate;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.NotificationCompat;
+
 import com.tempus.Alarm.Alarm;
 import com.tempus.Alarm.AlarmReceiver;
 import com.tempus.Alarm.TravelTimeProvider;
@@ -30,7 +33,8 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
         Intent sendIntend = new Intent(context, TravelTimeProvider.class);
         sendIntend.putExtra("EVENT_LOCATION", alarm.getEvent().getLocation());
         ((Activity) context).startActivityForResult(sendIntend, 1);
-
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String newTime = AlarmChangeRules.updateTimeAlarm(alarm.getAlarmTime(), Integer.valueOf(alarm.getAlarmETA()),
                 Integer.valueOf(travelTime));
 
@@ -45,7 +49,14 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
                 deletOldAlarmSet(context, alarm);
                 AddNewAlarmSet(context, alarm, convertTimeInMili(newTime));
             }
+            mBuilder.setContentTitle("Tempus - Your TimeManager");
+            mBuilder.setContentText("Hey, I've checked and updated ("+alarm.getAlarmName()+") to a better time!");
+        } else {
+            mBuilder.setContentTitle("Tempus - Your TimeManager");
+            mBuilder.setContentText("Hey, I've checked and you're alarm ("+alarm.getAlarmName()+") doensn't need a update.");
         }
+
+        mNotificationManager.notify(1, mBuilder.build());
     }
 
     private String[] getHourMin(String hour){
