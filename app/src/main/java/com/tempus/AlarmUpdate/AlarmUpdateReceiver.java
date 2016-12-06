@@ -12,6 +12,7 @@ import android.support.v7.app.NotificationCompat;
 import com.tempus.Alarm.Alarm;
 import com.tempus.Alarm.AlarmReceiver;
 import com.tempus.Alarm.TravelTimeProvider;
+import com.tempus.R;
 import com.tempus.auxiliars.DatabaseHelper;
 
 import java.text.DateFormat;
@@ -50,12 +51,13 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
                 AddNewAlarmSet(context, alarm, convertTimeInMili(newTime));
             }
             mBuilder.setContentTitle("Tempus - Your TimeManager");
+
             mBuilder.setContentText("Hey, I've checked and updated ("+alarm.getAlarmName()+") to a better time!");
         } else {
             mBuilder.setContentTitle("Tempus - Your TimeManager");
             mBuilder.setContentText("Hey, I've checked and you're alarm ("+alarm.getAlarmName()+") doensn't need a update.");
         }
-
+        mBuilder.setSmallIcon(R.drawable.ic_alarm_white_36dp);
         mNotificationManager.notify(1, mBuilder.build());
     }
 
