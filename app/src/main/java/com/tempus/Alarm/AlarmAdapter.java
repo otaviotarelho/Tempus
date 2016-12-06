@@ -119,7 +119,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                     int sync = Integer.valueOf(sharedPref.getString("sync_frequency",""));
                     Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, setTimeUpdate,pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000*60*5, pendingIntentAjusteAlarm);
                 }
                 else {
                     my_intent.putExtra("ALARM_SELECTED", "alarm_off");
