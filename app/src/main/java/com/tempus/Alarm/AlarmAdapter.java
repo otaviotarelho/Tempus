@@ -114,20 +114,24 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     tempusDB.updateStatus(a.getID(), true);
 
-                    pendingIntentAjusteAlarm = PendingIntent.getBroadcast(context, _id + 9000,
-                            my_ajust, PendingIntent.FLAG_UPDATE_CURRENT);
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-                    int sync = Integer.valueOf(sharedPref.getString("sync_frequency",""));
-                    Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
-                    alarmManager.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000*60*5, pendingIntentAjusteAlarm);
+                    if("1".equals(a.getType())) {
+                        pendingIntentAjusteAlarm = PendingIntent.getBroadcast(context, _id + 9000,
+                                my_ajust, PendingIntent.FLAG_UPDATE_CURRENT);
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                        int sync = Integer.valueOf(sharedPref.getString("sync_frequency", ""));
+                        Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
+                        alarmManager.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60 * 5, pendingIntentAjusteAlarm);
+                    }
                 }
                 else {
                     my_intent.putExtra("ALARM_SELECTED", "alarm_off");
                     elements.active.setText(R.string.alarm_off);
                     alarmManager.cancel(pendingIntent);
                     context.sendBroadcast(my_intent);
-                    alarmManager.cancel(pendingIntentAjusteAlarm);
-                    context.sendBroadcast(my_ajust);
+                    if("1".equals(a.getType())) {
+                        alarmManager.cancel(pendingIntentAjusteAlarm);
+                        context.sendBroadcast(my_ajust);
+                    }
                     tempusDB.updateStatus(a.getID(), false);
                 }
             }
