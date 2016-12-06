@@ -111,6 +111,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     final int _id = (int) a.getID();
                     pendingIntent = PendingIntent.getBroadcast(context, _id, my_intent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
+
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                     tempusDB.updateStatus(a.getID(), true);
 
@@ -120,6 +121,12 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                         int sync = Integer.valueOf(sharedPref.getString("sync_frequency", ""));
                         Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
+                        Calendar currentTime = Calendar.getInstance();
+
+                        if(setTimeUpdate < currentTime.getTimeInMillis()){
+                            setTimeUpdate = currentTime.getTimeInMillis();
+                        }
+
                         alarmManager.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60 * 5, pendingIntentAjusteAlarm);
                     }
                 }
