@@ -51,7 +51,6 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
                 AddNewAlarmSet(context, alarm, convertTimeInMili(newTime));
             }
             mBuilder.setContentTitle("Tempus - Your TimeManager");
-
             mBuilder.setContentText("Hey, I've checked and updated ("+alarm.getAlarmName()+") to a better time!");
         } else {
             mBuilder.setContentTitle("Tempus - Your TimeManager");

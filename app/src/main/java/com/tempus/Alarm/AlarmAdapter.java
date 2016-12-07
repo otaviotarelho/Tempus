@@ -101,7 +101,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                 my_intent.putExtra("ALARM_ID", a.getID());
 
                 Intent my_ajust = new Intent(context, AlarmUpdateReceiver.class);
-                my_ajust.putExtra("ALARM_INFORMATIONS", alarm);
+                my_ajust.putExtra("ALARM_INFORMATIONS", a);
 
                 if(elements.active.isChecked()){
                     my_intent.putExtra("ALARM_SELECTED", "alarm_on");
