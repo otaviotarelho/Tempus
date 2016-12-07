@@ -32,10 +32,11 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
         //Intent sendIntend = new Intent(context, TravelTimeProvider.class);
         //sendIntend.putExtra("EVENT_LOCATION", alarm.getEvent().getLocation());
         //((Activity) context).startActivityForResult(sendIntend, 1);
+        travelTime = "75";
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String newTime = AlarmChangeRules.updateTimeAlarm(alarm.getAlarmTime(), Integer.valueOf(alarm.getAlarmETA()), 75
-               /* Integer.valueOf(travelTime)*/);
+        String newTime = AlarmChangeRules.updateTimeAlarm(alarm.getAlarmTime(), Integer.valueOf(alarm.getAlarmETA()),
+               Integer.valueOf(travelTime));
 
 
         if(!newTime.equals(alarm.getAlarmTime())){
