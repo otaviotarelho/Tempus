@@ -61,6 +61,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
         context = getContext();
         tempusDB = new DatabaseHelper(getContext());
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        final AlarmManager alarmManagerRunAjust = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         final rowsElements elements = new rowsElements();
         elements.clock = (TextClock) convertView.findViewById(R.id.alarmClock);
         elements.name = (TextView) convertView.findViewById(R.id.ListItemAlarmName);
@@ -134,7 +135,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                         mBuilder.setContentText("Hey, I've schedulared a verification to start at " + setTimeUpdate );
                         mBuilder.setSmallIcon(R.drawable.ic_alarm_white_36dp);
                         mNotificationManager.notify(2, mBuilder.build());
-                        alarmManager.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60 * 5, pendingIntentAjusteAlarm);
+                        alarmManagerRunAjust.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60 * 5, pendingIntentAjusteAlarm);
                     }
                 }
                 else {
@@ -143,7 +144,7 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                     alarmManager.cancel(pendingIntent);
                     context.sendBroadcast(my_intent);
                     if("1".equals(a.getType())) {
-                        alarmManager.cancel(pendingIntentAjusteAlarm);
+                        alarmManagerRunAjust.cancel(pendingIntentAjusteAlarm);
                         context.sendBroadcast(my_ajust);
                     }
                     tempusDB.updateStatus(a.getID(), false);
