@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +133,8 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
                         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder.setContentTitle("Tempus - Your TimeManager");
-                        mBuilder.setContentText("Hey, I've schedulared a verification to start at " + setTimeUpdate );
+                        mBuilder.setContentText("start at " + setTimeUpdate );
+                        Log.d("TEMPUS>", String.valueOf(setTimeUpdate));
                         mBuilder.setSmallIcon(R.drawable.ic_alarm_white_36dp);
                         mNotificationManager.notify(2, mBuilder.build());
                         alarmManagerRunAjust.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60, pendingIntentAjusteAlarm);

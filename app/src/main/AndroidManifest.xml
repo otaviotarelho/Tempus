@@ -71,6 +71,8 @@
 
         <receiver android:name=".Alarm.AlarmReceiver" />
 
+        <receiver android:name=".AlarmUpdate.AlarmUpdateReceiver" />
+
         <service
             android:name=".Alarm.RingtonePlayingService"
             android:enabled="true" />

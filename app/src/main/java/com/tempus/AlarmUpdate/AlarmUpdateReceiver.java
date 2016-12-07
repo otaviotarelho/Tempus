@@ -1,6 +1,5 @@
 package com.tempus.AlarmUpdate;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,7 +10,6 @@ import android.support.v7.app.NotificationCompat;
 
 import com.tempus.Alarm.Alarm;
 import com.tempus.Alarm.AlarmReceiver;
-import com.tempus.Alarm.TravelTimeProvider;
 import com.tempus.R;
 import com.tempus.auxiliars.DatabaseHelper;
 
@@ -31,13 +29,14 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Alarm alarm = (Alarm) intent.getSerializableExtra("ALARM_INFORMATIONS");
         tempusDB = new DatabaseHelper(context);
-        Intent sendIntend = new Intent(context, TravelTimeProvider.class);
-        sendIntend.putExtra("EVENT_LOCATION", alarm.getEvent().getLocation());
-        ((Activity) context).startActivityForResult(sendIntend, 1);
+        //Intent sendIntend = new Intent(context, TravelTimeProvider.class);
+        //sendIntend.putExtra("EVENT_LOCATION", alarm.getEvent().getLocation());
+        //((Activity) context).startActivityForResult(sendIntend, 1);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String newTime = AlarmChangeRules.updateTimeAlarm(alarm.getAlarmTime(), Integer.valueOf(alarm.getAlarmETA()),
-                Integer.valueOf(travelTime));
+        String newTime = AlarmChangeRules.updateTimeAlarm(alarm.getAlarmTime(), Integer.valueOf(alarm.getAlarmETA()), 75
+               /* Integer.valueOf(travelTime)*/);
+
 
         if(!newTime.equals(alarm.getAlarmTime())){
             if(convertTimeInMili(newTime) <= currentTimeInMili()){
