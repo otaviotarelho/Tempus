@@ -124,18 +124,18 @@ class AlarmAdapter extends  ArrayAdapter<Alarm> {
                         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
                         int sync = Integer.valueOf(sharedPref.getString("sync_frequency", ""));
                         Long setTimeUpdate = AlarmChangeRules.updateTimeStartRun(a.getAlarmTime(), sync);
-                        Calendar currentTime = Calendar.getInstance();
 
-                        if(setTimeUpdate < currentTime.getTimeInMillis()){
-                            setTimeUpdate = currentTime.getTimeInMillis();
+                        if(setTimeUpdate < System.currentTimeMillis()){
+                            setTimeUpdate = System.currentTimeMillis();
                         }
+
                         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
                         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                         mBuilder.setContentTitle("Tempus - Your TimeManager");
                         mBuilder.setContentText("Hey, I've schedulared a verification to start at " + setTimeUpdate );
                         mBuilder.setSmallIcon(R.drawable.ic_alarm_white_36dp);
                         mNotificationManager.notify(2, mBuilder.build());
-                        alarmManagerRunAjust.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60 * 5, pendingIntentAjusteAlarm);
+                        alarmManagerRunAjust.setRepeating(AlarmManager.RTC, setTimeUpdate, 1000 * 60, pendingIntentAjusteAlarm);
                     }
                 }
                 else {

@@ -55,9 +55,10 @@ public class AlarmChangeRules {
             DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Calendar dataStartAlarm = Calendar.getInstance();
             Calendar dataCurrent = Calendar.getInstance();
+            dataCurrent.setTimeInMillis(System.currentTimeMillis());
             Date data = dateFormat.parse(timeStart);
             dataStartAlarm.setTime(data);
-            dataStartAlarm.add(Calendar.MINUTE, -SyncTime);
+            dataStartAlarm.add(Calendar.MINUTE, SyncTime * -1);
             if(dataCurrent.getTimeInMillis() > dataStartAlarm.getTimeInMillis()){
                 dataStartAlarm.add(Calendar.DATE, 1);
             }

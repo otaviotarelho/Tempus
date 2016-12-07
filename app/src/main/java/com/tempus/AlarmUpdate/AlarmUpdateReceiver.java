@@ -74,8 +74,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
     }
 
     private long currentTimeInMili(){
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTimeInMillis();
+        return System.currentTimeMillis();
     }
 
     private void deletOldAlarmSet(Context context, Alarm a){
