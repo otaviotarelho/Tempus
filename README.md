@@ -12,7 +12,7 @@
   The main project objective was to create an application based on APIs integrations and check its viability on helping users on their daily tasks. We, the authors, when finishing this project had an agreement about the future of this project getting the conclusion that the best way to encourage new developers to create new solutions like ours is sharing what we have done.
   
 ##What does you need to know?
-This application is free and need to keep this way. if you use this source code, please refer us.<br/>
+This application is free and need to keep this way. if you use this source code, please, refer us.<br/>
 We didn't upload the final code of this application, so it has a lot of work to be done. For example, the alarm is not updating itself when it suppose to do.<br/> 
 You can request the monograph through the email otaviortdb@gmail.com or to the UniSantos Library at unisantos.br 
  
